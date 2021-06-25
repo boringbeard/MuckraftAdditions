@@ -2,12 +2,12 @@ package com.boringbread.muckraft.common;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.world.DimensionType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public abstract class CommonProxy {
     public void preInit() {
+        MuckraftWorldGen.preInit();
     }
 
     public void init() {
