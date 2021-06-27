@@ -1,6 +1,6 @@
 {
 	"parent": "item/generated",
 	"textures": {
-		"layer0": "muckraft/muck_cheese"
+		"layer0": "muckraft:items/muck_cheese"
 	}
 }

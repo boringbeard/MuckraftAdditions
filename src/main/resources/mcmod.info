@@ -3,14 +3,10 @@
   "modid": "muckraft",
   "name": "Muckraft Additions",
   "description": "Adds things for Muckraft Mild.",
-  "version": "0.1.0",
-  "mcversion": "1.12.2",
-  "url": "",
-  "updateUrl": "",
-  "authorList": ["ExampleDude"],
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "authorList": ["boringbread"],
   "credits": "Everyone",
-  "logoFile": "",
-  "screenshots": [],
-  "dependencies": []
+  "logoFile": "assets/muckraft/textures/muck_cheese.png"
 }
 ]
