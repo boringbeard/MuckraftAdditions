@@ -2,8 +2,10 @@ package com.boringbread.muckraft.common.block;
 
 import com.boringbread.muckraft.common.Muckraft;
 import net.minecraft.block.BlockBreakable;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialPortal;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -23,7 +25,7 @@ public class BlockPortalStageOne extends BlockBreakable
 
     public BlockPortalStageOne()
     {
-        super(MaterialPortal.PORTAL, false);
+        super(Material.ROCK, false);
         this.setRegistryName(NAME);
         this.setUnlocalizedName(Muckraft.MODID + ":" + NAME);
     }
@@ -46,6 +48,5 @@ public class BlockPortalStageOne extends BlockBreakable
 
     public static void preInitClient()
     {
-
     }
 }

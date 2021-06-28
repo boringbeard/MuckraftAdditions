@@ -1,0 +1,9 @@
+{
+  "parent": "block/cube_bottom_top",
+
+  "textures": {
+    "side": "muckraft:blocks/portal_stage_one_side",
+    "bottom": "muckraft:blocks/portal_stage_one_bottom",
+    "top": "muckraft:blocks/portal_stage_one_top"
+  }
+}
