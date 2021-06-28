@@ -30,8 +30,14 @@ public class Muckraft
     }
 
     @EventHandler
-    public static void init(FMLInitializationEvent event){}
+    public static void init(FMLInitializationEvent event)
+    {
+        proxy.init();
+    }
 
     @EventHandler
-    public static void postInit(FMLPostInitializationEvent event){}
+    public static void postInit(FMLPostInitializationEvent event)
+    {
+        proxy.postInit();
+    }
 }

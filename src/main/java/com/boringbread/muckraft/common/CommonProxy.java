@@ -1,7 +1,8 @@
 package com.boringbread.muckraft.common;
 
 import com.boringbread.muckraft.common.block.BlockPortalStageOne;
-import com.boringbread.muckraft.common.item.ItemMuckCheese;
+import com.boringbread.muckraft.common.block.ModBlocks;
+import com.boringbread.muckraft.common.item.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
@@ -9,11 +10,9 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber
-public abstract class CommonProxy {
+public class CommonProxy {
     public void preInit() {
         MuckraftCreativeTab.preInitCommon();
-        BlockPortalStageOne.preInitCommon();
-        ItemMuckCheese.preInitCommon();
         MuckraftWorldGen.preInitCommon();
     }
 
@@ -30,13 +29,14 @@ public abstract class CommonProxy {
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event)
     {
-        event.getRegistry().register(BlockPortalStageOne.INSTANCE);
+        event.getRegistry().register(ModBlocks.PORTAL_STAGE_ONE);
     }
 
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event)
     {
-        event.getRegistry().register(ItemMuckCheese.INSTANCE);
-        event.getRegistry().register(BlockPortalStageOne.ITEM_BLOCK);
+        System.out.println(" 1 ");
+        event.getRegistry().register(ModItems.MUCK_CHEESE);
+        event.getRegistry().register(ModBlocks.ITEM_PORTAL_STAGE_ONE);
     }
 }
