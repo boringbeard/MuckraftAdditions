@@ -6,7 +6,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class MuckraftCreativeTab extends CreativeTabs {
+public class MuckraftCreativeTab extends CreativeTabs
+{
     public static MuckraftCreativeTab muckraftCreativeTab;
 
     public MuckraftCreativeTab(String label) { super(label); }

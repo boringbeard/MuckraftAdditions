@@ -10,12 +10,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static com.boringbread.muckraft.common.MuckraftCreativeTab.muckraftCreativeTab;
 
-public class ItemMuckCheese extends ItemFood {
+public class ItemMuckCheese extends ItemFood
+{
     public static final ItemMuckCheese INSTANCE = new ItemMuckCheese();
 
     public static final String NAME = "muck_cheese";
@@ -23,10 +22,10 @@ public class ItemMuckCheese extends ItemFood {
     public ItemMuckCheese()
     {
         super(20, 20, false);
-        this.setCreativeTab(muckraftCreativeTab);
-        this.setRegistryName(NAME);
-        this.setUnlocalizedName(Muckraft.MODID + "_" + NAME);
-        this.setHasSubtypes(false);
+        setCreativeTab(muckraftCreativeTab);
+        setRegistryName(NAME);
+        setUnlocalizedName(Muckraft.MODID + "_" + NAME);
+        setHasSubtypes(false);
     }
 
     @Override
