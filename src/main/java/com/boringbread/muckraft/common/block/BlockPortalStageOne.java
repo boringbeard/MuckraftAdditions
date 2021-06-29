@@ -1,5 +1,6 @@
 package com.boringbread.muckraft.common.block;
 
+import com.boringbread.muckraft.common.MuckTeleporter;
 import com.boringbread.muckraft.common.Muckraft;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -17,17 +18,21 @@ public class BlockPortalStageOne extends Block
     {
         super(Material.ROCK);
         this.setRegistryName(NAME);
+        this.setHarvestLevel("pickaxe", 1);
         this.setUnlocalizedName(Muckraft.MODID + "_" + NAME);
     }
 
     @Override
     public void onLanded(World worldIn, Entity entityIn)
     {
-        if(worldIn.isRemote) return;
-        entityIn.motionY = 0.0D;
-        if (!entityIn.isRiding() && !entityIn.isBeingRidden() && entityIn.isNonBoss())
+        if(!worldIn.isRemote)
         {
-            entityIn.changeDimension(-1);
+            entityIn.motionY = 0.0D;
+
+            if (!entityIn.isRiding() && !entityIn.isBeingRidden() && entityIn.isNonBoss())
+            {
+                entityIn.changeDimension(69, new MuckTeleporter());
+            }
         }
     }
 }
