@@ -15,9 +15,11 @@ public class BlockPortalStageOne extends Block
     public BlockPortalStageOne()
     {
         super(Material.ROCK);
-        setRegistryName(NAME);
         setCreativeTab(MuckraftCreativeTab.muckraftCreativeTab);
+        setHardness(2.0F);
         setHarvestLevel("pickaxe", 1);
+        setRegistryName(NAME);
+        setResistance(9);
         setUnlocalizedName(Muckraft.MODID + "_" + NAME);
     }
 
