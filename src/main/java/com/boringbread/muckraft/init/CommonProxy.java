@@ -1,8 +1,6 @@
-package com.boringbread.muckraft.common;
+package com.boringbread.muckraft.init;
 
-import com.boringbread.muckraft.common.init.ModBlocks;
-import com.boringbread.muckraft.common.init.ModItems;
-import com.boringbread.muckraft.common.init.MuckraftWorldGen;
+import com.boringbread.muckraft.creativetab.MuckraftCreativeTab;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;

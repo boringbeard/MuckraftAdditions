@@ -1,5 +1,6 @@
-package com.boringbread.muckraft.common;
+package com.boringbread.muckraft;
 
+import com.boringbread.muckraft.init.CommonProxy;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -18,7 +19,7 @@ public class Muckraft
 
     private static Logger logger;
 
-    @SidedProxy(clientSide = "com.boringbread.muckraft.client.ClientProxy", serverSide = "com.boringbread.muckraft.common.DedicatedServerProxy")
+    @SidedProxy(clientSide = "com.boringbread.muckraft.client.ClientProxy", serverSide = "DedicatedServerProxy")
 
     public static CommonProxy proxy;
 

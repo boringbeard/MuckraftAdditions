@@ -1,7 +1,7 @@
-package com.boringbread.muckraft.common.init;
+package com.boringbread.muckraft.init;
 
-import com.boringbread.muckraft.common.MuckraftCreativeTab;
-import com.boringbread.muckraft.common.block.BlockPortalStageOne;
+import com.boringbread.muckraft.creativetab.MuckraftCreativeTab;
+import com.boringbread.muckraft.block.BlockPortalStageOne;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;

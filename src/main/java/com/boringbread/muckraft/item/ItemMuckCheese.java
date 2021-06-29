@@ -1,7 +1,7 @@
-package com.boringbread.muckraft.common.item;
+package com.boringbread.muckraft.item;
 
-import com.boringbread.muckraft.common.Muckraft;
-import com.boringbread.muckraft.common.MuckraftCreativeTab;
+import com.boringbread.muckraft.Muckraft;
+import com.boringbread.muckraft.creativetab.MuckraftCreativeTab;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumRarity;

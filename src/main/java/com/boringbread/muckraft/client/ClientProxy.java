@@ -1,8 +1,8 @@
 package com.boringbread.muckraft.client;
 
-import com.boringbread.muckraft.common.CommonProxy;
-import com.boringbread.muckraft.common.init.ModBlocks;
-import com.boringbread.muckraft.common.init.ModItems;
+import com.boringbread.muckraft.init.CommonProxy;
+import com.boringbread.muckraft.init.ModBlocks;
+import com.boringbread.muckraft.init.ModItems;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

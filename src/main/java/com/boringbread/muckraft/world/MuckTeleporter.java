@@ -1,4 +1,4 @@
-package com.boringbread.muckraft.common;
+package com.boringbread.muckraft.world;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;

@@ -1,4 +1,4 @@
-package com.boringbread.muckraft.common.world;
+package com.boringbread.muckraft.world;
 
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.state.IBlockState;
