@@ -1,5 +1,6 @@
 package com.boringbread.muckraft.block;
 
+import com.boringbread.muckraft.creativetab.MuckraftCreativeTab;
 import com.boringbread.muckraft.world.MuckTeleporter;
 import com.boringbread.muckraft.Muckraft;
 import net.minecraft.block.Block;
@@ -14,9 +15,10 @@ public class BlockPortalStageOne extends Block
     public BlockPortalStageOne()
     {
         super(Material.ROCK);
-        this.setRegistryName(NAME);
-        this.setHarvestLevel("pickaxe", 1);
-        this.setUnlocalizedName(Muckraft.MODID + "_" + NAME);
+        setRegistryName(NAME);
+        setCreativeTab(MuckraftCreativeTab.muckraftCreativeTab);
+        setHarvestLevel("pickaxe", 1);
+        setUnlocalizedName(Muckraft.MODID + "_" + NAME);
     }
 
     @Override

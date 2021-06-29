@@ -1,6 +1,5 @@
 package com.boringbread.muckraft.init;
 
-import com.boringbread.muckraft.creativetab.MuckraftCreativeTab;
 import com.boringbread.muckraft.block.BlockPortalStageOne;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -23,7 +22,6 @@ public class ModBlocks {
     {
         Item itemBlock = new ItemBlock(block);
         itemBlock.setRegistryName(block.getRegistryName());
-        itemBlock.setCreativeTab(MuckraftCreativeTab.muckraftCreativeTab);
         return itemBlock;
     }
 }
