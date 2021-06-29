@@ -1,7 +1,6 @@
 package com.boringbread.muckraft.common.world;
 
-import com.boringbread.muckraft.common.world.MuckraftChunkGenerator;
-import com.boringbread.muckraft.common.world.MuckraftWorldGen;
+import com.boringbread.muckraft.common.init.MuckraftWorldGen;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.gen.IChunkGenerator;

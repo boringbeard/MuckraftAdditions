@@ -3,6 +3,7 @@ package com.boringbread.muckraft.common.block;
 import com.boringbread.muckraft.common.Muckraft;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
@@ -20,11 +21,13 @@ public class BlockPortalStageOne extends Block
     }
 
     @Override
-    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+    public void onLanded(World worldIn, Entity entityIn)
     {
+        if(worldIn.isRemote) return;
+        entityIn.motionY = 0.0D;
         if (!entityIn.isRiding() && !entityIn.isBeingRidden() && entityIn.isNonBoss())
         {
-            entityIn.changeDimension(69);
+            entityIn.changeDimension(-1);
         }
     }
 }

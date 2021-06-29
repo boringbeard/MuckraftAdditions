@@ -1,5 +1,6 @@
-package com.boringbread.muckraft.common.world;
+package com.boringbread.muckraft.common.init;
 
+import com.boringbread.muckraft.common.world.MuckraftWorldProvider;
 import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.DimensionManager;
 
