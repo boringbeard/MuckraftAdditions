@@ -1,6 +1,7 @@
 package com.boringbread.muckraft.common.item;
 
 import com.boringbread.muckraft.common.Muckraft;
+import com.boringbread.muckraft.common.MuckraftCreativeTab;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumRarity;
@@ -9,8 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
-import static com.boringbread.muckraft.common.MuckraftCreativeTab.muckraftCreativeTab;
-
 public class ItemMuckCheese extends ItemFood
 {
     public static final String NAME = "muck_cheese";
@@ -18,7 +17,7 @@ public class ItemMuckCheese extends ItemFood
     public ItemMuckCheese()
     {
         super(20, 20, false);
-        setCreativeTab(muckraftCreativeTab);
+        setCreativeTab(MuckraftCreativeTab.muckraftCreativeTab);
         setRegistryName(NAME);
         setUnlocalizedName(Muckraft.MODID + "_" + NAME);
         setHasSubtypes(false);

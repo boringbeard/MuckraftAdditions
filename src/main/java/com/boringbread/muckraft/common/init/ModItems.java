@@ -1,6 +1,7 @@
-package com.boringbread.muckraft.common.item;
+package com.boringbread.muckraft.common.init;
 
 import com.boringbread.muckraft.common.Muckraft;
+import com.boringbread.muckraft.common.item.ItemMuckCheese;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;

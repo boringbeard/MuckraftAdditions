@@ -1,6 +1,6 @@
 package com.boringbread.muckraft.common;
 
-import com.boringbread.muckraft.common.item.ModItems;
+import com.boringbread.muckraft.common.init.ModItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
