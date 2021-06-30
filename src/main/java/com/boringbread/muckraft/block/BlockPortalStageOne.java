@@ -32,7 +32,14 @@ public class BlockPortalStageOne extends Block
 
             if (!entityIn.isRiding() && !entityIn.isBeingRidden() && entityIn.isNonBoss())
             {
-                entityIn.changeDimension(69, new MuckTeleporter());
+                if(worldIn.provider.getDimension() != 69)
+                {
+                    entityIn.changeDimension(69, new MuckTeleporter());
+                }
+                else
+                {
+                    entityIn.changeDimension(0, new MuckTeleporter());
+                }
             }
         }
     }
