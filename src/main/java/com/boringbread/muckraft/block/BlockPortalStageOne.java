@@ -30,9 +30,11 @@ public class BlockPortalStageOne extends Block
         {
             entityIn.motionY = 0.0D;
 
-            if (!entityIn.isRiding() && !entityIn.isBeingRidden() && entityIn.isNonBoss())
+            if(entityIn.timeUntilPortal > 100) entityIn.timeUntilPortal = 100;
+
+            if(entityIn.timeUntilPortal == 0)
             {
-                if(worldIn.provider.getDimension() != 69)
+                if (worldIn.provider.getDimension() != 69)
                 {
                     entityIn.changeDimension(69, new MuckTeleporter());
                 }
@@ -40,6 +42,12 @@ public class BlockPortalStageOne extends Block
                 {
                     entityIn.changeDimension(0, new MuckTeleporter());
                 }
+
+                entityIn.timeUntilPortal = 100;
+            }
+            else
+            {
+                entityIn.timeUntilPortal -= 1;
             }
         }
     }
