@@ -1,8 +1,8 @@
 package com.boringbread.muckraft.world;
 
+import com.boringbread.muckraft.init.ModBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ITeleporter;
@@ -17,9 +17,10 @@ public class MuckTeleporter implements ITeleporter {
         int z = (int)Math.floor(entity.posZ);
 
         BlockPos pos = new BlockPos(x, y, z);
-        BlockPos newPos = findAcceptableLocation(300, pos, world);
+        BlockPos newPos = findAcceptableLocation(200, pos, world);
+        world.setBlockState(newPos, ModBlocks.PORTAL_STAGE_ONE.getDefaultState());
 
-        entity.setLocationAndAngles(newPos.getX(), newPos.getY(), newPos.getZ(), yaw, 0.0F);
+        entity.setLocationAndAngles(newPos.getX()+ 0.5, newPos.getY() + 1, newPos.getZ() + 0.5, yaw, 0.0F);
         entity.motionX = 0;
         entity.motionY = 0;
         entity.motionZ = 0;
@@ -32,9 +33,17 @@ public class MuckTeleporter implements ITeleporter {
         int y = pos.getY();
         int z = pos.getZ();
 
-        for(int r = 0; r <= range; r += range/6)
+        for(int r = 0; r <= range; r += range/10)
         {
-            int checksPerRing = 8;
+            if(r == 0)
+            {
+                int y1 = getGoodHeight(new BlockPos(x, y, z), world);
+                boolean isAcceptableLocation = y1 != -1;
+
+                if (isAcceptableLocation) return new BlockPos(x, y1, z);
+            }
+
+            int checksPerRing = 16;
 
             for(int i = 0; i <= checksPerRing; i++)
             {
@@ -44,14 +53,12 @@ public class MuckTeleporter implements ITeleporter {
                 int x1 = x + changeX;
                 int z1 = z + changeZ;
                 int y1 = getGoodHeight(new BlockPos(x1, y, z1), world);
-
-                System.out.println(changeX + ", " + changeZ);
-
                 boolean isAcceptableLocation = y1 != -1;
 
                 if (isAcceptableLocation) return new BlockPos(x1, y1, z1);
             }
         }
+
         return null;
     }
 
@@ -70,7 +77,7 @@ public class MuckTeleporter implements ITeleporter {
                 for(int z1 = z - 1; z1 < z + 2; z1++)
                 {
                     BlockPos checkPos = new BlockPos(x1, y, z1);
-                    IBlockState blockState = world.getBlockState(checkPos.add(0,-1, 0));
+                    IBlockState blockState = world.getBlockState(checkPos.down());
 
                     if (world.getLight(checkPos) == 15 && blockState.isOpaqueCube()) counter++;
                 }
