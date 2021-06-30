@@ -42,12 +42,10 @@ public class MuckraftChunkGenerator implements IChunkGenerator {
     private IBlockState oceanBlock = Blocks.WATER.getDefaultState();
     private double[] depthBuffer = new double[256];
     private MapGenBase caveGenerator = new MapGenCaves();
-    private MapGenStronghold strongholdGenerator = new MapGenStronghold();
     private MapGenVillage villageGenerator = new MapGenVillage();
     private MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
     private MapGenScatteredFeature scatteredFeatureGenerator = new MapGenScatteredFeature();
     private MapGenBase ravineGenerator = new MapGenRavine();
-    private StructureOceanMonument oceanMonumentGenerator = new StructureOceanMonument();
     private Biome[] biomesForGeneration;
     double[] mainNoiseRegion;
     double[] minLimitRegion;
@@ -58,12 +56,10 @@ public class MuckraftChunkGenerator implements IChunkGenerator {
     {
         {
             caveGenerator = net.minecraftforge.event.terraingen.TerrainGen.getModdedMapGen(caveGenerator, net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.CAVE);
-            strongholdGenerator = (MapGenStronghold)net.minecraftforge.event.terraingen.TerrainGen.getModdedMapGen(strongholdGenerator, net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.STRONGHOLD);
             villageGenerator = (MapGenVillage)net.minecraftforge.event.terraingen.TerrainGen.getModdedMapGen(villageGenerator, net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.VILLAGE);
             mineshaftGenerator = (MapGenMineshaft)net.minecraftforge.event.terraingen.TerrainGen.getModdedMapGen(mineshaftGenerator, net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.MINESHAFT);
             scatteredFeatureGenerator = (MapGenScatteredFeature)net.minecraftforge.event.terraingen.TerrainGen.getModdedMapGen(scatteredFeatureGenerator, net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.SCATTERED_FEATURE);
             ravineGenerator = net.minecraftforge.event.terraingen.TerrainGen.getModdedMapGen(ravineGenerator, net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.RAVINE);
-            oceanMonumentGenerator = (StructureOceanMonument)net.minecraftforge.event.terraingen.TerrainGen.getModdedMapGen(oceanMonumentGenerator, net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.OCEAN_MONUMENT);
         }
         this.world = worldIn;
         this.mapFeaturesEnabled = mapFeaturesEnabledIn;
@@ -222,19 +218,9 @@ public class MuckraftChunkGenerator implements IChunkGenerator {
                 this.villageGenerator.generate(this.world, x, z, chunkprimer);
             }
 
-            if (this.settings.useStrongholds)
-            {
-                this.strongholdGenerator.generate(this.world, x, z, chunkprimer);
-            }
-
             if (this.settings.useTemples)
             {
                 this.scatteredFeatureGenerator.generate(this.world, x, z, chunkprimer);
-            }
-
-            if (this.settings.useMonuments)
-            {
-                this.oceanMonumentGenerator.generate(this.world, x, z, chunkprimer);
             }
         }
 
@@ -395,19 +381,9 @@ public class MuckraftChunkGenerator implements IChunkGenerator {
                 flag = this.villageGenerator.generateStructure(this.world, this.rand, chunkpos);
             }
 
-            if (this.settings.useStrongholds)
-            {
-                this.strongholdGenerator.generateStructure(this.world, this.rand, chunkpos);
-            }
-
             if (this.settings.useTemples)
             {
                 this.scatteredFeatureGenerator.generateStructure(this.world, this.rand, chunkpos);
-            }
-
-            if (this.settings.useMonuments)
-            {
-                this.oceanMonumentGenerator.generateStructure(this.world, this.rand, chunkpos);
             }
         }
 
@@ -479,14 +455,7 @@ public class MuckraftChunkGenerator implements IChunkGenerator {
 
     public boolean generateStructures(Chunk chunkIn, int x, int z)
     {
-        boolean flag = false;
-
-        if (this.settings.useMonuments && this.mapFeaturesEnabled && chunkIn.getInhabitedTime() < 3600L)
-        {
-            flag |= this.oceanMonumentGenerator.generateStructure(this.world, this.rand, new ChunkPos(x, z));
-        }
-
-        return flag;
+        return false;
     }
 
     public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
@@ -499,11 +468,6 @@ public class MuckraftChunkGenerator implements IChunkGenerator {
             {
                 return this.scatteredFeatureGenerator.getMonsters();
             }
-
-            if (creatureType == EnumCreatureType.MONSTER && this.settings.useMonuments && this.oceanMonumentGenerator.isPositionInStructure(this.world, pos))
-            {
-                return this.oceanMonumentGenerator.getMonsters();
-            }
         }
 
         return biome.getSpawnableList(creatureType);
@@ -514,14 +478,6 @@ public class MuckraftChunkGenerator implements IChunkGenerator {
         if (!this.mapFeaturesEnabled)
         {
             return false;
-        }
-        else if ("Stronghold".equals(structureName) && this.strongholdGenerator != null)
-        {
-            return this.strongholdGenerator.isInsideStructure(pos);
-        }
-        else if ("Monument".equals(structureName) && this.oceanMonumentGenerator != null)
-        {
-            return this.oceanMonumentGenerator.isInsideStructure(pos);
         }
         else if ("Village".equals(structureName) && this.villageGenerator != null)
         {
@@ -543,14 +499,6 @@ public class MuckraftChunkGenerator implements IChunkGenerator {
         if (!this.mapFeaturesEnabled)
         {
             return null;
-        }
-        else if ("Stronghold".equals(structureName) && this.strongholdGenerator != null)
-        {
-            return this.strongholdGenerator.getNearestStructurePos(worldIn, position, findUnexplored);
-        }
-        else if ("Monument".equals(structureName) && this.oceanMonumentGenerator != null)
-        {
-            return this.oceanMonumentGenerator.getNearestStructurePos(worldIn, position, findUnexplored);
         }
         else if ("Village".equals(structureName) && this.villageGenerator != null)
         {
@@ -580,19 +528,9 @@ public class MuckraftChunkGenerator implements IChunkGenerator {
                 this.villageGenerator.generate(this.world, x, z, (ChunkPrimer)null);
             }
 
-            if (this.settings.useStrongholds)
-            {
-                this.strongholdGenerator.generate(this.world, x, z, (ChunkPrimer)null);
-            }
-
             if (this.settings.useTemples)
             {
                 this.scatteredFeatureGenerator.generate(this.world, x, z, (ChunkPrimer)null);
-            }
-
-            if (this.settings.useMonuments)
-            {
-                this.oceanMonumentGenerator.generate(this.world, x, z, (ChunkPrimer)null);
             }
         }
     }
