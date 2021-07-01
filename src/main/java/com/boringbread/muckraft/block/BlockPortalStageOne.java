@@ -49,7 +49,9 @@ public class BlockPortalStageOne extends Block {
             if (entityIn.timeUntilPortal == 0) {
                 if (worldIn.provider.getDimension() != 69) {
                     entityIn.changeDimension(69, new MuckTeleporter());
-                } else {
+                }
+                else
+                {
                     entityIn.changeDimension(0, new MuckTeleporter());
                 }
 
