@@ -1,0 +1,8 @@
+{
+  "parent": "block/half_slab",
+  "textures": {
+    "bottom": "muckraft:blocks/portal_one_bottom",
+    "top": "muckraft:blocks/portal_one_side_activated",
+    "side": "muckraft:blocks/portal_one_slab_side"
+  }
+}
