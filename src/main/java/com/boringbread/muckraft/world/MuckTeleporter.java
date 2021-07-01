@@ -18,7 +18,7 @@ public class MuckTeleporter implements ITeleporter {
 
         BlockPos pos = new BlockPos(x, y, z);
         BlockPos newPos = findAcceptableLocation(200, pos, world);
-        world.setBlockState(newPos, ModBlocks.PORTAL_STAGE_ONE.getDefaultState());
+        world.setBlockState(newPos, ModBlocks.PORTAL_STAGE_ONE.getStateFromMeta(1));
 
         entity.setLocationAndAngles(newPos.getX()+ 0.5, newPos.getY() + 1, newPos.getZ() + 0.5, yaw, 0.0F);
         entity.motionX = 0;
