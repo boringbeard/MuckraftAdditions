@@ -29,13 +29,13 @@ public class CommonProxy
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event)
     {
-        event.getRegistry().register(ModBlocks.PORTAL_STAGE_ONE);
+        ModBlocks.registerBlocks(event);
     }
 
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event)
     {
-        event.getRegistry().register(ModItems.MUCK_CHEESE);
-        event.getRegistry().register(ModBlocks.ITEM_PORTAL_STAGE_ONE);
+        ModItems.registerItems(event);
+        ModBlocks.registerItemBlocks(event);
     }
 }
