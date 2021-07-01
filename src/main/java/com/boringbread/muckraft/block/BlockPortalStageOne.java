@@ -9,7 +9,12 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBook;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockPortalStageOne extends Block {
@@ -29,7 +34,14 @@ public class BlockPortalStageOne extends Block {
 
     @Override
     public void onLanded(World worldIn, Entity entityIn) {
-        if (!worldIn.isRemote) {
+        double x = entityIn.posX;
+        double y = entityIn.posY;
+        double z = entityIn.posZ;
+        boolean isActivated = worldIn.getBlockState(new BlockPos(x, y - 1, z)).getValue(ACTIVATED);
+        System.out.println(isActivated);
+
+        if (!worldIn.isRemote && isActivated)
+        {
             entityIn.motionY = 0.0D;
 
             if (entityIn.timeUntilPortal > 100) entityIn.timeUntilPortal = 100;
@@ -49,9 +61,27 @@ public class BlockPortalStageOne extends Block {
     }
 
     @Override
-    public void onFallenUpon(World worldIn, BlockPos pos, Entity entityIn, float fallDistance)
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        System.out.println("joe");
+        if(playerIn.getHeldItem(hand).getItem() instanceof ItemBook && !worldIn.isRemote && !state.getValue(ACTIVATED))
+        {
+            worldIn.setBlockState(pos, state.withProperty(ACTIVATED, true));
+            playerIn.getHeldItem(hand).shrink(1);
+        }
+
+        return true;
+    }
+
+    @Override
+    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
+        if (state.getValue(ACTIVATED))
+        {
+            setLightLevel(14);
+            return 14;
+        }
+        setLightLevel(0);
+        return 0;
     }
 
     @Override
