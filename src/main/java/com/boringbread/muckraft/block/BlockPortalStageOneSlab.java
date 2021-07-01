@@ -56,7 +56,7 @@ public class BlockPortalStageOneSlab extends BlockSlab
     @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, ACTIVATED, FACING);
+        return new BlockStateContainer(this, ACTIVATED, FACING, HALF);
     }
 
     @Override
