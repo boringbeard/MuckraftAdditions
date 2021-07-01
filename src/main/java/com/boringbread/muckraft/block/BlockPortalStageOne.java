@@ -33,32 +33,49 @@ public class BlockPortalStageOne extends Block {
     }
 
     @Override
-    public void onLanded(World worldIn, Entity entityIn) {
+    public void onLanded(World worldIn, Entity entityIn)
+    {
+        if(worldIn.isRemote) return;
+
+        entityIn.motionY = 0.0D;
         double x = entityIn.posX;
         double y = entityIn.posY;
         double z = entityIn.posZ;
+
         boolean isActivated = worldIn.getBlockState(new BlockPos(x, y - 1, z)).getValue(ACTIVATED);
-        System.out.println(isActivated);
 
-        if (!worldIn.isRemote && isActivated)
+        if(isActivated)
         {
-            entityIn.motionY = 0.0D;
+            if(entityIn.timeUntilPortal > 100) entityIn.timeUntilPortal = 100;
 
-            if (entityIn.timeUntilPortal > 100) entityIn.timeUntilPortal = 100;
-
-            if (entityIn.timeUntilPortal == 0) {
-                if (worldIn.provider.getDimension() != 69) {
+            if(entityIn.timeUntilPortal == 0)
+            {
+                if(worldIn.provider.getDimension() != 69)
+                {
                     entityIn.changeDimension(69, new MuckTeleporter());
                 }
                 else
                 {
                     entityIn.changeDimension(0, new MuckTeleporter());
                 }
-
-                entityIn.timeUntilPortal = 100;
-            } else {
-                entityIn.timeUntilPortal -= 1;
             }
+
+            entityIn.timeUntilPortal -= 1;
+        }
+        else
+        {
+            entityIn.timeUntilPortal = 300;
+        }
+    }
+
+    @Override
+    public void onFallenUpon(World worldIn, BlockPos pos, Entity entityIn, float fallDistance)
+    {
+        if(!worldIn.isRemote)
+        {
+            super.onFallenUpon(worldIn, pos, entityIn, fallDistance);
+            System.out.println("joe");
+            entityIn.timeUntilPortal = 300;
         }
     }
 
@@ -77,7 +94,7 @@ public class BlockPortalStageOne extends Block {
     @Override
     public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
     {
-        if (state.getValue(ACTIVATED))
+        if(state.getValue(ACTIVATED))
         {
             setLightLevel(14);
             return 14;
