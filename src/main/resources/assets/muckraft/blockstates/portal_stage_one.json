@@ -1,5 +1,6 @@
 {
   "variants": {
-    "normal": { "model": "muckraft:portal_stage_one" }
+    "activated=false": {"model": "muckraft:portal_stage_one"},
+    "activated=true": {"model": "muckraft:portal_stage_one_activated"}
   }
 }

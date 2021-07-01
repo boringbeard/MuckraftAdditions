@@ -2,8 +2,8 @@
   "parent": "block/cube_bottom_top",
 
   "textures": {
-    "side": "muckraft:blocks/portal_one_side",
+    "side": "muckraft:blocks/portal_one_side_activated",
     "bottom": "muckraft:blocks/portal_one_bottom",
-    "top": "muckraft:blocks/portal_one_top"
+    "top": "muckraft:blocks/portal_one_top_activated"
   }
 }
