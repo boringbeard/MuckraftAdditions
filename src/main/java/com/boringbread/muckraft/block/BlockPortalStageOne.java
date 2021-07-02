@@ -81,8 +81,6 @@ public class BlockPortalStageOne extends Block {
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if(worldIn.isRemote) return false;
-
         IBlockState portalSlab = ModBlocks.PORTAL_STAGE_ONE_SLAB.getDefaultState();
         PropertyDirection direction = BlockPortalStageOneSlab.FACING;
         PropertyBool activated = BlockPortalStageOneSlab.ACTIVATED;
