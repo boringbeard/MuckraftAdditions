@@ -59,19 +59,26 @@ public class BlockPortalStageOneSlab extends BlockSlab
         if(!worldIn.isRemote)
         {
             EnumFacing direction;
-            if (facing != EnumFacing.UP && facing != EnumFacing.DOWN) {
+            if (facing != EnumFacing.UP && facing != EnumFacing.DOWN)
+            {
                 direction = facing;
-            } else {
-                if (hitX > hitZ) {
+            }
+            else
+            {
+                if (hitX > hitZ)
+                {
                     direction = hitX + hitZ > 1 ? EnumFacing.WEST : EnumFacing.SOUTH;
-                } else {
+                }
+                else
+                {
                     direction = hitX + hitZ > 1 ? EnumFacing.NORTH : EnumFacing.EAST;
                 }
             }
 
             IBlockState iblockstate = getDefaultState().withProperty(FACING, direction);
 
-            if (facing != EnumFacing.DOWN && (facing == EnumFacing.UP || (double) hitY <= 0.5D)) {
+            if (facing != EnumFacing.DOWN && (facing == EnumFacing.UP || (double) hitY <= 0.5D))
+            {
                 return iblockstate;
             }
 
@@ -93,13 +100,13 @@ public class BlockPortalStageOneSlab extends BlockSlab
         int totalValue = meta;
         List<Integer> digits = new LinkedList<>();
 
-        for (int i: digitValues)
+        for (int digitValue: digitValues)
         {
             int digit = 0;
 
-            while(totalValue > i)
+            while(totalValue > digitValue)
             {
-                totalValue -= i;
+                totalValue -= digitValue;
                 digit++;
             }
 
@@ -138,25 +145,25 @@ public class BlockPortalStageOneSlab extends BlockSlab
         EnumFacing direction = state.getValue(FACING);
         EnumBlockHalf half = state.getValue(HALF);
 
-        int i = activated ? 1 : 0;
-        int j = half == EnumBlockHalf.TOP ? 1 : 0;
-        int k;
+        int firstDigit = activated ? 1 : 0;
+        int secondDigit = half == EnumBlockHalf.TOP ? 1 : 0;
+        int thirdDigit;
 
         switch (direction)
         {
             case EAST:
-                k = 1;
+                thirdDigit = 1;
                 break;
             case SOUTH:
-                k = 2;
+                thirdDigit = 2;
                 break;
             case WEST:
-                k = 3;
+                thirdDigit = 3;
                 break;
-            default: k = 0;
+            default: thirdDigit = 0;
         }
 
-        return i * 8 + j * 4 + k;
+        return firstDigit * 8 + secondDigit * 4 + thirdDigit;
     }
 
     @Override

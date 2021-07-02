@@ -91,7 +91,7 @@ public class BlockPortalStageOne extends Block {
         boolean southSlab = worldIn.getBlockState(pos.south()) == portalSlab.withProperty(direction, EnumFacing.SOUTH);
         boolean complete = (eastSlab && westSlab) || (northSlab && southSlab);
 
-        if(playerIn.getHeldItem(hand).getItem() instanceof ItemBook && !worldIn.isRemote && !state.getValue(ACTIVATED) && complete)
+        if(playerIn.getHeldItem(hand).getItem() instanceof ItemBook && !state.getValue(ACTIVATED) && complete)
         {
             BlockPos pos1 = eastSlab && westSlab ? pos.east() : pos.north();
             BlockPos pos2 = eastSlab && westSlab ? pos.west() : pos.south();
