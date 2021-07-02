@@ -19,7 +19,7 @@ public class Muckraft
 
     private static Logger logger;
 
-    @SidedProxy(clientSide = "com.boringbread.muckraft.client.ClientProxy", serverSide = "DedicatedServerProxy")
+    @SidedProxy(clientSide = "com.boringbread.muckraft.client.ClientProxy", serverSide = "com.boringbread.muckraft.init.DedicatedServerProxy")
 
     public static CommonProxy proxy;
 
