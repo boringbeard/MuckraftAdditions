@@ -9,11 +9,15 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 public class BlockPortalStageOneSlab extends BlockSlab
@@ -32,7 +36,10 @@ public class BlockPortalStageOneSlab extends BlockSlab
         setRegistryName(NAME);
         setResistance(9);
         setUnlocalizedName(UNLOCALIZED_NAME);
-        setDefaultState(this.blockState.getBaseState().withProperty(ACTIVATED, false));
+        setDefaultState(this.blockState.getBaseState()
+                .withProperty(ACTIVATED, false)
+                .withProperty(FACING, EnumFacing.NORTH)
+                .withProperty(HALF, EnumBlockHalf.BOTTOM));
     }
 
 
@@ -54,26 +61,117 @@ public class BlockPortalStageOneSlab extends BlockSlab
     }
 
     @Override
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    {
+        EnumFacing direction;
+        if(facing != EnumFacing.UP && facing != EnumFacing.DOWN)
+        {
+            direction = facing;
+        }
+        else
+        {
+            if(hitX > hitZ)
+            {
+                direction = hitX + hitZ > 1 ? EnumFacing.WEST : EnumFacing.SOUTH;
+            }
+            else
+            {
+                direction = hitX + hitZ > 1 ? EnumFacing.NORTH : EnumFacing.EAST;
+            }
+        }
+
+        IBlockState iblockstate = getDefaultState().withProperty(FACING, direction);
+
+        if (facing != EnumFacing.DOWN && (facing == EnumFacing.UP || (double) hitY <= 0.5D))
+        {
+            return iblockstate;
+        }
+
+        return iblockstate.withProperty(HALF, EnumBlockHalf.TOP);
+    }
+
+    @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, ACTIVATED, HALF);
+        return new BlockStateContainer(this, ACTIVATED, FACING, HALF);
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
-        return getDefaultState().withProperty(ACTIVATED, meta != 0);
+        int[] digitValues = {8, 4, 1};
+        int totalValue = meta;
+        List<Integer> digits = new LinkedList<>();
+
+        for (int i: digitValues)
+        {
+            int digit = 0;
+
+            while(totalValue > i)
+            {
+                totalValue -= i;
+                digit++;
+            }
+
+            digits.add(digit);
+        }
+
+        boolean activated = digits.get(0) == 1;
+        EnumBlockHalf half = digits.get(1) == 1 ? EnumBlockHalf.TOP : EnumBlockHalf.BOTTOM;
+        EnumFacing facing;
+
+        switch(digits.get(2))
+        {
+            case 1:
+                facing = EnumFacing.EAST;
+                break;
+            case 2:
+                facing = EnumFacing.SOUTH;
+                break;
+            case 3:
+                facing = EnumFacing.WEST;
+                break;
+            default:
+                facing = EnumFacing.NORTH;
+        }
+
+        return getDefaultState()
+                .withProperty(ACTIVATED, activated)
+                .withProperty(HALF, half)
+                .withProperty(FACING, facing);
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return state.getValue(ACTIVATED) ? 1 : 0;
+        boolean activated = state.getValue(ACTIVATED);
+        EnumFacing direction = state.getValue(FACING);
+        EnumBlockHalf half = state.getValue(HALF);
+
+        int i = activated ? 1 : 0;
+        int j = half == EnumBlockHalf.TOP ? 1 : 0;
+        int k;
+
+        switch (direction)
+        {
+            case EAST:
+                k = 1;
+                break;
+            case SOUTH:
+                k = 2;
+                break;
+            case WEST:
+                k = 3;
+                break;
+            default: k = 0;
+        }
+
+        return i * 8 + j * 4 + k;
     }
 
     @Override
     public String getUnlocalizedName(int meta) {
-        return null;
+        return UNLOCALIZED_NAME;
     }
 
     @Override

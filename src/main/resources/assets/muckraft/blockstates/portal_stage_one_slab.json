@@ -1,6 +1,20 @@
 {
   "variants": {
-    "activated=false,half=bottom": {"model": "muckraft:portal_stage_one_slab"},
-    "activated=true,half=bottom": {"model": "muckraft:portal_stage_one_slab_activated"}
+    "activated=false,facing=north,half=bottom": {"model": "muckraft:portal_stage_one_slab"},
+    "activated=true,facing=north,half=bottom": {"model": "muckraft:portal_stage_one_slab_activated"},
+    "activated=false,facing=north,half=top": {"model": "muckraft:portal_stage_one_upper_slab"},
+    "activated=true,facing=north,half=top": {"model": "muckraft:portal_stage_one_upper_slab_activated"},
+    "activated=false,facing=east,half=bottom": {"model": "muckraft:portal_stage_one_slab", "y": 90},
+    "activated=true,facing=east,half=bottom": {"model": "muckraft:portal_stage_one_slab_activated", "y": 90},
+    "activated=false,facing=east,half=top": {"model": "muckraft:portal_stage_one_upper_slab", "y": 90},
+    "activated=true,facing=east,half=top": {"model": "muckraft:portal_stage_one_upper_slab_activated", "y": 90},
+    "activated=false,facing=south,half=bottom": {"model": "muckraft:portal_stage_one_slab", "y": 180},
+    "activated=true,facing=south,half=bottom": {"model": "muckraft:portal_stage_one_slab_activated", "y": 180},
+    "activated=false,facing=south,half=top": {"model": "muckraft:portal_stage_one_upper_slab", "y": 180},
+    "activated=true,facing=south,half=top": {"model": "muckraft:portal_stage_one_upper_slab_activated", "y": 180},
+    "activated=false,facing=west,half=bottom": {"model": "muckraft:portal_stage_one_slab", "y": 270},
+    "activated=true,facing=west,half=bottom": {"model": "muckraft:portal_stage_one_slab_activated", "y": 270},
+    "activated=false,facing=west,half=top": {"model": "muckraft:portal_stage_one_upper_slab", "y": 270},
+    "activated=true,facing=west,half=top": {"model": "muckraft:portal_stage_one_upper_slab_activated", "y": 270}
   }
 }
