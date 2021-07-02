@@ -22,10 +22,10 @@ import java.util.Random;
 
 public class BlockPortalStageOneSlab extends BlockSlab
 {
-    private static final String NAME = "portal_stage_one_slab";
-    private static final String UNLOCALIZED_NAME = Muckraft.MODID + "_" + NAME;
-    private static final PropertyBool ACTIVATED = PropertyBool.create("activated");
-    private static final PropertyDirection FACING = PropertyDirection.create("facing");
+    public static final String NAME = "portal_stage_one_slab";
+    public static final String UNLOCALIZED_NAME = Muckraft.MODID + "_" + NAME;
+    public static final PropertyBool ACTIVATED = PropertyBool.create("activated");
+    public static final PropertyDirection FACING = PropertyDirection.create("facing");
 
     public BlockPortalStageOneSlab()
     {
@@ -40,12 +40,6 @@ public class BlockPortalStageOneSlab extends BlockSlab
                 .withProperty(ACTIVATED, false)
                 .withProperty(FACING, EnumFacing.NORTH)
                 .withProperty(HALF, EnumBlockHalf.BOTTOM));
-    }
-
-
-    @Override
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
-    {
     }
 
     @Override

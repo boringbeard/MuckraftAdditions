@@ -1,11 +1,13 @@
 package com.boringbread.muckraft.block;
 
 import com.boringbread.muckraft.creativetab.MuckraftCreativeTab;
+import com.boringbread.muckraft.init.ModBlocks;
 import com.boringbread.muckraft.world.MuckTeleporter;
 import com.boringbread.muckraft.Muckraft;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -46,9 +48,9 @@ public class BlockPortalStageOne extends Block {
 
         if(isActivated)
         {
-            if(entityIn.timeUntilPortal > 100) entityIn.timeUntilPortal = 100;
+            if(entityIn.timeUntilPortal > 101) entityIn.timeUntilPortal = 101;
 
-            if(entityIn.timeUntilPortal == 0)
+            if(entityIn.timeUntilPortal == 1)
             {
                 if(worldIn.provider.getDimension() != 69)
                 {
@@ -58,6 +60,8 @@ public class BlockPortalStageOne extends Block {
                 {
                     entityIn.changeDimension(0, new MuckTeleporter());
                 }
+
+                entityIn.timeUntilPortal -= 1;
             }
 
             entityIn.timeUntilPortal -= 1;
@@ -74,7 +78,6 @@ public class BlockPortalStageOne extends Block {
         if(!worldIn.isRemote)
         {
             super.onFallenUpon(worldIn, pos, entityIn, fallDistance);
-            System.out.println("joe");
             entityIn.timeUntilPortal = 300;
         }
     }
@@ -82,9 +85,24 @@ public class BlockPortalStageOne extends Block {
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if(playerIn.getHeldItem(hand).getItem() instanceof ItemBook && !worldIn.isRemote && !state.getValue(ACTIVATED))
+        if(worldIn.isRemote) return false;
+
+        IBlockState portalSlab = ModBlocks.PORTAL_STAGE_ONE_SLAB.getDefaultState();
+        PropertyDirection direction = BlockPortalStageOneSlab.FACING;
+        PropertyBool activated = BlockPortalStageOneSlab.ACTIVATED;
+        boolean eastSlab = worldIn.getBlockState(pos.east()) == portalSlab.withProperty(direction, EnumFacing.EAST);
+        boolean westSlab = worldIn.getBlockState(pos.west()) == portalSlab.withProperty(direction, EnumFacing.WEST);
+        boolean northSlab = worldIn.getBlockState(pos.north()) == portalSlab.withProperty(direction, EnumFacing.NORTH);
+        boolean southSlab = worldIn.getBlockState(pos.south()) == portalSlab.withProperty(direction, EnumFacing.SOUTH);
+        boolean complete = (eastSlab && westSlab) || (northSlab && southSlab);
+
+        if(playerIn.getHeldItem(hand).getItem() instanceof ItemBook && !worldIn.isRemote && !state.getValue(ACTIVATED) && complete)
         {
+            BlockPos pos1 = eastSlab && westSlab ? pos.east() : pos.north();
+            BlockPos pos2 = eastSlab && westSlab ? pos.west() : pos.south();
             worldIn.setBlockState(pos, state.withProperty(ACTIVATED, true));
+            worldIn.setBlockState(pos1, worldIn.getBlockState(pos1).withProperty(activated, true));
+            worldIn.setBlockState(pos2, worldIn.getBlockState(pos2).withProperty(activated, true));
             playerIn.getHeldItem(hand).shrink(1);
         }
 
