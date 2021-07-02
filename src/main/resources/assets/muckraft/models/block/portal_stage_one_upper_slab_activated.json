@@ -2,7 +2,7 @@
   "parent": "block/upper_slab",
   "textures": {
     "bottom": "muckraft:blocks/portal_one_bottom",
-    "top": "muckraft:blocks/portal_one_side_activated",
+    "top": "muckraft:blocks/portal_one_slab_top_activated",
     "side": "muckraft:blocks/portal_one_slab_side"
   }
 }
