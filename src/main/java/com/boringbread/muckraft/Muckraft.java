@@ -17,7 +17,7 @@ public class Muckraft
     public static final String VERSION = "0.1.0";
     public static final String MCVERSION = "[1.12.2]";
 
-    private static Logger logger;
+    public static Logger logger;
 
     @SidedProxy(clientSide = "com.boringbread.muckraft.client.ClientProxy", serverSide = "com.boringbread.muckraft.init.DedicatedServerProxy")
 
@@ -27,7 +27,7 @@ public class Muckraft
     public static void preInit(FMLPreInitializationEvent event)
     {
         logger = event.getModLog();
-        proxy.preInit();
+        proxy.preInit(event);
     }
 
     @EventHandler

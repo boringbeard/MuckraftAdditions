@@ -15,11 +15,7 @@ public class MuckTeleporter implements ITeleporter {
     {
         if(!world.isRemote)
         {
-            int x = (int) Math.floor(entity.posX);
-            int y = (int) Math.floor(entity.posY);
-            int z = (int) Math.floor(entity.posZ);
-
-            BlockPos pos = new BlockPos(x, y, z);
+            BlockPos pos = new BlockPos(entity);
             BlockPos newPos = findAcceptableLocation(200, pos, world);
             world.setBlockState(newPos, ModBlocks.PORTAL_STAGE_ONE.getStateFromMeta(1));
 
@@ -64,6 +60,11 @@ public class MuckTeleporter implements ITeleporter {
                 }
             }
         }
+        return null;
+    }
+
+    private BlockPos findExistingPortal(int range, BlockPos pos, World world)
+    {
         return null;
     }
 

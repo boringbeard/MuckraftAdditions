@@ -1,5 +1,6 @@
 package com.boringbread.muckraft.block;
 
+import com.boringbread.muckraft.config.Config;
 import com.boringbread.muckraft.creativetab.MuckraftCreativeTab;
 import com.boringbread.muckraft.init.ModBlocks;
 import com.boringbread.muckraft.world.MuckTeleporter;
@@ -51,8 +52,8 @@ public class BlockPortalStageOne extends Block {
                 if (entityIn.timeUntilPortal > 101) entityIn.timeUntilPortal = 101;
 
                 if (entityIn.timeUntilPortal == 1) {
-                    if (worldIn.provider.getDimension() != 69) {
-                        entityIn.changeDimension(69, new MuckTeleporter());
+                    if (worldIn.provider.getDimension() != Config.stageOneID) {
+                        entityIn.changeDimension(Config.stageOneID, new MuckTeleporter());
                     } else {
                         entityIn.changeDimension(0, new MuckTeleporter());
                     }
