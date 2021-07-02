@@ -18,7 +18,6 @@ import net.minecraft.world.World;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 public class BlockPortalStageOneSlab extends BlockSlab
 {
@@ -57,31 +56,28 @@ public class BlockPortalStageOneSlab extends BlockSlab
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        EnumFacing direction;
-        if(facing != EnumFacing.UP && facing != EnumFacing.DOWN)
+        if(!worldIn.isRemote)
         {
-            direction = facing;
-        }
-        else
-        {
-            if(hitX > hitZ)
-            {
-                direction = hitX + hitZ > 1 ? EnumFacing.WEST : EnumFacing.SOUTH;
+            EnumFacing direction;
+            if (facing != EnumFacing.UP && facing != EnumFacing.DOWN) {
+                direction = facing;
+            } else {
+                if (hitX > hitZ) {
+                    direction = hitX + hitZ > 1 ? EnumFacing.WEST : EnumFacing.SOUTH;
+                } else {
+                    direction = hitX + hitZ > 1 ? EnumFacing.NORTH : EnumFacing.EAST;
+                }
             }
-            else
-            {
-                direction = hitX + hitZ > 1 ? EnumFacing.NORTH : EnumFacing.EAST;
+
+            IBlockState iblockstate = getDefaultState().withProperty(FACING, direction);
+
+            if (facing != EnumFacing.DOWN && (facing == EnumFacing.UP || (double) hitY <= 0.5D)) {
+                return iblockstate;
             }
+
+            return iblockstate.withProperty(HALF, EnumBlockHalf.TOP);
         }
-
-        IBlockState iblockstate = getDefaultState().withProperty(FACING, direction);
-
-        if (facing != EnumFacing.DOWN && (facing == EnumFacing.UP || (double) hitY <= 0.5D))
-        {
-            return iblockstate;
-        }
-
-        return iblockstate.withProperty(HALF, EnumBlockHalf.TOP);
+        return null;
     }
 
     @Override

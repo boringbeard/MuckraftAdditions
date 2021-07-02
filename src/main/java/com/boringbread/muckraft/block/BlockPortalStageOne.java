@@ -23,7 +23,8 @@ public class BlockPortalStageOne extends Block {
     public static final String NAME = "portal_stage_one";
     public static final PropertyBool ACTIVATED = PropertyBool.create("activated");
 
-    public BlockPortalStageOne() {
+    public BlockPortalStageOne()
+    {
         super(Material.ROCK);
         setCreativeTab(MuckraftCreativeTab.muckraftCreativeTab);
         setHardness(2.0F);
@@ -37,38 +38,32 @@ public class BlockPortalStageOne extends Block {
     @Override
     public void onLanded(World worldIn, Entity entityIn)
     {
-        if(worldIn.isRemote) return;
-
-        entityIn.motionY = 0.0D;
-        double x = entityIn.posX;
-        double y = entityIn.posY;
-        double z = entityIn.posZ;
-
-        boolean isActivated = worldIn.getBlockState(new BlockPos(x, y - 1, z)).getValue(ACTIVATED);
-
-        if(isActivated)
+        if(!worldIn.isRemote)
         {
-            if(entityIn.timeUntilPortal > 101) entityIn.timeUntilPortal = 101;
+            entityIn.motionY = 0.0D;
+            double x = entityIn.posX;
+            double y = entityIn.posY;
+            double z = entityIn.posZ;
 
-            if(entityIn.timeUntilPortal == 1)
-            {
-                if(worldIn.provider.getDimension() != 69)
-                {
-                    entityIn.changeDimension(69, new MuckTeleporter());
-                }
-                else
-                {
-                    entityIn.changeDimension(0, new MuckTeleporter());
+            boolean isActivated = worldIn.getBlockState(new BlockPos(x, y - 1, z)).getValue(ACTIVATED);
+
+            if (isActivated) {
+                if (entityIn.timeUntilPortal > 101) entityIn.timeUntilPortal = 101;
+
+                if (entityIn.timeUntilPortal == 1) {
+                    if (worldIn.provider.getDimension() != 69) {
+                        entityIn.changeDimension(69, new MuckTeleporter());
+                    } else {
+                        entityIn.changeDimension(0, new MuckTeleporter());
+                    }
+
+                    entityIn.timeUntilPortal -= 1;
                 }
 
                 entityIn.timeUntilPortal -= 1;
+            } else {
+                entityIn.timeUntilPortal = 300;
             }
-
-            entityIn.timeUntilPortal -= 1;
-        }
-        else
-        {
-            entityIn.timeUntilPortal = 300;
         }
     }
 
