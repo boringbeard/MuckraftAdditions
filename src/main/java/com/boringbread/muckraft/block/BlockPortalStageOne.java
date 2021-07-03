@@ -3,6 +3,8 @@ package com.boringbread.muckraft.block;
 import com.boringbread.muckraft.config.Config;
 import com.boringbread.muckraft.creativetab.MuckraftCreativeTab;
 import com.boringbread.muckraft.init.ModBlocks;
+import com.boringbread.muckraft.init.MuckraftWorldGen;
+import com.boringbread.muckraft.world.DimBlockPos;
 import com.boringbread.muckraft.world.MuckTeleporter;
 import com.boringbread.muckraft.Muckraft;
 import net.minecraft.block.Block;
@@ -94,6 +96,7 @@ public class BlockPortalStageOne extends Block {
             worldIn.setBlockState(pos, state.withProperty(ACTIVATED, true));
             worldIn.setBlockState(pos1, worldIn.getBlockState(pos1).withProperty(activated, true));
             worldIn.setBlockState(pos2, worldIn.getBlockState(pos2).withProperty(activated, true));
+            MuckTeleporter.DESTINATION_CACHE.add(new DimBlockPos(pos, worldIn.provider.getDimension()));
             playerIn.getHeldItem(hand).shrink(1);
         }
 
@@ -113,6 +116,7 @@ public class BlockPortalStageOne extends Block {
         {
             PortalStatus status = getPortalStatus(pos, worldIn);
             if (status == PortalStatus.INCOMPLETE) worldIn.setBlockState(pos, state.withProperty(ACTIVATED, false));
+            MuckTeleporter.DESTINATION_CACHE.remove(new DimBlockPos(pos, worldIn.provider.getDimension()));
         }
     }
 

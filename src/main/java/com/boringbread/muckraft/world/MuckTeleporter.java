@@ -9,8 +9,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ITeleporter;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MuckTeleporter implements ITeleporter {
+    public static final List<DimBlockPos> DESTINATION_CACHE = new ArrayList<>();
 
     @Override
     public void placeEntity(World world, Entity entity, float yaw)
@@ -18,9 +21,8 @@ public class MuckTeleporter implements ITeleporter {
         if(!world.isRemote)
         {
             BlockPos pos = new BlockPos(entity);
-            BlockPos newPos = findAcceptableLocation(200, pos, world);
-            world.setBlockState(newPos, ModBlocks.PORTAL_STAGE_ONE.getStateFromMeta(1));
-
+            BlockPos newPos = findAcceptableLocation(256, pos, world);
+            world.setBlockState(newPos, ModBlocks.PORTAL_STAGE_ONE.getDefaultState().withProperty(BlockPortalStageOne.ACTIVATED, true));
             entity.setLocationAndAngles(newPos.getX() + 0.5, newPos.getY() + 1, newPos.getZ() + 0.5, yaw, 0.0F);
             entity.motionX = 0;
             entity.motionY = 0;
@@ -41,54 +43,60 @@ public class MuckTeleporter implements ITeleporter {
 
             if(existingPortalPos != null) return existingPortalPos;
 
-            for (int r = 0; r <= range; r += range / 10)
+            for (int r = 0; r <= range; r += range / 16)
             {
+                boolean isAcceptableLocation = false;
+                BlockPos newLocation = null;
+
                 if (r == 0)
                 {
                     int y1 = getGoodHeight(new BlockPos(x, y, z), world);
-                    boolean isAcceptableLocation = y1 != -1;
-
-                    if (isAcceptableLocation) return new BlockPos(x, y1, z);
+                    isAcceptableLocation = y1 != -1;
+                    newLocation = new BlockPos(x, y1, z);
                 }
-
-                int checksPerRing = 16;
-
-                for (int i = 0; i <= checksPerRing; i++) {
-                    double tau = 2 * Math.PI;
-                    int changeX = (int) Math.round(r * Math.cos(i * tau / checksPerRing));
-                    int changeZ = (int) Math.round(r * Math.sin(i * tau / checksPerRing));
-                    int x1 = x + changeX;
-                    int z1 = z + changeZ;
-                    int y1 = getGoodHeight(new BlockPos(x1, y, z1), world);
-                    boolean isAcceptableLocation = y1 != -1;
-
-                    if (isAcceptableLocation) return new BlockPos(x1, y1, z1);
-                }
-            }
-        }
-        return null;
-    }
-
-    private BlockPos findExistingPortal(int range, BlockPos pos, World world)
-    {
-        for(int offsetX = -range; offsetX <= range; offsetX++)
-        {
-            for(int offsetZ = -range; offsetZ <= range; offsetZ++)
-            {
-                for(int searchY = 0; searchY < 256; searchY++)
+                else
                 {
-                    IBlockState stageOnePortal = ModBlocks.PORTAL_STAGE_ONE.getDefaultState();
-                    int x = pos.getX() + offsetX;
-                    int z = pos.getZ() + offsetZ;
-                    BlockPos checkPos = new BlockPos(x, searchY, z);
+                    int checksPerRing = 16;
 
-                    if(world.getBlockState(checkPos) == stageOnePortal.withProperty(BlockPortalStageOne.ACTIVATED, true))
+                    for (int i = 0; i <= checksPerRing; i++)
                     {
-                        return checkPos;
+                        double tau = 2 * Math.PI;
+                        int changeX = (int) Math.round(r * Math.cos(i * tau / checksPerRing));
+                        int changeZ = (int) Math.round(r * Math.sin(i * tau / checksPerRing));
+                        int x1 = x + changeX;
+                        int z1 = z + changeZ;
+                        int y1 = getGoodHeight(new BlockPos(x1, y, z1), world);
+                        isAcceptableLocation = y1 != -1;
+                        newLocation = new BlockPos(x1, y1, z1);
                     }
                 }
+
+                if (isAcceptableLocation)
+                {
+                    DESTINATION_CACHE.add(new DimBlockPos(newLocation, world.provider.getDimension()));
+                    return newLocation;
+                }
             }
         }
+        return pos;
+    }
+
+    @Nullable
+    private BlockPos findExistingPortal(int range, BlockPos pos, World world)
+    {
+        for(DimBlockPos portalLocation : DESTINATION_CACHE)
+        {
+            if(pos.distanceSq(portalLocation.getPos()) < range && world.provider.getDimension() == portalLocation.getDimID())
+            {
+                if(world.getBlockState(portalLocation.getPos()) == ModBlocks.PORTAL_STAGE_ONE.getDefaultState().withProperty(BlockPortalStageOne.ACTIVATED, true))
+                {
+                    return portalLocation.getPos();
+                }
+
+                DESTINATION_CACHE.remove(portalLocation);
+            }
+        }
+
         return null;
     }
 
