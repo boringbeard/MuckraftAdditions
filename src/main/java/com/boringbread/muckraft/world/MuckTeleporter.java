@@ -1,5 +1,6 @@
 package com.boringbread.muckraft.world;
 
+import com.boringbread.muckraft.block.BlockPortalStageOne;
 import com.boringbread.muckraft.init.ModBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -10,6 +11,7 @@ import net.minecraftforge.common.util.ITeleporter;
 import javax.annotation.Nullable;
 
 public class MuckTeleporter implements ITeleporter {
+
     @Override
     public void placeEntity(World world, Entity entity, float yaw)
     {
@@ -34,6 +36,10 @@ public class MuckTeleporter implements ITeleporter {
             int x = pos.getX();
             int y = pos.getY();
             int z = pos.getZ();
+
+            BlockPos existingPortalPos = findExistingPortal(range, pos, world);
+
+            if(existingPortalPos != null) return existingPortalPos;
 
             for (int r = 0; r <= range; r += range / 10)
             {
@@ -65,6 +71,24 @@ public class MuckTeleporter implements ITeleporter {
 
     private BlockPos findExistingPortal(int range, BlockPos pos, World world)
     {
+        for(int offsetX = -range; offsetX <= range; offsetX++)
+        {
+            for(int offsetZ = -range; offsetZ <= range; offsetZ++)
+            {
+                for(int searchY = 0; searchY < 256; searchY++)
+                {
+                    IBlockState stageOnePortal = ModBlocks.PORTAL_STAGE_ONE.getDefaultState();
+                    int x = pos.getX() + offsetX;
+                    int z = pos.getZ() + offsetZ;
+                    BlockPos checkPos = new BlockPos(x, searchY, z);
+
+                    if(world.getBlockState(checkPos) == stageOnePortal.withProperty(BlockPortalStageOne.ACTIVATED, true))
+                    {
+                        return checkPos;
+                    }
+                }
+            }
+        }
         return null;
     }
 
