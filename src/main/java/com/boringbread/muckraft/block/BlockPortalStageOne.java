@@ -3,7 +3,6 @@ package com.boringbread.muckraft.block;
 import com.boringbread.muckraft.config.Config;
 import com.boringbread.muckraft.creativetab.MuckraftCreativeTab;
 import com.boringbread.muckraft.init.ModBlocks;
-import com.boringbread.muckraft.init.MuckraftWorldGen;
 import com.boringbread.muckraft.world.DimBlockPos;
 import com.boringbread.muckraft.world.MuckTeleporter;
 import com.boringbread.muckraft.Muckraft;
@@ -115,8 +114,9 @@ public class BlockPortalStageOne extends Block {
         if(!worldIn.isRemote)
         {
             PortalStatus status = getPortalStatus(pos, worldIn);
-            if (status == PortalStatus.INCOMPLETE) worldIn.setBlockState(pos, state.withProperty(ACTIVATED, false));
-            MuckTeleporter.DESTINATION_CACHE.remove(new DimBlockPos(pos, worldIn.provider.getDimension()));
+            if (status != PortalStatus.ACTIVE_COMPLETE_X && status != PortalStatus.ACTIVE_COMPLETE_Z) {
+                worldIn.setBlockState(pos, state.withProperty(ACTIVATED, false));
+            }
         }
     }
 
@@ -160,11 +160,17 @@ public class BlockPortalStageOne extends Block {
         IBlockState blockSouth = worldIn.getBlockState(pos.south());
         PropertyDirection direction = BlockPortalStageOneSlab.FACING;
 
-        boolean eastSlab = blockEast == portalSlab.withProperty(direction, EnumFacing.EAST) || blockEast == portalSlabActive.withProperty(direction, EnumFacing.EAST);
-        boolean westSlab = blockWest == portalSlab.withProperty(direction, EnumFacing.WEST) || blockWest == portalSlabActive.withProperty(direction, EnumFacing.WEST);
-        boolean northSlab = blockNorth == portalSlab.withProperty(direction, EnumFacing.NORTH) || blockNorth == portalSlabActive.withProperty(direction, EnumFacing.NORTH);
-        boolean southSlab = blockSouth == portalSlab.withProperty(direction, EnumFacing.SOUTH) || blockSouth == portalSlabActive.withProperty(direction, EnumFacing.SOUTH);
+        boolean eastSlab = blockEast == portalSlab.withProperty(direction, EnumFacing.EAST);
+        boolean westSlab = blockWest == portalSlab.withProperty(direction, EnumFacing.WEST);
+        boolean northSlab = blockNorth == portalSlab.withProperty(direction, EnumFacing.NORTH);
+        boolean southSlab = blockSouth == portalSlab.withProperty(direction, EnumFacing.SOUTH);
+        boolean eastSlabActive = blockEast == portalSlabActive.withProperty(direction, EnumFacing.EAST);
+        boolean westSlabActive = blockWest == portalSlabActive.withProperty(direction, EnumFacing.WEST);
+        boolean southSlabActive = blockNorth == portalSlabActive.withProperty(direction, EnumFacing.NORTH);
+        boolean northSlabActive = blockSouth == portalSlabActive.withProperty(direction, EnumFacing.SOUTH);
 
+        if(eastSlabActive && westSlabActive) return PortalStatus.ACTIVE_COMPLETE_X;
+        if(northSlabActive && southSlabActive) return PortalStatus.ACTIVE_COMPLETE_Z;
         if(eastSlab && westSlab) return PortalStatus.COMPLETE_X;
         if(northSlab && southSlab) return PortalStatus.COMPLETE_Z;
         return PortalStatus.INCOMPLETE;
@@ -172,6 +178,6 @@ public class BlockPortalStageOne extends Block {
 
     protected enum PortalStatus
     {
-        COMPLETE_X, COMPLETE_Z, INCOMPLETE
+        COMPLETE_X, COMPLETE_Z, ACTIVE_COMPLETE_X, ACTIVE_COMPLETE_Z, INCOMPLETE
     }
 }
