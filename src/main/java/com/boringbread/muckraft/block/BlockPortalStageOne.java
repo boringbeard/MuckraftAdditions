@@ -103,7 +103,7 @@ public class BlockPortalStageOne extends Block {
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
-        if(!worldIn.isRemote) worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
+        if(!worldIn.isRemote) worldIn.scheduleUpdate(pos, this, 0);
     }
 
     @Override
