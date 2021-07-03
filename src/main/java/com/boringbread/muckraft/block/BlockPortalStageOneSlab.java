@@ -2,6 +2,8 @@ package com.boringbread.muckraft.block;
 
 import com.boringbread.muckraft.Muckraft;
 import com.boringbread.muckraft.creativetab.MuckraftCreativeTab;
+import com.boringbread.muckraft.init.ModBlocks;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -18,6 +20,7 @@ import net.minecraft.world.World;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 public class BlockPortalStageOneSlab extends BlockSlab
 {
@@ -163,6 +166,21 @@ public class BlockPortalStageOneSlab extends BlockSlab
     }
 
     @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+        if(!worldIn.isRemote) worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
+    }
+
+    @Override
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    {
+        if(!connectedToActivePortal(worldIn, pos, state) && !worldIn.isRemote)
+        {
+            worldIn.setBlockState(pos, state.withProperty(ACTIVATED, false));
+        }
+    }
+
+    @Override
     public String getUnlocalizedName(int meta) {
         return UNLOCALIZED_NAME;
     }
@@ -180,5 +198,27 @@ public class BlockPortalStageOneSlab extends BlockSlab
     @Override
     public Comparable<?> getTypeForItem(ItemStack stack) {
         return null;
+    }
+
+    private boolean connectedToActivePortal(World worldIn, BlockPos pos, IBlockState state)
+    {
+        BlockPos checkPos;
+
+        switch(state.getValue(FACING))
+        {
+            case EAST:
+                checkPos = pos.west();
+                break;
+            case SOUTH:
+                checkPos = pos.north();
+                break;
+            case WEST:
+                checkPos = pos.east();
+                break;
+            default:
+                checkPos = pos.south();
+        }
+
+        return worldIn.getBlockState(checkPos) == ModBlocks.PORTAL_STAGE_ONE.getDefaultState().withProperty(BlockPortalStageOne.ACTIVATED, true);
     }
 }

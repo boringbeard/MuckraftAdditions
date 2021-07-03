@@ -20,6 +20,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import java.util.Random;
+
 public class BlockPortalStageOne extends Block {
     public static final String NAME = "portal_stage_one";
     public static final PropertyBool ACTIVATED = PropertyBool.create("activated");
@@ -81,19 +83,14 @@ public class BlockPortalStageOne extends Block {
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        IBlockState portalSlab = ModBlocks.PORTAL_STAGE_ONE_SLAB.getDefaultState();
-        PropertyDirection direction = BlockPortalStageOneSlab.FACING;
         PropertyBool activated = BlockPortalStageOneSlab.ACTIVATED;
-        boolean eastSlab = worldIn.getBlockState(pos.east()) == portalSlab.withProperty(direction, EnumFacing.EAST);
-        boolean westSlab = worldIn.getBlockState(pos.west()) == portalSlab.withProperty(direction, EnumFacing.WEST);
-        boolean northSlab = worldIn.getBlockState(pos.north()) == portalSlab.withProperty(direction, EnumFacing.NORTH);
-        boolean southSlab = worldIn.getBlockState(pos.south()) == portalSlab.withProperty(direction, EnumFacing.SOUTH);
-        boolean complete = (eastSlab && westSlab) || (northSlab && southSlab);
+        PortalStatus status = getPortalStatus(pos, worldIn);
+        boolean complete = status != PortalStatus.INCOMPLETE;
 
         if(playerIn.getHeldItem(hand).getItem() instanceof ItemBook && !state.getValue(ACTIVATED) && complete)
         {
-            BlockPos pos1 = eastSlab && westSlab ? pos.east() : pos.north();
-            BlockPos pos2 = eastSlab && westSlab ? pos.west() : pos.south();
+            BlockPos pos1 = status == PortalStatus.COMPLETE_X ? pos.east() : pos.north();
+            BlockPos pos2 = status == PortalStatus.COMPLETE_X ? pos.west() : pos.south();
             worldIn.setBlockState(pos, state.withProperty(ACTIVATED, true));
             worldIn.setBlockState(pos1, worldIn.getBlockState(pos1).withProperty(activated, true));
             worldIn.setBlockState(pos2, worldIn.getBlockState(pos2).withProperty(activated, true));
@@ -101,6 +98,22 @@ public class BlockPortalStageOne extends Block {
         }
 
         return true;
+    }
+
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+        if(!worldIn.isRemote) worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
+    }
+
+    @Override
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    {
+        if(!worldIn.isRemote)
+        {
+            PortalStatus status = getPortalStatus(pos, worldIn);
+            if (status == PortalStatus.INCOMPLETE) worldIn.setBlockState(pos, state.withProperty(ACTIVATED, false));
+        }
     }
 
     @Override
@@ -131,5 +144,30 @@ public class BlockPortalStageOne extends Block {
     public int getMetaFromState(IBlockState state)
     {
         return state.getValue(ACTIVATED) ? 1 : 0;
+    }
+
+    private PortalStatus getPortalStatus(BlockPos pos, World worldIn)
+    {
+        IBlockState portalSlab = ModBlocks.PORTAL_STAGE_ONE_SLAB.getDefaultState();
+        IBlockState portalSlabActive = portalSlab.withProperty(BlockPortalStageOneSlab.ACTIVATED, true);
+        IBlockState blockEast = worldIn.getBlockState(pos.east());
+        IBlockState blockWest = worldIn.getBlockState(pos.west());
+        IBlockState blockNorth = worldIn.getBlockState(pos.north());
+        IBlockState blockSouth = worldIn.getBlockState(pos.south());
+        PropertyDirection direction = BlockPortalStageOneSlab.FACING;
+
+        boolean eastSlab = blockEast == portalSlab.withProperty(direction, EnumFacing.EAST) || blockEast == portalSlabActive.withProperty(direction, EnumFacing.EAST);
+        boolean westSlab = blockWest == portalSlab.withProperty(direction, EnumFacing.WEST) || blockWest == portalSlabActive.withProperty(direction, EnumFacing.WEST);
+        boolean northSlab = blockNorth == portalSlab.withProperty(direction, EnumFacing.NORTH) || blockNorth == portalSlabActive.withProperty(direction, EnumFacing.NORTH);
+        boolean southSlab = blockSouth == portalSlab.withProperty(direction, EnumFacing.SOUTH) || blockSouth == portalSlabActive.withProperty(direction, EnumFacing.SOUTH);
+
+        if(eastSlab && westSlab) return PortalStatus.COMPLETE_X;
+        if(northSlab && southSlab) return PortalStatus.COMPLETE_Z;
+        return PortalStatus.INCOMPLETE;
+    }
+
+    protected enum PortalStatus
+    {
+        COMPLETE_X, COMPLETE_Z, INCOMPLETE
     }
 }
