@@ -1,9 +1,11 @@
 package com.boringbread.muckraft.world;
 
 import com.boringbread.muckraft.block.BlockPortalStageOne;
+import com.boringbread.muckraft.block.BlockPortalStageOneSlab;
 import com.boringbread.muckraft.init.ModBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ITeleporter;
@@ -22,7 +24,10 @@ public class MuckTeleporter implements ITeleporter {
         {
             BlockPos pos = new BlockPos(entity);
             BlockPos newPos = findAcceptableLocation(256, pos, world);
-            world.setBlockState(newPos, ModBlocks.PORTAL_STAGE_ONE.getDefaultState().withProperty(BlockPortalStageOne.ACTIVATED, true));
+            if(world.getBlockState(newPos) != ModBlocks.PORTAL_STAGE_ONE.getDefaultState().withProperty(BlockPortalStageOne.ACTIVATED, true))
+            {
+                makePortal(newPos, world);
+            }
             entity.setLocationAndAngles(newPos.getX() + 0.5, newPos.getY() + 1, newPos.getZ() + 0.5, yaw, 0.0F);
             entity.motionX = 0;
             entity.motionY = 0;
@@ -98,6 +103,14 @@ public class MuckTeleporter implements ITeleporter {
         }
 
         return null;
+    }
+
+    private void makePortal(BlockPos pos, World world)
+    {
+        IBlockState activePortalSlab = ModBlocks.PORTAL_STAGE_ONE_SLAB.getDefaultState().withProperty(BlockPortalStageOneSlab.ACTIVATED, true);
+        world.setBlockState(pos.east(), activePortalSlab.withProperty(BlockPortalStageOneSlab.FACING, EnumFacing.EAST));
+        world.setBlockState(pos.west(), activePortalSlab.withProperty(BlockPortalStageOneSlab.FACING, EnumFacing.WEST));
+        world.setBlockState(pos, ModBlocks.PORTAL_STAGE_ONE.getDefaultState().withProperty(BlockPortalStageOne.ACTIVATED, true));
     }
 
     private int getGoodHeight(BlockPos pos, World world)
