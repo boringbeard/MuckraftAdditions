@@ -12,16 +12,18 @@ public class MuckraftWorldProvider extends WorldProvider
     protected void init()
     {
         this.hasSkyLight = true;
-        this.biomeProvider = new StageOneBiomeProvider();
+        this.biomeProvider = new StageOneBiomeProvider(world.getWorldInfo());
     }
 
     @Override
-    public DimensionType getDimensionType() {
+    public DimensionType getDimensionType()
+    {
         return MuckraftWorldGen.STAGE_ONE;
     }
 
     @Override
-    public IChunkGenerator createChunkGenerator() {
+    public IChunkGenerator createChunkGenerator()
+    {
         return new MuckraftChunkGenerator(this.world, this.world.getSeed(), this.world.getWorldInfo().isMapFeaturesEnabled(), this.world.getWorldInfo().getGeneratorOptions());
     }
 }

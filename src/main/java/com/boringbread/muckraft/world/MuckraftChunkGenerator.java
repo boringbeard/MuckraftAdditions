@@ -217,11 +217,6 @@ public class MuckraftChunkGenerator implements IChunkGenerator {
             {
                 this.villageGenerator.generate(this.world, x, z, chunkprimer);
             }
-
-            if (this.settings.useTemples)
-            {
-                this.scatteredFeatureGenerator.generate(this.world, x, z, chunkprimer);
-            }
         }
 
         Chunk chunk = new Chunk(this.world, chunkprimer, x, z);
@@ -346,7 +341,7 @@ public class MuckraftChunkGenerator implements IChunkGenerator {
                         d5 = d5 * (1.0D - d6) + -10.0D * d6;
                     }
 
-                    this.heightMap[i] = d5;
+                    this.heightMap[i] = d5 * 0.2F;
                     ++i;
                 }
             }
