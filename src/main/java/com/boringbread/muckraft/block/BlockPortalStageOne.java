@@ -17,6 +17,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBook;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -42,14 +43,22 @@ public class BlockPortalStageOne extends Block {
     @Override
     public void onLanded(World worldIn, Entity entityIn)
     {
+        double x = entityIn.posX;
+        double y = entityIn.posY;
+        double z = entityIn.posZ;
+        BlockPos pos = new BlockPos(x, y - 1, z);
+        boolean isActivated = worldIn.getBlockState(pos).getValue(ACTIVATED);
+
+        if(isActivated)
+        {
+            for (int i = 0; i < 3; i++) {
+                worldIn.spawnParticle(EnumParticleTypes.FIREWORKS_SPARK, pos.getX() + 0.25 + Math.random()/2, pos.getY() + 1.0F, pos.getZ() + 0.25 + Math.random()/2, 0, 1, 0);
+            }
+        }
+
         if(!worldIn.isRemote)
         {
             entityIn.motionY = 0.0D;
-            double x = entityIn.posX;
-            double y = entityIn.posY;
-            double z = entityIn.posZ;
-
-            boolean isActivated = worldIn.getBlockState(new BlockPos(x, y - 1, z)).getValue(ACTIVATED);
 
             if (isActivated) {
                 if (entityIn.timeUntilPortal > 101) entityIn.timeUntilPortal = 101;
