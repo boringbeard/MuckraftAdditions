@@ -3,6 +3,7 @@ package com.boringbread.muckraft.world;
 import com.boringbread.muckraft.block.BlockPortalStageOne;
 import com.boringbread.muckraft.block.BlockPortalStageOneSlab;
 import com.boringbread.muckraft.init.ModBlocks;
+import com.boringbread.muckraft.util.DimBlockPos;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumFacing;

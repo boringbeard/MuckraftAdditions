@@ -1,4 +1,4 @@
-package com.boringbread.muckraft.world;
+package com.boringbread.muckraft.util;
 
 import net.minecraft.util.math.BlockPos;
 
