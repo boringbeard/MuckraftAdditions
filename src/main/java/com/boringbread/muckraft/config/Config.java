@@ -61,9 +61,9 @@ public class Config {
     {
         stageOneID = cfg.getInt("Stage One Dimension ID", CATEGORY_DIMENSIONS, 6969, -9999, 9999, "Set the dimension ID for stage one: ");
         stageTwoID = cfg.getInt("Stage Two Dimension ID", CATEGORY_DIMENSIONS, 6970, -9999, 9999, "Set the dimension ID for stage two: ");
-        stageThreeID = cfg.getInt("Stage Three Dimension ID", CATEGORY_DIMENSIONS, 6971, -9999, 9999, "Set the dimension ID for stage three: ");
-        stageFourID = cfg.getInt("Stage Four Dimension ID", CATEGORY_DIMENSIONS, 6972, -9999, 9999, "Set the dimension ID for stage four: ");
-        stageFiveID = cfg.getInt("Stage Five Dimension ID", CATEGORY_DIMENSIONS, 6973, -9999, 9999, "Set the dimension ID for stage five: ");
-        stageSixID = cfg.getInt("Stage Six Dimension ID", CATEGORY_DIMENSIONS, 6974, -9999, 9999, "Set the dimension ID for stage six: ");
+        stageThreeID = cfg.getInt("Stage Three Dimension ID", CATEGORY_DIMENSIONS, 0, -9999, 9999, "Set the dimension ID for stage three: ");
+        stageFourID = cfg.getInt("Stage Four Dimension ID", CATEGORY_DIMENSIONS, 6971, -9999, 9999, "Set the dimension ID for stage four: ");
+        stageFiveID = cfg.getInt("Stage Five Dimension ID", CATEGORY_DIMENSIONS, 6972, -9999, 9999, "Set the dimension ID for stage five: ");
+        stageSixID = cfg.getInt("Stage Six Dimension ID", CATEGORY_DIMENSIONS, 6973, -9999, 9999, "Set the dimension ID for stage six: ");
     }
 }
