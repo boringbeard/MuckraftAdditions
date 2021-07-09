@@ -23,7 +23,7 @@ public class MuckTeleporter implements ITeleporter {
         if(!world.isRemote)
         {
             BlockPos pos = new BlockPos(entity);
-            BlockPos newPos = findAcceptableLocation(256, pos, world);
+            BlockPos newPos = findAcceptableLocation(1024, pos, world);
             if(world.getBlockState(newPos) != ModBlocks.PORTAL_STAGE_ONE.getDefaultState().withProperty(BlockPortalStageOne.ACTIVATED, true))
             {
                 makePortal(newPos, world);
@@ -38,49 +38,46 @@ public class MuckTeleporter implements ITeleporter {
     @Nullable
     private BlockPos findAcceptableLocation(int range, BlockPos pos, World world)
     {
-        if(!world.isRemote)
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
+
+        BlockPos existingPortalPos = findExistingPortal(range, pos, world);
+
+        if(existingPortalPos != null) return existingPortalPos;
+
+        for (int r = 0; r <= range; r += 16)
         {
-            int x = pos.getX();
-            int y = pos.getY();
-            int z = pos.getZ();
+            boolean isAcceptableLocation = false;
+            BlockPos newLocation = null;
 
-            BlockPos existingPortalPos = findExistingPortal(range, pos, world);
-
-            if(existingPortalPos != null) return existingPortalPos;
-
-            for (int r = 0; r <= range; r += range / 16)
+            if (r == 0)
             {
-                boolean isAcceptableLocation = false;
-                BlockPos newLocation = null;
+                int y1 = getGoodHeight(new BlockPos(x, y, z), world);
+                isAcceptableLocation = y1 != -1;
+                newLocation = new BlockPos(x, y1, z);
+            }
+            else
+            {
+                int checksPerRing = 16;
 
-                if (r == 0)
+                for (int i = 0; i <= checksPerRing; i++)
                 {
-                    int y1 = getGoodHeight(new BlockPos(x, y, z), world);
+                    double tau = 2 * Math.PI;
+                    int changeX = (int) Math.round(r * Math.cos(i * tau / checksPerRing));
+                    int changeZ = (int) Math.round(r * Math.sin(i * tau / checksPerRing));
+                    int x1 = x + changeX;
+                    int z1 = z + changeZ;
+                    int y1 = getGoodHeight(new BlockPos(x1, y, z1), world);
                     isAcceptableLocation = y1 != -1;
-                    newLocation = new BlockPos(x, y1, z);
+                    newLocation = new BlockPos(x1, y1, z1);
                 }
-                else
-                {
-                    int checksPerRing = 16;
+            }
 
-                    for (int i = 0; i <= checksPerRing; i++)
-                    {
-                        double tau = 2 * Math.PI;
-                        int changeX = (int) Math.round(r * Math.cos(i * tau / checksPerRing));
-                        int changeZ = (int) Math.round(r * Math.sin(i * tau / checksPerRing));
-                        int x1 = x + changeX;
-                        int z1 = z + changeZ;
-                        int y1 = getGoodHeight(new BlockPos(x1, y, z1), world);
-                        isAcceptableLocation = y1 != -1;
-                        newLocation = new BlockPos(x1, y1, z1);
-                    }
-                }
-
-                if (isAcceptableLocation)
-                {
-                    DESTINATION_CACHE.add(new DimBlockPos(newLocation, world.provider.getDimension()));
-                    return newLocation;
-                }
+            if (isAcceptableLocation)
+            {
+                DESTINATION_CACHE.add(new DimBlockPos(newLocation, world.provider.getDimension()));
+                return newLocation;
             }
         }
         return pos;

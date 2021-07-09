@@ -1,18 +1,18 @@
 package com.boringbread.muckraft.world;
 
 import com.boringbread.muckraft.init.MuckraftWorldGen;
-import com.boringbread.muckraft.world.biome.StageOneBiomeProvider;
+import com.boringbread.muckraft.world.biome.BiomeProviderS1;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 
-public class MuckraftWorldProvider extends WorldProvider
+public class WorldProviderS1 extends WorldProvider
 {
     @Override
     protected void init()
     {
         this.hasSkyLight = true;
-        this.biomeProvider = new StageOneBiomeProvider(world.getWorldInfo());
+        this.biomeProvider = new BiomeProviderS1(world.getWorldInfo());
     }
 
     @Override
@@ -24,6 +24,6 @@ public class MuckraftWorldProvider extends WorldProvider
     @Override
     public IChunkGenerator createChunkGenerator()
     {
-        return new MuckraftChunkGenerator(this.world, this.world.getSeed(), this.world.getWorldInfo().isMapFeaturesEnabled(), this.world.getWorldInfo().getGeneratorOptions());
+        return new ChunkGeneratorS1(this.world, this.world.getSeed(), this.world.getWorldInfo().isMapFeaturesEnabled(), this.world.getWorldInfo().getGeneratorOptions());
     }
 }

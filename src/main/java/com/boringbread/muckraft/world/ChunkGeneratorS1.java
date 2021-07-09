@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class MuckraftChunkGenerator implements IChunkGenerator {
+public class ChunkGeneratorS1 implements IChunkGenerator {
     protected static final IBlockState STONE = Blocks.STONE.getDefaultState();
     private final Random rand;
     private NoiseGeneratorOctaves minLimitPerlinNoise;
@@ -52,7 +52,7 @@ public class MuckraftChunkGenerator implements IChunkGenerator {
     double[] maxLimitRegion;
     double[] depthRegion;
 
-    public MuckraftChunkGenerator(World worldIn, long seed, boolean mapFeaturesEnabledIn, String generatorOptions)
+    public ChunkGeneratorS1(World worldIn, long seed, boolean mapFeaturesEnabledIn, String generatorOptions)
     {
         {
             caveGenerator = net.minecraftforge.event.terraingen.TerrainGen.getModdedMapGen(caveGenerator, net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.CAVE);

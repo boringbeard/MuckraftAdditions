@@ -18,7 +18,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class StageOneBiomeProvider extends BiomeProvider
+public class BiomeProviderS1 extends BiomeProvider
 {
     private ChunkGeneratorSettings settings;
     private GenLayer genBiomes;
@@ -26,7 +26,7 @@ public class StageOneBiomeProvider extends BiomeProvider
     private final BiomeCache biomeCache;
     private final List<Biome> biomesToSpawnIn;
 
-    protected StageOneBiomeProvider()
+    protected BiomeProviderS1()
     {
         allowedBiomes.clear();
         allowedBiomes.add(Biomes.PLAINS);
@@ -34,7 +34,7 @@ public class StageOneBiomeProvider extends BiomeProvider
         this.biomesToSpawnIn = Lists.newArrayList(allowedBiomes);
     }
 
-    private StageOneBiomeProvider(long seed, WorldType worldTypeIn)
+    private BiomeProviderS1(long seed, WorldType worldTypeIn)
     {
         this();
         GenLayer[] agenlayer = initializeAllBiomeGenerators(seed, worldTypeIn, this.settings);
@@ -42,7 +42,7 @@ public class StageOneBiomeProvider extends BiomeProvider
         this.biomeIndexLayer = agenlayer[1];
     }
 
-    public StageOneBiomeProvider(WorldInfo info)
+    public BiomeProviderS1(WorldInfo info)
     {
         this(info.getSeed() * 3, info.getTerrainType());
     }
