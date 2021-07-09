@@ -16,6 +16,12 @@ import java.util.List;
 
 public class MuckTeleporter implements ITeleporter {
     public static final List<DimBlockPos> DESTINATION_CACHE = new ArrayList<>();
+    private final int portalStage;
+
+    public MuckTeleporter(int portalStage)
+    {
+        this.portalStage = portalStage;
+    }
 
     @Override
     public void placeEntity(World world, Entity entity, float yaw)
@@ -26,7 +32,7 @@ public class MuckTeleporter implements ITeleporter {
             BlockPos newPos = findAcceptableLocation(1024, pos, world);
             if(world.getBlockState(newPos) != ModBlocks.PORTAL_STAGE_ONE.getDefaultState().withProperty(BlockPortalStageOne.ACTIVATED, true))
             {
-                makePortal(newPos, world);
+                makePortal(newPos, world, this.portalStage);
             }
             entity.setLocationAndAngles(newPos.getX() + 0.5, newPos.getY() + 1, newPos.getZ() + 0.5, yaw, 0.0F);
             entity.motionX = 0;
@@ -102,7 +108,7 @@ public class MuckTeleporter implements ITeleporter {
         return null;
     }
 
-    private void makePortal(BlockPos pos, World world)
+    private void makePortal(BlockPos pos, World world, int portalStage)
     {
         IBlockState activePortalSlab = ModBlocks.PORTAL_STAGE_ONE_SLAB.getDefaultState().withProperty(BlockPortalStageOneSlab.ACTIVATED, true);
         world.setBlockState(pos.east(), activePortalSlab.withProperty(BlockPortalStageOneSlab.FACING, EnumFacing.EAST));
