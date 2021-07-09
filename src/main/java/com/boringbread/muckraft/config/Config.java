@@ -18,6 +18,7 @@ public class Config {
     public static int stageFourID;
     public static int stageFiveID;
     public static int stageSixID;
+    public static int[] dimensionIDs;
 
 
     public static void preInitCommon(FMLPreInitializationEvent event)
@@ -65,5 +66,6 @@ public class Config {
         stageFourID = cfg.getInt("Stage Four Dimension ID", CATEGORY_DIMENSIONS, 6971, -9999, 9999, "Set the dimension ID for stage four: ");
         stageFiveID = cfg.getInt("Stage Five Dimension ID", CATEGORY_DIMENSIONS, 6972, -9999, 9999, "Set the dimension ID for stage five: ");
         stageSixID = cfg.getInt("Stage Six Dimension ID", CATEGORY_DIMENSIONS, 6973, -9999, 9999, "Set the dimension ID for stage six: ");
+        dimensionIDs = new int[]{stageOneID, stageTwoID, stageThreeID, stageFourID, stageFiveID, stageSixID};
     }
 }

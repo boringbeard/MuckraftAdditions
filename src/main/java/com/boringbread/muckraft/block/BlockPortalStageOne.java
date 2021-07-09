@@ -24,13 +24,12 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class BlockPortalStageOne extends Block {
+public class BlockPortalStageOne extends BlockMuckPortal {
     public static final String NAME = "portal_stage_one";
-    public static final PropertyBool ACTIVATED = PropertyBool.create("activated");
 
     public BlockPortalStageOne()
     {
-        super(Material.ROCK);
+        super(Material.ROCK, 0, 100);
         setCreativeTab(MuckraftCreativeTab.muckraftCreativeTab);
         setHardness(2.0F);
         setHarvestLevel("pickaxe", 1);
@@ -54,30 +53,13 @@ public class BlockPortalStageOne extends Block {
             for (int i = 0; i < 3; i++) {
                 worldIn.spawnParticle(EnumParticleTypes.FIREWORKS_SPARK, pos.getX() + 0.25 + Math.random()/2, pos.getY() + 1.0F, pos.getZ() + 0.25 + Math.random()/2, 0, 1, 0);
             }
+
+            if(!worldIn.isRemote)
+                teleportPlayer(entityIn, worldIn);
         }
+        else if(!worldIn.isRemote) entityIn.timeUntilPortal = 300;
 
-        if(!worldIn.isRemote)
-        {
-            entityIn.motionY = 0.0D;
-
-            if (isActivated) {
-                if (entityIn.timeUntilPortal > 101) entityIn.timeUntilPortal = 101;
-
-                if (entityIn.timeUntilPortal == 1) {
-                    if (worldIn.provider.getDimension() != Config.stageOneID) {
-                        entityIn.changeDimension(Config.stageOneID, new MuckTeleporter(1));
-                    } else {
-                        entityIn.changeDimension(Config.stageTwoID, new MuckTeleporter(1));
-                    }
-
-                    entityIn.timeUntilPortal -= 1;
-                }
-
-                entityIn.timeUntilPortal -= 1;
-            } else {
-                entityIn.timeUntilPortal = 300;
-            }
-        }
+        entityIn.motionY = 0.0D;
     }
 
     @Override
@@ -118,18 +100,6 @@ public class BlockPortalStageOne extends Block {
     }
 
     @Override
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
-    {
-        if(!worldIn.isRemote)
-        {
-            PortalStatus status = getPortalStatus(pos, worldIn);
-            if (status != PortalStatus.ACTIVE_COMPLETE_X && status != PortalStatus.ACTIVE_COMPLETE_Z) {
-                worldIn.setBlockState(pos, state.withProperty(ACTIVATED, false));
-            }
-        }
-    }
-
-    @Override
     public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         if(state.getValue(ACTIVATED))
@@ -159,7 +129,8 @@ public class BlockPortalStageOne extends Block {
         return state.getValue(ACTIVATED) ? 1 : 0;
     }
 
-    private PortalStatus getPortalStatus(BlockPos pos, World worldIn)
+    @Override
+    protected PortalStatus getPortalStatus(BlockPos pos, World worldIn)
     {
         IBlockState portalSlab = ModBlocks.PORTAL_STAGE_ONE_SLAB.getDefaultState();
         IBlockState portalSlabActive = portalSlab.withProperty(BlockPortalStageOneSlab.ACTIVATED, true);
@@ -183,10 +154,5 @@ public class BlockPortalStageOne extends Block {
         if(eastSlab && westSlab) return PortalStatus.COMPLETE_X;
         if(northSlab && southSlab) return PortalStatus.COMPLETE_Z;
         return PortalStatus.INCOMPLETE;
-    }
-
-    protected enum PortalStatus
-    {
-        COMPLETE_X, COMPLETE_Z, ACTIVE_COMPLETE_X, ACTIVE_COMPLETE_Z, INCOMPLETE
     }
 }
