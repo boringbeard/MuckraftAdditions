@@ -9,18 +9,16 @@ import java.util.Arrays;
 
 public class OreHandler
 {
-    private static final GenerateMinable.EventType[] oreWhitelistS1 = new GenerateMinable.EventType[]{
-            GenerateMinable.EventType.COAL, GenerateMinable.EventType.IRON, GenerateMinable.EventType.ANDESITE,
-            GenerateMinable.EventType.DIORITE, GenerateMinable.EventType.DIRT, GenerateMinable.EventType.GRANITE,
-            GenerateMinable.EventType.GRAVEL, GenerateMinable.EventType.REDSTONE, GenerateMinable.EventType.SILVERFISH,
-            GenerateMinable.EventType.CUSTOM
+    private static final GenerateMinable.EventType[] oreBlacklistS1 = new GenerateMinable.EventType[]{
+            GenerateMinable.EventType.DIAMOND, GenerateMinable.EventType.EMERALD, GenerateMinable.EventType.GOLD,
+            GenerateMinable.EventType.LAPIS
     };
 
     @SubscribeEvent
     public static void onGenerateOres(GenerateMinable event)
     {
         if (event.getWorld().provider.getDimension() == Config.stageOneID) {
-            if (!Arrays.asList(oreWhitelistS1).contains(event.getType())) event.setResult(Event.Result.DENY);
+            if (Arrays.asList(oreBlacklistS1).contains(event.getType())) event.setResult(Event.Result.DENY);
         }
     }
 }
