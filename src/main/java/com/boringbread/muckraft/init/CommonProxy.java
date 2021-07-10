@@ -2,8 +2,10 @@ package com.boringbread.muckraft.init;
 
 import com.boringbread.muckraft.config.Config;
 import com.boringbread.muckraft.creativetab.MuckraftCreativeTab;
+import com.boringbread.muckraft.event.OreHandler;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -15,6 +17,7 @@ public class CommonProxy
     public void preInit(FMLPreInitializationEvent event)
     {
         Config.preInitCommon(event);
+        MinecraftForge.ORE_GEN_BUS.register(OreHandler.class);
         MuckraftCreativeTab.preInitCommon();
         MuckraftWorldGen.preInitCommon();
     }
