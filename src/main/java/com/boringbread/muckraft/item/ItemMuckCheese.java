@@ -9,6 +9,7 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 
 public class ItemMuckCheese extends ItemFood
 {
@@ -24,10 +25,10 @@ public class ItemMuckCheese extends ItemFood
     }
 
     @Override
-    public EnumRarity getRarity(ItemStack stack) { return EnumRarity.EPIC; }
+    public @NotNull EnumRarity getRarity(@NotNull ItemStack stack) { return EnumRarity.EPIC; }
 
     @Override
-    protected void onFoodEaten(ItemStack stack, World worldIn, EntityPlayer player)
+    protected void onFoodEaten(@NotNull ItemStack stack, World worldIn, @NotNull EntityPlayer player)
     {
         if(!worldIn.isRemote)
         {

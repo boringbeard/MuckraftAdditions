@@ -3,8 +3,8 @@ package com.boringbread.muckraft.util;
 import net.minecraft.util.math.BlockPos;
 
 public class DimBlockPos {
-    private BlockPos pos;
-    private int DimID;
+    private final BlockPos pos;
+    private final int DimID;
 
     public DimBlockPos(BlockPos pos, int DimID)
     {

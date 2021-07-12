@@ -20,6 +20,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 
 public class BlockPortalStageOne extends BlockMuckPortal {
     public static final String NAME = "portal_stage_one";
@@ -60,7 +61,7 @@ public class BlockPortalStageOne extends BlockMuckPortal {
     }
 
     @Override
-    public void onFallenUpon(World worldIn, BlockPos pos, Entity entityIn, float fallDistance)
+    public void onFallenUpon(World worldIn, @NotNull BlockPos pos, @NotNull Entity entityIn, float fallDistance)
     {
         if(!worldIn.isRemote)
         {
@@ -70,7 +71,7 @@ public class BlockPortalStageOne extends BlockMuckPortal {
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(@NotNull World worldIn, @NotNull BlockPos pos, @NotNull IBlockState state, EntityPlayer playerIn, @NotNull EnumHand hand, @NotNull EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         PropertyBool activated = BlockPortalStageOneSlab.ACTIVATED;
         PortalStatus status = getPortalStatus(pos, worldIn);
@@ -91,13 +92,13 @@ public class BlockPortalStageOne extends BlockMuckPortal {
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    public void neighborChanged(@NotNull IBlockState state, World worldIn, @NotNull BlockPos pos, @NotNull Block blockIn, @NotNull BlockPos fromPos)
     {
         if(!worldIn.isRemote) worldIn.scheduleUpdate(pos, this, 0);
     }
 
     @Override
-    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
+    public int getLightValue(IBlockState state, @NotNull IBlockAccess world, @NotNull BlockPos pos)
     {
         if(state.getValue(ACTIVATED))
         {
@@ -109,13 +110,13 @@ public class BlockPortalStageOne extends BlockMuckPortal {
     }
 
     @Override
-    protected BlockStateContainer createBlockState()
+    protected @NotNull BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, ACTIVATED);
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta)
+    public @NotNull IBlockState getStateFromMeta(int meta)
     {
         return getDefaultState().withProperty(ACTIVATED, meta != 0);
     }

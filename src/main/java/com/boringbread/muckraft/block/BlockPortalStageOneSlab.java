@@ -17,6 +17,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -45,7 +46,7 @@ public class BlockPortalStageOneSlab extends BlockSlab
     }
 
     @Override
-    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
+    public int getLightValue(IBlockState state, @NotNull IBlockAccess world, @NotNull BlockPos pos)
     {
         if(state.getValue(ACTIVATED))
         {
@@ -57,7 +58,7 @@ public class BlockPortalStageOneSlab extends BlockSlab
     }
 
     @Override
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    public @NotNull IBlockState getStateForPlacement(@NotNull World worldIn, @NotNull BlockPos pos, @NotNull EnumFacing facing, float hitX, float hitY, float hitZ, int meta, @NotNull EntityLivingBase placer)
     {
             EnumFacing direction;
             if (facing != EnumFacing.UP && facing != EnumFacing.DOWN)
@@ -87,13 +88,13 @@ public class BlockPortalStageOneSlab extends BlockSlab
     }
 
     @Override
-    protected BlockStateContainer createBlockState()
+    protected @NotNull BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, ACTIVATED, FACING, HALF);
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta)
+    public @NotNull IBlockState getStateFromMeta(int meta)
     {
         int[] digitValues = {8, 4, 1};
         int totalValue = meta;
@@ -166,13 +167,13 @@ public class BlockPortalStageOneSlab extends BlockSlab
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    public void neighborChanged(@NotNull IBlockState state, World worldIn, @NotNull BlockPos pos, @NotNull Block blockIn, @NotNull BlockPos fromPos)
     {
         if(!worldIn.isRemote) worldIn.scheduleUpdate(pos, this, 0);
     }
 
     @Override
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    public void updateTick(@NotNull World worldIn, @NotNull BlockPos pos, @NotNull IBlockState state, @NotNull Random rand)
     {
         if(!connectedToActivePortal(worldIn, pos, state) && !worldIn.isRemote)
         {
@@ -181,7 +182,7 @@ public class BlockPortalStageOneSlab extends BlockSlab
     }
 
     @Override
-    public String getUnlocalizedName(int meta) {
+    public @NotNull String getUnlocalizedName(int meta) {
         return UNLOCALIZED_NAME;
     }
 
@@ -196,7 +197,7 @@ public class BlockPortalStageOneSlab extends BlockSlab
     }
 
     @Override
-    public Comparable<?> getTypeForItem(ItemStack stack) {
+    public Comparable<?> getTypeForItem(@NotNull ItemStack stack) {
         return null;
     }
 

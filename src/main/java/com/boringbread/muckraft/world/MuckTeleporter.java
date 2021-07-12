@@ -42,7 +42,6 @@ public class MuckTeleporter implements ITeleporter {
         }
     }
 
-    @Nullable
     private BlockPos findAcceptableLocation(int range, BlockPos pos, World world)
     {
         int x = pos.getX();

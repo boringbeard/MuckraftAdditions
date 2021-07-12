@@ -38,6 +38,7 @@ public class ModBlocks {
     public static Item createItemBlock(Block block, int stackSize)
     {
         Item itemBlock = new ItemBlock(block);
+        assert block.getRegistryName() != null;
         itemBlock.setRegistryName(block.getRegistryName());
         itemBlock.setMaxStackSize(stackSize);
         return itemBlock;

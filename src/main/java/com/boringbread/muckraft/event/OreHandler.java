@@ -14,8 +14,6 @@ public class OreHandler
             GenerateMinable.EventType.LAPIS
     };
 
-
-
     @SubscribeEvent
     public static void onGenerateOres(GenerateMinable event)
     {
