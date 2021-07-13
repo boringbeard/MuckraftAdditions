@@ -2,7 +2,7 @@ package com.boringbread.muckraft.world;
 
 import com.boringbread.muckraft.block.BlockPortalStageOne;
 import com.boringbread.muckraft.block.BlockPortalStageOneSlab;
-import com.boringbread.muckraft.init.ModBlocks;
+import com.boringbread.muckraft.init.MuckBlocks;
 import com.boringbread.muckraft.util.DimBlockPos;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -31,7 +31,7 @@ public class MuckTeleporter implements ITeleporter {
         {
             BlockPos pos = new BlockPos(entity);
             BlockPos newPos = findAcceptableLocation(1024, pos, world);
-            if(world.getBlockState(newPos) != ModBlocks.PORTAL_STAGE_ONE.getDefaultState().withProperty(BlockPortalStageOne.ACTIVATED, true))
+            if(world.getBlockState(newPos) != MuckBlocks.PORTAL_STAGE_ONE.getDefaultState().withProperty(BlockPortalStageOne.ACTIVATED, true))
             {
                 makePortal(newPos, world, this.portalStage);
             }
@@ -96,7 +96,7 @@ public class MuckTeleporter implements ITeleporter {
         {
             if(pos.distanceSq(portalLocation.getPos()) < range && world.provider.getDimension() == portalLocation.getDimID())
             {
-                if(world.getBlockState(portalLocation.getPos()) == ModBlocks.PORTAL_STAGE_ONE.getDefaultState().withProperty(BlockPortalStageOne.ACTIVATED, true))
+                if(world.getBlockState(portalLocation.getPos()) == MuckBlocks.PORTAL_STAGE_ONE.getDefaultState().withProperty(BlockPortalStageOne.ACTIVATED, true))
                 {
                     return portalLocation.getPos();
                 }
@@ -110,10 +110,10 @@ public class MuckTeleporter implements ITeleporter {
 
     private void makePortal(BlockPos pos, World world, int portalStage)
     {
-        IBlockState activePortalSlab = ModBlocks.PORTAL_STAGE_ONE_SLAB.getDefaultState().withProperty(BlockPortalStageOneSlab.ACTIVATED, true);
+        IBlockState activePortalSlab = MuckBlocks.PORTAL_STAGE_ONE_SLAB.getDefaultState().withProperty(BlockPortalStageOneSlab.ACTIVATED, true);
         world.setBlockState(pos.east(), activePortalSlab.withProperty(BlockPortalStageOneSlab.FACING, EnumFacing.EAST));
         world.setBlockState(pos.west(), activePortalSlab.withProperty(BlockPortalStageOneSlab.FACING, EnumFacing.WEST));
-        world.setBlockState(pos, ModBlocks.PORTAL_STAGE_ONE.getDefaultState().withProperty(BlockPortalStageOne.ACTIVATED, true));
+        world.setBlockState(pos, MuckBlocks.PORTAL_STAGE_ONE.getDefaultState().withProperty(BlockPortalStageOne.ACTIVATED, true));
     }
 
     private int getGoodHeight(BlockPos pos, World world)

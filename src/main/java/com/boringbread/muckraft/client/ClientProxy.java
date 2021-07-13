@@ -1,8 +1,8 @@
 package com.boringbread.muckraft.client;
 
 import com.boringbread.muckraft.init.CommonProxy;
-import com.boringbread.muckraft.init.ModBlocks;
-import com.boringbread.muckraft.init.ModItems;
+import com.boringbread.muckraft.init.MuckBlocks;
+import com.boringbread.muckraft.init.MuckItems;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -18,7 +18,7 @@ public class ClientProxy extends CommonProxy {
 
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
-        ModBlocks.initModels();
-        ModItems.initModels();
+        MuckBlocks.initModels();
+        MuckItems.initModels();
     }
 }

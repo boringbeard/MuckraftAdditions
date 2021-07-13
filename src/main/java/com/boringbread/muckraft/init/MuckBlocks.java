@@ -9,7 +9,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ModBlocks {
+public class MuckBlocks {
     public static final BlockPortalStageOne PORTAL_STAGE_ONE = new BlockPortalStageOne();
     public static final BlockPortalStageOneSlab PORTAL_STAGE_ONE_SLAB = new BlockPortalStageOneSlab();
 
@@ -19,8 +19,8 @@ public class ModBlocks {
     @SideOnly(Side.CLIENT)
     public static void initModels()
     {
-        ModItems.initModel(ITEM_PORTAL_STAGE_ONE, "portal_stage_one");
-        ModItems.initModel(ITEM_PORTAL_STAGE_ONE_SLAB, "portal_stage_one_slab");
+        MuckItems.initModel(ITEM_PORTAL_STAGE_ONE, "portal_stage_one");
+        MuckItems.initModel(ITEM_PORTAL_STAGE_ONE_SLAB, "portal_stage_one_slab");
     }
 
     public static void registerBlocks(RegistryEvent.Register<Block> event)

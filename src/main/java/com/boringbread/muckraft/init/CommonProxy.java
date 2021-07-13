@@ -35,13 +35,13 @@ public class CommonProxy
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event)
     {
-        ModBlocks.registerBlocks(event);
+        MuckBlocks.registerBlocks(event);
     }
 
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event)
     {
-        ModItems.registerItems(event);
-        ModBlocks.registerItemBlocks(event);
+        MuckItems.registerItems(event);
+        MuckBlocks.registerItemBlocks(event);
     }
 }

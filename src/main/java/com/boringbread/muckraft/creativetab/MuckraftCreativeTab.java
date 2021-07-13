@@ -1,6 +1,6 @@
 package com.boringbread.muckraft.creativetab;
 
-import com.boringbread.muckraft.init.ModItems;
+import com.boringbread.muckraft.init.MuckItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
@@ -15,7 +15,7 @@ public class MuckraftCreativeTab extends CreativeTabs
 
     @SideOnly(Side.CLIENT)
     @Override
-    public @NotNull ItemStack getTabIconItem() { return new ItemStack(ModItems.MUCK_CHEESE); }
+    public @NotNull ItemStack getTabIconItem() { return new ItemStack(MuckItems.MUCK_CHEESE); }
 
     public static void preInitCommon() { muckraftCreativeTab = new MuckraftCreativeTab("muckraft_creative_tab"); }
 }

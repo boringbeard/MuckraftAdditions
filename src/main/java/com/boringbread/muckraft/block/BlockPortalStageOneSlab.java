@@ -2,7 +2,7 @@ package com.boringbread.muckraft.block;
 
 import com.boringbread.muckraft.Muckraft;
 import com.boringbread.muckraft.creativetab.MuckraftCreativeTab;
-import com.boringbread.muckraft.init.ModBlocks;
+import com.boringbread.muckraft.init.MuckBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
@@ -220,6 +220,6 @@ public class BlockPortalStageOneSlab extends BlockSlab
                 checkPos = pos.south();
         }
 
-        return worldIn.getBlockState(checkPos) == ModBlocks.PORTAL_STAGE_ONE.getDefaultState().withProperty(BlockPortalStageOne.ACTIVATED, true);
+        return worldIn.getBlockState(checkPos) == MuckBlocks.PORTAL_STAGE_ONE.getDefaultState().withProperty(BlockPortalStageOne.ACTIVATED, true);
     }
 }

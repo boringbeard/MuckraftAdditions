@@ -1,7 +1,7 @@
 package com.boringbread.muckraft.block;
 
 import com.boringbread.muckraft.creativetab.MuckraftCreativeTab;
-import com.boringbread.muckraft.init.ModBlocks;
+import com.boringbread.muckraft.init.MuckBlocks;
 import com.boringbread.muckraft.util.DimBlockPos;
 import com.boringbread.muckraft.world.MuckTeleporter;
 import com.boringbread.muckraft.Muckraft;
@@ -130,7 +130,7 @@ public class BlockPortalStageOne extends BlockMuckPortal {
     @Override
     protected PortalStatus getPortalStatus(BlockPos pos, World worldIn)
     {
-        IBlockState portalSlab = ModBlocks.PORTAL_STAGE_ONE_SLAB.getDefaultState();
+        IBlockState portalSlab = MuckBlocks.PORTAL_STAGE_ONE_SLAB.getDefaultState();
         IBlockState portalSlabActive = portalSlab.withProperty(BlockPortalStageOneSlab.ACTIVATED, true);
         IBlockState blockEast = worldIn.getBlockState(pos.east());
         IBlockState blockWest = worldIn.getBlockState(pos.west());

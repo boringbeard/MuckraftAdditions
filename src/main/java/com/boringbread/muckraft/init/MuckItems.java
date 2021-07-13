@@ -9,7 +9,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ModItems {
+public class MuckItems {
     public static final ItemMuckCheese MUCK_CHEESE = new ItemMuckCheese();
 
     @SideOnly(Side.CLIENT)
@@ -27,6 +27,6 @@ public class ModItems {
 
     public static void registerItems(RegistryEvent.Register<Item> event)
     {
-        event.getRegistry().register(ModItems.MUCK_CHEESE);
+        event.getRegistry().register(MuckItems.MUCK_CHEESE);
     }
 }
