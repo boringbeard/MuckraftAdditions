@@ -1,11 +1,24 @@
 pluginManagement {
-    repositories {
-        maven {
-            url 'https://gitlab.com/api/v4/projects/26758973/packages/maven'
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == 'net.minecraftforge.gradle') {
+                useModule("${requested.id}:ForgeGradle:${requested.version}")
+            }
         }
     }
 
-    plugins {
-        id 'wtf.gofancy.fancygradle' version "1.0.0"
+    repositories {
+        jcenter()
+        mavenCentral()
+
+        maven {
+            url 'https://files.minecraftforge.net/maven'
+        }
+        maven {
+            name 'FancyGradle'
+            url 'https://gitlab.com/api/v4/projects/26758973/packages/maven'
+        }
+        mavenLocal()
+        gradlePluginPortal()
     }
 }

@@ -1,23 +1,12 @@
-buildscript {
-    repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
-        jcenter()
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:5.+'
-    }
-}
-
 plugins {
-    id 'wtf.gofancy.fancygradle'
+    id 'net.minecraftforge.gradle' version '5.+'
+    id 'wtf.gofancy.fancygradle' version '1.0.1'
+    id 'maven-publish'
+    id 'idea'
 }
 
-
-apply plugin: 'net.minecraftforge.gradle'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
-apply plugin: 'idea'
-apply plugin: 'maven-publish'
+idea.module.inheritOutputDirs = true
 
 import wtf.gofancy.fancygradle.patch.Patch
 
