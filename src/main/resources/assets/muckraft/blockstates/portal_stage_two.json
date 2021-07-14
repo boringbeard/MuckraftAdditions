@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "activated=false": {"model": "muckraft:portal_stage_two"},
+    "activated=true": {"model": "muckraft:portal_stage_two"}
+  }
+}
