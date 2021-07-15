@@ -1,3 +1,12 @@
 {
-  "parent": "block/cube_bottom_top"
+  "parent": "block/cube_bottom_top",
+  "textures": {
+    "particle": "muckraft:blocks/portal_stage_two",
+    "down": "muckraft:blocks/portal_stage_two",
+    "up": "muckraft:blocks/portal_stage_two_top",
+    "north": "muckraft:blocks/portal_stage_two",
+    "east": "muckraft:blocks/portal_stage_two_port",
+    "south": "muckraft:blocks/portal_stage_two",
+    "west": "muckraft:blocks/portal_stage_two_port"
+  }
 }
