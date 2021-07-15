@@ -13,10 +13,12 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemBook;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -82,6 +84,7 @@ public class BlockPortalStageOne extends BlockMuckPortal
         {
             BlockPos pos1 = status == PortalStatus.COMPLETE_X ? pos.east() : pos.north();
             BlockPos pos2 = status == PortalStatus.COMPLETE_X ? pos.west() : pos.south();
+            worldIn.playSound(null, pos, SoundEvents.BLOCK_END_PORTAL_SPAWN, SoundCategory.HOSTILE, 1.0F, 1.0F);
             worldIn.setBlockState(pos, state.withProperty(ACTIVATED, true));
             worldIn.setBlockState(pos1, worldIn.getBlockState(pos1).withProperty(activated, true));
             worldIn.setBlockState(pos2, worldIn.getBlockState(pos2).withProperty(activated, true));
