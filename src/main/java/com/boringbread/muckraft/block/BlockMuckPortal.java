@@ -44,7 +44,6 @@ public abstract class BlockMuckPortal extends Block
         if (entityIn.timeUntilPortal < 0) entityIn.timeUntilPortal = -1;
 
         if (entityIn.timeUntilPortal == 1) {
-            System.out.println(worldIn.provider.getDimension());
             if (worldIn.provider.getDimension() == Config.dimensionIDs[stage]) {
                 entityIn.changeDimension(Config.dimensionIDs[stage + 1], new MuckTeleporter(stage));
             } else {
