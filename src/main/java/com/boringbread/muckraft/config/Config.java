@@ -60,6 +60,7 @@ public class Config {
 
     private static void initDimensionConfig(Configuration cfg)
     {
+        Muckraft.logger.log(Level.DEBUG, "Initializing Dimension Configs");
         stageOneID = cfg.getInt("Stage One Dimension ID", CATEGORY_DIMENSIONS, 6969, -9999, 9999, "Set the dimension ID for stage one: ");
         stageTwoID = cfg.getInt("Stage Two Dimension ID", CATEGORY_DIMENSIONS, 6970, -9999, 9999, "Set the dimension ID for stage two: ");
         stageThreeID = cfg.getInt("Stage Three Dimension ID", CATEGORY_DIMENSIONS, 0, -9999, 9999, "Set the dimension ID for stage three: ");

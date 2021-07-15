@@ -19,7 +19,7 @@ public class CommonProxy
         Config.preInitCommon(event);
         MinecraftForge.ORE_GEN_BUS.register(OreHandler.class);
         MuckraftCreativeTab.preInitCommon();
-        MuckraftWorldGen.preInitCommon();
+        MuckWorldGen.preInitCommon();
     }
 
     public void init()

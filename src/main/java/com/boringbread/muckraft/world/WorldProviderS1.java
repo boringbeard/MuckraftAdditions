@@ -1,6 +1,6 @@
 package com.boringbread.muckraft.world;
 
-import com.boringbread.muckraft.init.MuckraftWorldGen;
+import com.boringbread.muckraft.init.MuckWorldGen;
 import com.boringbread.muckraft.world.biome.BiomeProviderS1;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.WorldProvider;
@@ -20,7 +20,7 @@ public class WorldProviderS1 extends WorldProvider
     @Override
     public @NotNull DimensionType getDimensionType()
     {
-        return MuckraftWorldGen.STAGE_ONE;
+        return MuckWorldGen.STAGE_ONE;
     }
 
     @Override
