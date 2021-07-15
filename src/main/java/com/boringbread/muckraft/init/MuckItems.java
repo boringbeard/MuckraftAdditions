@@ -9,7 +9,8 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class MuckItems {
+public class MuckItems
+{
     public static final ItemMuckCheese MUCK_CHEESE = new ItemMuckCheese();
 
     @SideOnly(Side.CLIENT)

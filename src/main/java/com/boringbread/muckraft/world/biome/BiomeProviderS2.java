@@ -19,7 +19,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class BiomeProviderS2 extends BiomeProvider {
+public class BiomeProviderS2 extends BiomeProvider
+{
     private ChunkGeneratorSettings settings;
     private GenLayer genBiomes;
     private GenLayer biomeIndexLayer;

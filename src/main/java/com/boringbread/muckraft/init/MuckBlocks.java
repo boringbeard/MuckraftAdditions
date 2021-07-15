@@ -10,7 +10,8 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class MuckBlocks {
+public class MuckBlocks
+{
     public static final BlockPortalStageOne PORTAL_STAGE_ONE = new BlockPortalStageOne();
     public static final BlockPortalStageOneSlab PORTAL_STAGE_ONE_SLAB = new BlockPortalStageOneSlab();
     public static final BlockPortalStageTwo PORTAL_STAGE_TWO = new BlockPortalStageTwo();

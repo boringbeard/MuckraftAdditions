@@ -19,7 +19,8 @@ public abstract class BlockMuckPortal extends Block
     private final int cooldown;
     public static final PropertyBool ACTIVATED = PropertyBool.create("activated");
 
-    public BlockMuckPortal(Material blockMaterialIn, int stage, int cooldown) {
+    public BlockMuckPortal(Material blockMaterialIn, int stage, int cooldown)
+    {
         super(blockMaterialIn);
         this.stage = stage;
         this.cooldown = cooldown;
@@ -31,7 +32,8 @@ public abstract class BlockMuckPortal extends Block
         if(!worldIn.isRemote)
         {
             PortalStatus status = getPortalStatus(pos, worldIn);
-            if (status != PortalStatus.ACTIVE_COMPLETE_X && status != PortalStatus.ACTIVE_COMPLETE_Z) {
+            if (status != PortalStatus.ACTIVE_COMPLETE_X && status != PortalStatus.ACTIVE_COMPLETE_Z)
+            {
                 worldIn.setBlockState(pos, state.withProperty(ACTIVATED, false));
             }
         }
@@ -43,10 +45,14 @@ public abstract class BlockMuckPortal extends Block
 
         if (entityIn.timeUntilPortal < 0) entityIn.timeUntilPortal = -1;
 
-        if (entityIn.timeUntilPortal == 1) {
-            if (worldIn.provider.getDimension() == Config.dimensionIDs[stage]) {
+        if (entityIn.timeUntilPortal == 1)
+        {
+            if (worldIn.provider.getDimension() == Config.dimensionIDs[stage])
+            {
                 entityIn.changeDimension(Config.dimensionIDs[stage + 1], new MuckTeleporter(stage));
-            } else {
+            }
+            else
+            {
                 entityIn.changeDimension(Config.dimensionIDs[stage], new MuckTeleporter(stage));
             }
 

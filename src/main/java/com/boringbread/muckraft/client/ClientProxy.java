@@ -9,7 +9,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber
-public class ClientProxy extends CommonProxy {
+public class ClientProxy extends CommonProxy
+{
     @Override
     public void preInit(FMLPreInitializationEvent event)
     {
@@ -17,7 +18,8 @@ public class ClientProxy extends CommonProxy {
     }
 
     @SubscribeEvent
-    public static void registerModels(ModelRegistryEvent event) {
+    public static void registerModels(ModelRegistryEvent event)
+    {
         MuckBlocks.initModels();
         MuckItems.initModels();
     }

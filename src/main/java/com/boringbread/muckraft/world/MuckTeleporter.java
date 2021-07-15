@@ -17,7 +17,8 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MuckTeleporter implements ITeleporter {
+public class MuckTeleporter implements ITeleporter
+{
     public static final List<DimBlockPos> DESTINATION_CACHE = new ArrayList<>();
     private final BlockMuckPortal portal;
     private final int portalStage;
@@ -144,7 +145,8 @@ public class MuckTeleporter implements ITeleporter {
                     }
                 }
 
-                if (counter == 9) {
+                if (counter == 9)
+                {
                     y1 = y;
                     break;
                 }

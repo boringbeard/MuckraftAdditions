@@ -22,7 +22,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
-public class BlockPortalStageOne extends BlockMuckPortal {
+public class BlockPortalStageOne extends BlockMuckPortal
+{
     public static final String NAME = "portal_stage_one";
 
     public BlockPortalStageOne()
@@ -48,12 +49,12 @@ public class BlockPortalStageOne extends BlockMuckPortal {
 
         if(isActivated)
         {
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 3; i++)
+            {
                 worldIn.spawnParticle(EnumParticleTypes.FIREWORKS_SPARK, pos.getX() + 0.25 + Math.random()/2, pos.getY() + 1.0F, pos.getZ() + 0.25 + Math.random()/2, 0, 1, 0);
             }
 
-            if(!worldIn.isRemote)
-                teleportPlayer(entityIn, worldIn);
+            if(!worldIn.isRemote) teleportPlayer(entityIn, worldIn);
         }
         else if(!worldIn.isRemote) entityIn.timeUntilPortal = 300;
 

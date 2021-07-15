@@ -7,7 +7,8 @@ import org.apache.logging.log4j.Level;
 
 import java.io.File;
 
-public class Config {
+public class Config
+{
 
     private static final String CATEGORY_DIMENSIONS = "dimensions";
 

@@ -100,7 +100,8 @@ public class BiomeProviderS1 extends BiomeProvider
                 biomes[i] = Biome.getBiome(aint[i], Biomes.DEFAULT);
             }
 
-            for (int i = 0; i < biomes.length; i++) {
+            for (int i = 0; i < biomes.length; i++)
+            {
                 if(biomes[i] instanceof BiomeJungle) biomes[i] = Biomes.MUTATED_SAVANNA;
                 if(biomes[i] instanceof BiomeHills) biomes[i] = Biomes.FOREST;
                 if(biomes[i] instanceof BiomeMesa) biomes[i] = Biomes.DESERT;

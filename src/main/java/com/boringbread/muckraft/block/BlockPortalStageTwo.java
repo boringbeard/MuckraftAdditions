@@ -13,10 +13,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
-public class BlockPortalStageTwo extends BlockMuckPortal {
+public class BlockPortalStageTwo extends BlockMuckPortal
+{
     public static final String NAME = "portal_stage_two";
 
-    public BlockPortalStageTwo() {
+    public BlockPortalStageTwo()
+    {
         super(Material.ROCK, 1, 100);
         setCreativeTab(MuckraftCreativeTab.muckraftCreativeTab);
         setHardness(2.0F);

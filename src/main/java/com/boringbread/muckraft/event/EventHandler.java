@@ -6,7 +6,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber
-public class EventHandler {
+public class EventHandler
+{
     @SubscribeEvent
     public static void onCreateSpawnPosition(WorldEvent.CreateSpawnPosition event)
     {
