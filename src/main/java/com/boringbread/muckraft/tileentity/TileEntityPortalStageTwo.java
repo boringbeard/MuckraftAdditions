@@ -47,15 +47,17 @@ public class TileEntityPortalStageTwo extends TileEntity implements IEnergyStora
     public void readFromNBT(NBTTagCompound compound)
     {
         super.readFromNBT(compound);
+        if (compound.hasKey("items")) itemStackHandler.deserializeNBT((NBTTagCompound) compound.getTag("items"));
+        if (compound.hasKey("energy")) this.energy = compound.getInteger("energy");
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         super.writeToNBT(compound);
-        NBTTagCompound tagCompound = this.getTileData();
-        tagCompound.setInteger("energy", energy);
-        return tagCompound;
+        compound.setTag("items", itemStackHandler.serializeNBT());
+        compound.setInteger("energy", energy);
+        return compound;
     }
 
     @Override
