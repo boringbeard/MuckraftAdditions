@@ -3,10 +3,13 @@ package com.boringbread.muckraft.init;
 import com.boringbread.muckraft.block.BlockPortalStageOne;
 import com.boringbread.muckraft.block.BlockPortalStageOneSlab;
 import com.boringbread.muckraft.block.BlockPortalStageTwo;
+import com.boringbread.muckraft.tileentity.TileEntityPortalStageTwo;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -33,6 +36,11 @@ public class MuckBlocks
         event.getRegistry().register(PORTAL_STAGE_ONE);
         event.getRegistry().register(PORTAL_STAGE_ONE_SLAB);
         event.getRegistry().register(PORTAL_STAGE_TWO);
+    }
+
+    public static void registerTileEntities()
+    {
+        GameRegistry.registerTileEntity(TileEntityPortalStageTwo.class, new ResourceLocation("muckraft:portal_stage_two_tile_entity"));
     }
 
     public static void registerItemBlocks(RegistryEvent.Register<Item> event)

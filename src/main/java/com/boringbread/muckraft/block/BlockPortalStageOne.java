@@ -36,7 +36,7 @@ public class BlockPortalStageOne extends BlockMuckPortal
         setHarvestLevel("pickaxe", 1);
         setRegistryName(NAME);
         setResistance(9);
-        setUnlocalizedName(Muckraft.MODID + "_" + NAME);
+        setUnlocalizedName(Muckraft.MOD_ID + "_" + NAME);
         setDefaultState(this.blockState.getBaseState().withProperty(ACTIVATED, false));
     }
 

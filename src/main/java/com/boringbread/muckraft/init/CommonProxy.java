@@ -1,5 +1,7 @@
 package com.boringbread.muckraft.init;
 
+import com.boringbread.muckraft.Muckraft;
+import com.boringbread.muckraft.client.gui.GuiHandler;
 import com.boringbread.muckraft.config.Config;
 import com.boringbread.muckraft.creativetab.MuckraftCreativeTab;
 import com.boringbread.muckraft.event.OreHandler;
@@ -10,6 +12,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 @Mod.EventBusSubscriber
 public class CommonProxy
@@ -24,7 +27,7 @@ public class CommonProxy
 
     public void init()
     {
-
+        NetworkRegistry.INSTANCE.registerGuiHandler(Muckraft.instance, new GuiHandler());
     }
 
     public void postInit()
@@ -36,6 +39,7 @@ public class CommonProxy
     public static void registerBlocks(RegistryEvent.Register<Block> event)
     {
         MuckBlocks.registerBlocks(event);
+        MuckBlocks.registerTileEntities();
     }
 
     @SubscribeEvent

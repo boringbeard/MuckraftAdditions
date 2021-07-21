@@ -22,7 +22,7 @@ public class MuckItems
     @SideOnly(Side.CLIENT)
     public static void initModel(Item item, String name)
     {
-        ModelResourceLocation location = new ModelResourceLocation(Muckraft.MODID + ":" + name, "inventory");
+        ModelResourceLocation location = new ModelResourceLocation(Muckraft.MOD_ID + ":" + name, "inventory");
         ModelLoader.setCustomModelResourceLocation(item, 0, location);
     }
 

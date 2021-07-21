@@ -100,7 +100,7 @@ public class MuckTeleporter implements ITeleporter
     {
         for(DimBlockPos portalLocation : DESTINATION_CACHE)
         {
-            if(pos.distanceSq(portalLocation.getPos()) < range && world.provider.getDimension() == portalLocation.getDimID())
+            if(pos.distanceSq(portalLocation.getPos()) < range * range && world.provider.getDimension() == portalLocation.getDimID())
             {
                 if(world.getBlockState(portalLocation.getPos()) == portal.getDefaultState().withProperty(BlockPortalStageOne.ACTIVATED, true))
                 {

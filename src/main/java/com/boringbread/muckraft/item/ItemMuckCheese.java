@@ -20,7 +20,7 @@ public class ItemMuckCheese extends ItemFood
         super(20, 20, false);
         setCreativeTab(MuckraftCreativeTab.muckraftCreativeTab);
         setRegistryName(NAME);
-        setUnlocalizedName(Muckraft.MODID + "_" + NAME);
+        setUnlocalizedName(Muckraft.MOD_ID + "_" + NAME);
         setHasSubtypes(false);
     }
 

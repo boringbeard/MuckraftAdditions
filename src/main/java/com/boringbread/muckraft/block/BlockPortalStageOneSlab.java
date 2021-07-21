@@ -26,7 +26,7 @@ import java.util.Random;
 public class BlockPortalStageOneSlab extends BlockSlab
 {
     public static final String NAME = "portal_stage_one_slab";
-    public static final String UNLOCALIZED_NAME = Muckraft.MODID + "_" + NAME;
+    public static final String UNLOCALIZED_NAME = Muckraft.MOD_ID + "_" + NAME;
     public static final PropertyBool ACTIVATED = PropertyBool.create("activated");
     public static final PropertyDirection FACING = PropertyDirection.create("facing");
 
