@@ -15,6 +15,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -23,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
-public class TileEntityPortalStageTwo extends TileEntity implements IEnergyStorage, ITickable
+public class TileEntityPortalStageTwo extends TileEntity implements ITickable
 {
     private static final int[] SLOTS = {0, 1, 2, 3, 4};
     private final ItemStack[] heldItems = new ItemStack[5];
@@ -43,6 +44,8 @@ public class TileEntityPortalStageTwo extends TileEntity implements IEnergyStora
         }
     };
 
+    private EnergyStorage energyStorage = new EnergyStorage(1000000, 1000);
+
     @Override
     public void readFromNBT(NBTTagCompound compound)
     {
@@ -56,50 +59,8 @@ public class TileEntityPortalStageTwo extends TileEntity implements IEnergyStora
     {
         super.writeToNBT(compound);
         compound.setTag("items", itemStackHandler.serializeNBT());
-        compound.setInteger("energy", energy);
+        compound.setInteger("energy", energyStorage.getEnergyStored());
         return compound;
-    }
-
-    @Override
-    public int receiveEnergy(int maxReceive, boolean simulate)
-    {
-        int energyReceived = Math.min(capacity - energy, Math.min(1000, maxReceive));
-        if (!simulate)
-            energy += energyReceived;
-        return energyReceived;
-    }
-
-    @Override
-    public int extractEnergy(int maxExtract, boolean simulate)
-    {
-        int energyExtracted = Math.min(energy, Math.min(1000, maxExtract));
-        if (!simulate)
-            energy -= energyExtracted;
-        return energyExtracted;
-    }
-
-    @Override
-    public int getEnergyStored()
-    {
-        return energy;
-    }
-
-    @Override
-    public int getMaxEnergyStored()
-    {
-        return capacity;
-    }
-
-    @Override
-    public boolean canExtract()
-    {
-        return energy > 0;
-    }
-
-    @Override
-    public boolean canReceive()
-    {
-        return energy < capacity;
     }
 
     public boolean isUsableByPlayer(EntityPlayer player)
@@ -139,9 +100,19 @@ public class TileEntityPortalStageTwo extends TileEntity implements IEnergyStora
         }
         if (capability == CapabilityEnergy.ENERGY && (facing == EnumFacing.WEST || facing == EnumFacing.EAST))
         {
-            return CapabilityEnergy.ENERGY.cast(this);
+            return CapabilityEnergy.ENERGY.cast(energyStorage);
         }
 
         return super.getCapability(capability, facing);
+    }
+
+    public EnergyStorage getEnergyStorage()
+    {
+        return energyStorage;
+    }
+
+    public ItemStackHandler getItemStackHandler()
+    {
+        return itemStackHandler;
     }
 }
