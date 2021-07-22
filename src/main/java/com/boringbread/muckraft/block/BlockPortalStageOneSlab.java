@@ -28,7 +28,7 @@ public class BlockPortalStageOneSlab extends BlockSlab
     public static final String NAME = "portal_stage_one_slab";
     public static final String UNLOCALIZED_NAME = Muckraft.MOD_ID + "_" + NAME;
     public static final PropertyBool ACTIVATED = PropertyBool.create("activated");
-    public static final PropertyDirection FACING = PropertyDirection.create("facing");
+    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
     public BlockPortalStageOneSlab()
     {
