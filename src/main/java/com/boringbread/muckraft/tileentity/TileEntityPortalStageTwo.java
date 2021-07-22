@@ -29,6 +29,7 @@ public class TileEntityPortalStageTwo extends TileEntity implements ITickable
     private static final int[] SLOTS = {0, 1, 2, 3, 4};
     private final ItemStack[] heldItems = new ItemStack[5];
     private final int capacity = 1_000_000;
+    private boolean sacrificeAccepted;
     private int energy;
 
     public TileEntityPortalStageTwo() {
@@ -51,7 +52,8 @@ public class TileEntityPortalStageTwo extends TileEntity implements ITickable
     {
         super.readFromNBT(compound);
         if (compound.hasKey("items")) itemStackHandler.deserializeNBT((NBTTagCompound) compound.getTag("items"));
-        if (compound.hasKey("energy")) this.energy = compound.getInteger("energy");
+        if (compound.hasKey("energy")) energy = compound.getInteger("energy");
+        if (compound.hasKey("sacrificeAccepted")) sacrificeAccepted = compound.getBoolean("sacrificeAccepted");
     }
 
     @Override
@@ -60,6 +62,7 @@ public class TileEntityPortalStageTwo extends TileEntity implements ITickable
         super.writeToNBT(compound);
         compound.setTag("items", itemStackHandler.serializeNBT());
         compound.setInteger("energy", energyStorage.getEnergyStored());
+        compound.setBoolean("sacrificeAccepted", sacrificeAccepted);
         return compound;
     }
 

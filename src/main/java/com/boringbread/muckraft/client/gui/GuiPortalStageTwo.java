@@ -1,9 +1,13 @@
 package com.boringbread.muckraft.client.gui;
 
 import com.boringbread.muckraft.inventory.ContainerPortalStageTwo;
+import com.boringbread.muckraft.network.MessageConfirmPortal;
+import com.boringbread.muckraft.network.MuckPacketHandler;
 import com.boringbread.muckraft.tileentity.TileEntityPortalStageTwo;
+import io.netty.buffer.Unpooled;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiBeacon;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -12,13 +16,20 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.play.client.CPacketCloseWindow;
+import net.minecraft.network.play.client.CPacketCustomPayload;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
 
 @SideOnly(Side.CLIENT)
 public class GuiPortalStageTwo extends GuiContainer
@@ -56,6 +67,16 @@ public class GuiPortalStageTwo extends GuiContainer
     public void updateScreen()
     {
         super.updateScreen();
+        int i = 0;
+        for (int j = 0; j < portalStageTwo.getItemStackHandler().getSlots(); j++)
+        {
+            if (portalStageTwo.getItemStackHandler().getStackInSlot(j).isEmpty())
+            {
+                confirmButton.enabled = false;
+                i++;
+            }
+            if (i == 0) confirmButton.enabled = true;
+        }
     }
 
     @Override
@@ -68,6 +89,15 @@ public class GuiPortalStageTwo extends GuiContainer
                 guibutton.drawButtonForegroundLayer(mouseX - this.guiLeft, mouseY - this.guiTop);
                 break;
             }
+        }
+    }
+
+    @Override
+    protected void actionPerformed(GuiButton button) throws IOException
+    {
+        if (button.id == 0)
+        {
+            MuckPacketHandler.INSTANCE.sendToServer(new MessageConfirmPortal(portalStageTwo.getPos()));
         }
     }
 

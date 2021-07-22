@@ -5,6 +5,7 @@ import com.boringbread.muckraft.client.gui.GuiHandler;
 import com.boringbread.muckraft.config.Config;
 import com.boringbread.muckraft.creativetab.MuckraftCreativeTab;
 import com.boringbread.muckraft.event.OreHandler;
+import com.boringbread.muckraft.network.MuckPacketHandler;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
@@ -23,6 +24,7 @@ public class CommonProxy
         MinecraftForge.ORE_GEN_BUS.register(OreHandler.class);
         MuckraftCreativeTab.preInitCommon();
         MuckWorldGen.preInitCommon();
+        MuckPacketHandler.preInitCommon();
     }
 
     public void init()
