@@ -44,6 +44,12 @@ public class TileEntityPortalStageTwo extends TileEntity implements ITickable
         {
             return 1;
         }
+
+        @Override
+        protected void onContentsChanged(int slot)
+        {
+            TileEntityPortalStageTwo.this.markDirty();
+        }
     };
 
     private EnergyStorage energyStorage = new EnergyStorage(1000000, 1000);
