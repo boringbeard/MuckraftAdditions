@@ -47,19 +47,6 @@ public class ContainerPortalStageTwo extends Container
     public void onContainerClosed(EntityPlayer playerIn)
     {
         super.onContainerClosed(playerIn);
-
-        if (!playerIn.world.isRemote)
-        {
-            for (SacrificeSlot sacrificeSlot: sacrificeSlots)
-            {
-                ItemStack itemstack = sacrificeSlot.decrStackSize(sacrificeSlot.getSlotStackLimit());
-
-                if (!itemstack.isEmpty())
-                {
-                    playerIn.dropItem(itemstack, false);
-                }
-            }
-        }
     }
 
     @Override
