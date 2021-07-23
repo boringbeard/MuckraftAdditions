@@ -44,12 +44,6 @@ public class ContainerPortalStageTwo extends Container
     }
 
     @Override
-    public void onContainerClosed(EntityPlayer playerIn)
-    {
-        super.onContainerClosed(playerIn);
-    }
-
-    @Override
     public boolean canInteractWith(EntityPlayer playerIn)
     {
         return tilePortalStageTwo.isUsableByPlayer(playerIn);
