@@ -1,5 +1,6 @@
 package com.boringbread.muckraft.tileentity;
 
+import com.boringbread.muckraft.block.BlockPortalStageTwo;
 import com.boringbread.muckraft.inventory.ContainerPortalStageTwo;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -87,7 +88,7 @@ public class TileEntityPortalStageTwo extends TileEntity implements ITickable
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing)
     {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || (capability == CapabilityEnergy.ENERGY && (facing == EnumFacing.WEST || facing == EnumFacing.EAST)))
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || (capability == CapabilityEnergy.ENERGY && facing == world.getBlockState(pos).getValue(BlockPortalStageTwo.FACING).getOpposite()))
         {
             return true;
         }
@@ -101,7 +102,7 @@ public class TileEntityPortalStageTwo extends TileEntity implements ITickable
         {
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemStackHandler);
         }
-        if (capability == CapabilityEnergy.ENERGY && (facing == EnumFacing.WEST || facing == EnumFacing.EAST))
+        if (capability == CapabilityEnergy.ENERGY && (facing == world.getBlockState(pos).getValue(BlockPortalStageTwo.FACING).getOpposite()))
         {
             return CapabilityEnergy.ENERGY.cast(energyStorage);
         }
