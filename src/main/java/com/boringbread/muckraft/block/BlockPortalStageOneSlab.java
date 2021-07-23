@@ -60,31 +60,8 @@ public class BlockPortalStageOneSlab extends BlockSlab
     @Override
     public @NotNull IBlockState getStateForPlacement(@NotNull World worldIn, @NotNull BlockPos pos, @NotNull EnumFacing facing, float hitX, float hitY, float hitZ, int meta, @NotNull EntityLivingBase placer)
     {
-            EnumFacing direction;
-            if (facing != EnumFacing.UP && facing != EnumFacing.DOWN)
-            {
-                direction = facing;
-            }
-            else
-            {
-                if (hitX > hitZ)
-                {
-                    direction = hitX + hitZ > 1 ? EnumFacing.WEST : EnumFacing.SOUTH;
-                }
-                else
-                {
-                    direction = hitX + hitZ > 1 ? EnumFacing.NORTH : EnumFacing.EAST;
-                }
-            }
-
-            IBlockState blockState = getDefaultState().withProperty(FACING, direction);
-
-            if (facing != EnumFacing.DOWN && (facing == EnumFacing.UP || (double) hitY <= 0.5D))
-            {
-                return blockState;
-            }
-
-            return blockState.withProperty(HALF, EnumBlockHalf.TOP);
+            return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer)
+                    .withProperty(FACING, placer.getHorizontalFacing().getOpposite());
     }
 
     @Override

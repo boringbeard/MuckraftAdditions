@@ -6,6 +6,7 @@ import com.boringbread.muckraft.creativetab.MuckraftCreativeTab;
 import com.boringbread.muckraft.tileentity.TileEntityPortalStageTwo;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -23,6 +24,7 @@ import javax.annotation.Nullable;
 public class BlockPortalStageTwo extends BlockMuckPortal implements ITileEntityProvider
 {
     public static final String NAME = "portal_stage_two";
+    public static PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
     public BlockPortalStageTwo()
     {
@@ -33,7 +35,7 @@ public class BlockPortalStageTwo extends BlockMuckPortal implements ITileEntityP
         setRegistryName(NAME);
         setResistance(9);
         setUnlocalizedName(Muckraft.MOD_ID + "_" + NAME);
-        setDefaultState(this.blockState.getBaseState().withProperty(ACTIVATED, true));
+        setDefaultState(this.blockState.getBaseState().withProperty(ACTIVATED, false).withProperty(FACING, EnumFacing.NORTH));
     }
 
     @Override
@@ -74,32 +76,73 @@ public class BlockPortalStageTwo extends BlockMuckPortal implements ITileEntityP
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
+    public TileEntity createNewTileEntity(World worldIn, int meta)
+    {
         return new TileEntityPortalStageTwo();
     }
 
     @Override
     protected @NotNull BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, ACTIVATED);
+        return new BlockStateContainer(this, ACTIVATED, FACING);
     }
 
     @Override
     public @NotNull IBlockState getStateForPlacement(@NotNull World worldIn, @NotNull BlockPos pos, @NotNull EnumFacing facing, float hitX, float hitY, float hitZ, int meta, @NotNull EntityLivingBase placer)
     {
-        return this.getDefaultState();
+        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
     }
 
     @Override
     public @NotNull IBlockState getStateFromMeta(int meta)
     {
-        return getDefaultState().withProperty(ACTIVATED, meta != 0);
+        IBlockState blockState = this.getDefaultState();
+
+        boolean activated = (meta + 1) > 4;
+        int facingInt;
+        EnumFacing facing;
+
+        if (activated) facingInt = (meta + 1) - 4;
+        else facingInt = meta + 1;
+
+        switch (facingInt)
+        {
+            case 2:
+                facing = EnumFacing.EAST;
+                break;
+            case 3:
+                facing = EnumFacing.SOUTH;
+                break;
+            case 4:
+                facing = EnumFacing.WEST;
+                break;
+            default:
+                facing = EnumFacing.NORTH;
+        }
+
+        return getDefaultState().withProperty(ACTIVATED, activated).withProperty(FACING, facing);
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return state.getValue(ACTIVATED) ? 1 : 0;
+        int activated = state.getValue(ACTIVATED) ? 2 : 1;
+        int direction;
+        switch (state.getValue(FACING))
+        {
+            case EAST:
+                direction = 2;
+                break;
+            case SOUTH:
+                direction = 3;
+                break;
+            case WEST:
+                direction = 4;
+                break;
+            default:
+                direction = 1;
+        }
+        return activated * direction - 1;
     }
 
     @Override
@@ -131,7 +174,8 @@ public class BlockPortalStageTwo extends BlockMuckPortal implements ITileEntityP
     }
 
     @Override
-    protected PortalStatus getPortalStatus(BlockPos pos, World worldIn) {
+    protected PortalStatus getPortalStatus(BlockPos pos, World worldIn)
+    {
         return PortalStatus.ACTIVE_COMPLETE_X;
     }
 }
