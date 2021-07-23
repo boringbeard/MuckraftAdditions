@@ -24,6 +24,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Random;
+
 public class BlockPortalStageOne extends BlockMuckPortal
 {
     public static final String NAME = "portal_stage_one";
@@ -38,6 +40,19 @@ public class BlockPortalStageOne extends BlockMuckPortal
         setResistance(9);
         setUnlocalizedName(Muckraft.MOD_ID + "_" + NAME);
         setDefaultState(this.blockState.getBaseState().withProperty(ACTIVATED, false));
+    }
+
+    @Override
+    public void updateTick(World worldIn, @NotNull BlockPos pos, @NotNull IBlockState state, @NotNull Random rand)
+    {
+        if(!worldIn.isRemote)
+        {
+            PortalStatus status = getPortalStatus(pos, worldIn);
+            if (status != PortalStatus.ACTIVE_COMPLETE_X && status != PortalStatus.ACTIVE_COMPLETE_Z)
+            {
+                worldIn.setBlockState(pos, state.withProperty(ACTIVATED, false));
+            }
+        }
     }
 
     @Override

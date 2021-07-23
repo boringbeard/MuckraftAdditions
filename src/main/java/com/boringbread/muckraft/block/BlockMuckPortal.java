@@ -26,19 +26,6 @@ public abstract class BlockMuckPortal extends Block
         this.cooldown = cooldown;
     }
 
-    @Override
-    public void updateTick(World worldIn, @NotNull BlockPos pos, @NotNull IBlockState state, @NotNull Random rand)
-    {
-        if(!worldIn.isRemote)
-        {
-            PortalStatus status = getPortalStatus(pos, worldIn);
-            if (status != PortalStatus.ACTIVE_COMPLETE_X && status != PortalStatus.ACTIVE_COMPLETE_Z)
-            {
-                worldIn.setBlockState(pos, state.withProperty(ACTIVATED, false));
-            }
-        }
-    }
-
     protected void teleportPlayer(Entity entityIn, World worldIn)
     {
         if (entityIn.timeUntilPortal > cooldown + 1) entityIn.timeUntilPortal = cooldown + 1;

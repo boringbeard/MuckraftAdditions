@@ -4,6 +4,7 @@ import com.boringbread.muckraft.Muckraft;
 import com.boringbread.muckraft.client.gui.GuiHandler;
 import com.boringbread.muckraft.creativetab.MuckraftCreativeTab;
 import com.boringbread.muckraft.tileentity.TileEntityPortalStageTwo;
+import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
@@ -16,10 +17,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 public class BlockPortalStageTwo extends BlockMuckPortal implements ITileEntityProvider
 {
@@ -48,16 +51,39 @@ public class BlockPortalStageTwo extends BlockMuckPortal implements ITileEntityP
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if(worldIn.isRemote) return true;
+        if (worldIn.isRemote) return true;
 
         TileEntity tileentity = worldIn.getTileEntity(pos);
 
         if (tileentity instanceof TileEntityPortalStageTwo)
         {
-            System.out.println(GuiHandler.getID());
             playerIn.openGui(Muckraft.instance, GuiHandler.getID(), worldIn, pos.getX(), pos.getY(), pos.getZ());
         }
         return true;
+    }
+
+    @Override
+    public void neighborChanged(@NotNull IBlockState state, World worldIn, @NotNull BlockPos pos, @NotNull Block blockIn, @NotNull BlockPos fromPos)
+    {
+        if (!worldIn.isRemote) worldIn.scheduleUpdate(pos, this, 0);
+    }
+
+    @Override
+    public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, @org.jetbrains.annotations.Nullable EnumFacing side)
+    {
+        return side.getOpposite() == state.getValue(FACING);
+    }
+
+    @Override
+    public void updateTick(World worldIn, @NotNull BlockPos pos, @NotNull IBlockState state, @NotNull Random rand)
+    {
+        EnumFacing facing = (EnumFacing) state.getValue(FACING);
+        TileEntity tileentity = worldIn.getTileEntity(pos);
+
+        if (worldIn.getRedstonePower(pos.offset(facing), facing) > 0 && tileentity instanceof TileEntityPortalStageTwo && ((TileEntityPortalStageTwo) tileentity).isSacrificeAccepted())
+        {
+            worldIn.setBlockState(pos, state.withProperty(ACTIVATED, true));
+        }
     }
 
     @Override
@@ -148,7 +174,7 @@ public class BlockPortalStageTwo extends BlockMuckPortal implements ITileEntityP
     @Override
     public void onFallenUpon(World worldIn, @NotNull BlockPos pos, @NotNull Entity entityIn, float fallDistance)
     {
-        if(!worldIn.isRemote)
+        if (!worldIn.isRemote)
         {
             super.onFallenUpon(worldIn, pos, entityIn, fallDistance);
             entityIn.timeUntilPortal = 300;
@@ -164,11 +190,11 @@ public class BlockPortalStageTwo extends BlockMuckPortal implements ITileEntityP
         BlockPos pos = new BlockPos(x, y - 1, z);
         boolean isActivated = worldIn.getBlockState(pos).getValue(ACTIVATED);
 
-        if(isActivated)
+        if (isActivated)
         {
-            if(!worldIn.isRemote) teleportPlayer(entityIn, worldIn);
+            if (!worldIn.isRemote) teleportPlayer(entityIn, worldIn);
         }
-        else if(!worldIn.isRemote) entityIn.timeUntilPortal = 300;
+        else if (!worldIn.isRemote) entityIn.timeUntilPortal = 300;
 
         entityIn.motionY = 0.0D;
     }

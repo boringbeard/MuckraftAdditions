@@ -44,6 +44,7 @@ public class MessageConfirmPortal implements IMessage
             if (tileEntity instanceof TileEntityPortalStageTwo)
             {
                 ItemStackHandler portalInventory = ((TileEntityPortalStageTwo) tileEntity).getItemStackHandler();
+                ((TileEntityPortalStageTwo) tileEntity).setSacrificeAccepted(true);
                 for (int i = 0; i < portalInventory.getSlots(); i++)
                 {
                     portalInventory.setStackInSlot(i, ItemStack.EMPTY);

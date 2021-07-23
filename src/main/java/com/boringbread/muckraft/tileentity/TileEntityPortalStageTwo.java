@@ -125,4 +125,14 @@ public class TileEntityPortalStageTwo extends TileEntity implements ITickable
     {
         return itemStackHandler;
     }
+
+    public boolean isSacrificeAccepted()
+    {
+        return sacrificeAccepted;
+    }
+
+    public void setSacrificeAccepted(boolean sacrificeAccepted)
+    {
+        this.sacrificeAccepted = sacrificeAccepted;
+    }
 }
