@@ -16,7 +16,7 @@ public class MuckItems
     @SideOnly(Side.CLIENT)
     public static void initModels()
     {
-        initModel(MUCK_CHEESE, "muck_cheese");
+        initModel(MUCK_CHEESE, ItemMuckCheese.NAME);
     }
 
     @SideOnly(Side.CLIENT)
