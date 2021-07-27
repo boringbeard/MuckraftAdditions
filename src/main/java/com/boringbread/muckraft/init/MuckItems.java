@@ -18,8 +18,8 @@ public class MuckItems
     @SideOnly(Side.CLIENT)
     public static void initModels()
     {
-        initModel(MUCK_CHEESE, "muck_cheese");
-        initModel(PARASITE_SWORD, "parasite_sword");
+        initModel(MUCK_CHEESE, ItemMuckCheese.NAME);
+        initModel(PARASITE_SWORD, ItemParasiteSword.NAME);
     }
 
     @SideOnly(Side.CLIENT)
