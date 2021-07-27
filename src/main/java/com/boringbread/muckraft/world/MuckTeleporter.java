@@ -20,14 +20,11 @@ import java.util.List;
 public class MuckTeleporter implements ITeleporter
 {
     public static final List<DimBlockPos> DESTINATION_CACHE = new ArrayList<>();
-    private final BlockMuckPortal portal;
-    private final int portalStage;
+    private final IBlockState portal;
 
-    public MuckTeleporter(int portalStage)
+    public MuckTeleporter(IBlockState portal)
     {
-        BlockMuckPortal[] portals = {MuckBlocks.PORTAL_STAGE_ONE, MuckBlocks.PORTAL_STAGE_TWO};
-        this.portalStage = portalStage;
-        this.portal = portals[portalStage];
+        this.portal = portal;
     }
 
     @Override
@@ -37,10 +34,13 @@ public class MuckTeleporter implements ITeleporter
         {
             BlockPos pos = new BlockPos(entity);
             BlockPos newPos = findAcceptableLocation(1024, pos, world);
-            if(world.getBlockState(newPos) != portal.getDefaultState().withProperty(BlockPortalStageOne.ACTIVATED, true))
+            IBlockState state = world.getBlockState(newPos);
+
+            if(state != portal.withProperty(BlockMuckPortal.ACTIVATED, true))
             {
-                makePortal(newPos, world, this.portalStage);
+                makePortal(newPos, world, this.portal);
             }
+
             entity.setLocationAndAngles(newPos.getX() + 0.5, newPos.getY() + 1, newPos.getZ() + 0.5, yaw, 0.0F);
             entity.motionX = 0;
             entity.motionY = 0;
@@ -88,7 +88,6 @@ public class MuckTeleporter implements ITeleporter
 
             if (isAcceptableLocation)
             {
-                DESTINATION_CACHE.add(new DimBlockPos(newLocation, world.provider.getDimension()));
                 return newLocation;
             }
         }
@@ -98,11 +97,15 @@ public class MuckTeleporter implements ITeleporter
     @Nullable
     private BlockPos findExistingPortal(int range, BlockPos pos, World world)
     {
-        for(DimBlockPos portalLocation : DESTINATION_CACHE)
+        DimBlockPos[] destinationCache = DESTINATION_CACHE.toArray(new DimBlockPos[0]); //there's no way this is the best way to do it but at least for now it solves the co-modification problem
+
+        for(DimBlockPos portalLocation : destinationCache)
         {
+            IBlockState state = world.getBlockState(portalLocation.getPos());
+
             if(pos.distanceSq(portalLocation.getPos()) < range * range && world.provider.getDimension() == portalLocation.getDimID())
             {
-                if(world.getBlockState(portalLocation.getPos()) == portal.getDefaultState().withProperty(BlockPortalStageOne.ACTIVATED, true))
+                if (state.getBlock().equals(portal.getBlock()) && state == state.withProperty(BlockPortalStageOne.ACTIVATED, true))
                 {
                     return portalLocation.getPos();
                 }
@@ -114,12 +117,21 @@ public class MuckTeleporter implements ITeleporter
         return null;
     }
 
-    private void makePortal(BlockPos pos, World world, int portalStage)
+    private void makePortal(BlockPos pos, World world, IBlockState portal)
     {
-        IBlockState activePortalSlab = MuckBlocks.PORTAL_STAGE_ONE_SLAB.getDefaultState().withProperty(BlockPortalStageOneSlab.ACTIVATED, true);
-        world.setBlockState(pos.east(), activePortalSlab.withProperty(BlockPortalStageOneSlab.FACING, EnumFacing.EAST));
-        world.setBlockState(pos.west(), activePortalSlab.withProperty(BlockPortalStageOneSlab.FACING, EnumFacing.WEST));
-        world.setBlockState(pos, MuckBlocks.PORTAL_STAGE_ONE.getDefaultState().withProperty(BlockPortalStageOne.ACTIVATED, true));
+        switch (((BlockMuckPortal) portal.getBlock()).getStage())
+        {
+            case 0:
+                IBlockState activePortalSlab = MuckBlocks.PORTAL_STAGE_ONE_SLAB.getDefaultState().withProperty(BlockPortalStageOneSlab.ACTIVATED, true);
+                world.setBlockState(pos.north(), activePortalSlab.withProperty(BlockPortalStageOneSlab.FACING, EnumFacing.NORTH));
+                world.setBlockState(pos.south(), activePortalSlab.withProperty(BlockPortalStageOneSlab.FACING, EnumFacing.SOUTH));
+                world.setBlockState(pos, portal.withProperty(BlockMuckPortal.ACTIVATED, true));
+                break;
+            case 1:
+                world.setBlockState(pos, portal.withProperty(BlockMuckPortal.ACTIVATED, true));
+        }
+
+        DESTINATION_CACHE.add(new DimBlockPos(pos, world.provider.getDimension()));
     }
 
     private int getGoodHeight(BlockPos pos, World world)
