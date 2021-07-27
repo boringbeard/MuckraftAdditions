@@ -5,6 +5,7 @@ import com.boringbread.muckraft.world.MuckTeleporter;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
@@ -49,6 +50,12 @@ public abstract class BlockMuckPortal extends Block
         }
 
         entityIn.timeUntilPortal -= 1;
+    }
+
+    @Override
+    protected @NotNull BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, ACTIVATED);
     }
 
     public int getStage()

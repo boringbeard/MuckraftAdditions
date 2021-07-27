@@ -135,12 +135,6 @@ public class BlockPortalS1 extends BlockMuckPortal
     }
 
     @Override
-    protected @NotNull BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, ACTIVATED);
-    }
-
-    @Override
     public @NotNull IBlockState getStateFromMeta(int meta)
     {
         return getDefaultState().withProperty(ACTIVATED, meta != 0);
