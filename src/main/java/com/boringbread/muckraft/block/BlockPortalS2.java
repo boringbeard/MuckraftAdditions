@@ -3,7 +3,7 @@ package com.boringbread.muckraft.block;
 import com.boringbread.muckraft.Muckraft;
 import com.boringbread.muckraft.client.gui.GuiHandler;
 import com.boringbread.muckraft.creativetab.MuckraftCreativeTab;
-import com.boringbread.muckraft.tileentity.TileEntityPortalStageTwo;
+import com.boringbread.muckraft.tileentity.TileEntityPortalS2;
 import com.boringbread.muckraft.util.DimBlockPos;
 import com.boringbread.muckraft.world.MuckTeleporter;
 import net.minecraft.block.Block;
@@ -26,12 +26,12 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class BlockPortalStageTwo extends BlockMuckPortal implements ITileEntityProvider
+public class BlockPortalS2 extends BlockMuckPortal implements ITileEntityProvider
 {
     public static final String NAME = "portal_stage_two";
     public static PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
-    public BlockPortalStageTwo()
+    public BlockPortalS2()
     {
         super(Material.ROCK, 1, 100);
         setCreativeTab(MuckraftCreativeTab.muckraftCreativeTab);
@@ -57,7 +57,7 @@ public class BlockPortalStageTwo extends BlockMuckPortal implements ITileEntityP
 
         TileEntity tileentity = worldIn.getTileEntity(pos);
 
-        if (tileentity instanceof TileEntityPortalStageTwo)
+        if (tileentity instanceof TileEntityPortalS2)
         {
             playerIn.openGui(Muckraft.instance, GuiHandler.getID(), worldIn, pos.getX(), pos.getY(), pos.getZ());
         }
@@ -82,7 +82,7 @@ public class BlockPortalStageTwo extends BlockMuckPortal implements ITileEntityP
         EnumFacing facing = (EnumFacing) state.getValue(FACING);
         TileEntity tileentity = worldIn.getTileEntity(pos);
 
-        if (worldIn.getRedstonePower(pos.offset(facing), facing) > 0 && tileentity instanceof TileEntityPortalStageTwo && ((TileEntityPortalStageTwo) tileentity).isSacrificeAccepted())
+        if (worldIn.getRedstonePower(pos.offset(facing), facing) > 0 && tileentity instanceof TileEntityPortalS2 && ((TileEntityPortalS2) tileentity).isSacrificeAccepted())
         {
             worldIn.setBlockState(pos, state.withProperty(ACTIVATED, true));
             MuckTeleporter.DESTINATION_CACHE.add(new DimBlockPos(pos, worldIn.provider.getDimension()));
@@ -107,7 +107,7 @@ public class BlockPortalStageTwo extends BlockMuckPortal implements ITileEntityP
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta)
     {
-        return new TileEntityPortalStageTwo();
+        return new TileEntityPortalS2();
     }
 
     @Override

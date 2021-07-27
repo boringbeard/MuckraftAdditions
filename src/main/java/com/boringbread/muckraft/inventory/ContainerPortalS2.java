@@ -1,20 +1,19 @@
 package com.boringbread.muckraft.inventory;
 
-import com.boringbread.muckraft.tileentity.TileEntityPortalStageTwo;
+import com.boringbread.muckraft.tileentity.TileEntityPortalS2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class ContainerPortalStageTwo extends Container
+public class ContainerPortalS2 extends Container
 {
-    private final TileEntityPortalStageTwo tilePortalStageTwo;
+    private final TileEntityPortalS2 tilePortalStageTwo;
     private final SacrificeSlot[] sacrificeSlots;
 
-    public ContainerPortalStageTwo(IInventory playerInventory, TileEntityPortalStageTwo tilePortalStageTwo)
+    public ContainerPortalS2(IInventory playerInventory, TileEntityPortalS2 tilePortalStageTwo)
     {
         this.tilePortalStageTwo = tilePortalStageTwo;
         this.sacrificeSlots = new SacrificeSlot[5];

@@ -26,11 +26,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
-public class BlockPortalStageOne extends BlockMuckPortal
+public class BlockPortalS1 extends BlockMuckPortal
 {
     public static final String NAME = "portal_stage_one";
 
-    public BlockPortalStageOne()
+    public BlockPortalS1()
     {
         super(Material.ROCK, 0, 100);
         setCreativeTab(MuckraftCreativeTab.muckraftCreativeTab);
@@ -93,7 +93,7 @@ public class BlockPortalStageOne extends BlockMuckPortal
     @Override
     public boolean onBlockActivated(@NotNull World worldIn, @NotNull BlockPos pos, @NotNull IBlockState state, EntityPlayer playerIn, @NotNull EnumHand hand, @NotNull EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        PropertyBool activated = BlockPortalStageOneSlab.ACTIVATED;
+        PropertyBool activated = BlockPortalS1Slab.ACTIVATED;
         PortalStatus status = getPortalStatus(pos, worldIn);
         boolean complete = status != PortalStatus.INCOMPLETE;
 
@@ -156,12 +156,12 @@ public class BlockPortalStageOne extends BlockMuckPortal
     protected PortalStatus getPortalStatus(BlockPos pos, World worldIn)
     {
         IBlockState portalSlab = MuckBlocks.PORTAL_STAGE_ONE_SLAB.getDefaultState();
-        IBlockState portalSlabActive = portalSlab.withProperty(BlockPortalStageOneSlab.ACTIVATED, true);
+        IBlockState portalSlabActive = portalSlab.withProperty(BlockPortalS1Slab.ACTIVATED, true);
         IBlockState blockEast = worldIn.getBlockState(pos.east());
         IBlockState blockWest = worldIn.getBlockState(pos.west());
         IBlockState blockNorth = worldIn.getBlockState(pos.north());
         IBlockState blockSouth = worldIn.getBlockState(pos.south());
-        PropertyDirection direction = BlockPortalStageOneSlab.FACING;
+        PropertyDirection direction = BlockPortalS1Slab.FACING;
 
         boolean eastSlab = blockEast == portalSlab.withProperty(direction, EnumFacing.EAST);
         boolean westSlab = blockWest == portalSlab.withProperty(direction, EnumFacing.WEST);

@@ -1,31 +1,22 @@
 package com.boringbread.muckraft.tileentity;
 
-import com.boringbread.muckraft.block.BlockPortalStageTwo;
-import com.boringbread.muckraft.inventory.ContainerPortalStageTwo;
+import com.boringbread.muckraft.block.BlockPortalS2;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
-import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
-public class TileEntityPortalStageTwo extends TileEntity implements ITickable
+public class TileEntityPortalS2 extends TileEntity implements ITickable
 {
     private static final int[] SLOTS = {0, 1, 2, 3, 4};
     private final ItemStack[] heldItems = new ItemStack[5];
@@ -33,7 +24,7 @@ public class TileEntityPortalStageTwo extends TileEntity implements ITickable
     private boolean sacrificeAccepted;
     private int energy;
 
-    public TileEntityPortalStageTwo() {
+    public TileEntityPortalS2() {
         Arrays.fill(heldItems, ItemStack.EMPTY);
     }
 
@@ -48,7 +39,7 @@ public class TileEntityPortalStageTwo extends TileEntity implements ITickable
         @Override
         protected void onContentsChanged(int slot)
         {
-            TileEntityPortalStageTwo.this.markDirty();
+            TileEntityPortalS2.this.markDirty();
         }
     };
 
@@ -94,7 +85,7 @@ public class TileEntityPortalStageTwo extends TileEntity implements ITickable
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing)
     {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || (capability == CapabilityEnergy.ENERGY && facing == world.getBlockState(pos).getValue(BlockPortalStageTwo.FACING).getOpposite()))
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || (capability == CapabilityEnergy.ENERGY && facing == world.getBlockState(pos).getValue(BlockPortalS2.FACING).getOpposite()))
         {
             return true;
         }
@@ -108,7 +99,7 @@ public class TileEntityPortalStageTwo extends TileEntity implements ITickable
         {
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemStackHandler);
         }
-        if (capability == CapabilityEnergy.ENERGY && (facing == world.getBlockState(pos).getValue(BlockPortalStageTwo.FACING).getOpposite()))
+        if (capability == CapabilityEnergy.ENERGY && (facing == world.getBlockState(pos).getValue(BlockPortalS2.FACING).getOpposite()))
         {
             return CapabilityEnergy.ENERGY.cast(energyStorage);
         }

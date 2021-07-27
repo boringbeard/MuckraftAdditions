@@ -1,11 +1,10 @@
 package com.boringbread.muckraft.world;
 
 import com.boringbread.muckraft.block.BlockMuckPortal;
-import com.boringbread.muckraft.block.BlockPortalStageOne;
-import com.boringbread.muckraft.block.BlockPortalStageOneSlab;
+import com.boringbread.muckraft.block.BlockPortalS1;
+import com.boringbread.muckraft.block.BlockPortalS1Slab;
 import com.boringbread.muckraft.init.MuckBlocks;
 import com.boringbread.muckraft.util.DimBlockPos;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumFacing;
@@ -105,7 +104,7 @@ public class MuckTeleporter implements ITeleporter
 
             if(pos.distanceSq(portalLocation.getPos()) < range * range && world.provider.getDimension() == portalLocation.getDimID())
             {
-                if (state.getBlock().equals(portal.getBlock()) && state == state.withProperty(BlockPortalStageOne.ACTIVATED, true))
+                if (state.getBlock().equals(portal.getBlock()) && state == state.withProperty(BlockPortalS1.ACTIVATED, true))
                 {
                     return portalLocation.getPos();
                 }
@@ -122,9 +121,9 @@ public class MuckTeleporter implements ITeleporter
         switch (((BlockMuckPortal) portal.getBlock()).getStage())
         {
             case 0:
-                IBlockState activePortalSlab = MuckBlocks.PORTAL_STAGE_ONE_SLAB.getDefaultState().withProperty(BlockPortalStageOneSlab.ACTIVATED, true);
-                world.setBlockState(pos.north(), activePortalSlab.withProperty(BlockPortalStageOneSlab.FACING, EnumFacing.NORTH));
-                world.setBlockState(pos.south(), activePortalSlab.withProperty(BlockPortalStageOneSlab.FACING, EnumFacing.SOUTH));
+                IBlockState activePortalSlab = MuckBlocks.PORTAL_STAGE_ONE_SLAB.getDefaultState().withProperty(BlockPortalS1Slab.ACTIVATED, true);
+                world.setBlockState(pos.north(), activePortalSlab.withProperty(BlockPortalS1Slab.FACING, EnumFacing.NORTH));
+                world.setBlockState(pos.south(), activePortalSlab.withProperty(BlockPortalS1Slab.FACING, EnumFacing.SOUTH));
                 world.setBlockState(pos, portal.withProperty(BlockMuckPortal.ACTIVATED, true));
                 break;
             case 1:

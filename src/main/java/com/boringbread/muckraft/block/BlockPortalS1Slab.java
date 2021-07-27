@@ -23,14 +23,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class BlockPortalStageOneSlab extends BlockSlab
+public class BlockPortalS1Slab extends BlockSlab
 {
     public static final String NAME = "portal_stage_one_slab";
     public static final String UNLOCALIZED_NAME = Muckraft.MOD_ID + "_" + NAME;
     public static final PropertyBool ACTIVATED = PropertyBool.create("activated");
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
-    public BlockPortalStageOneSlab()
+    public BlockPortalS1Slab()
     {
         super(Material.ROCK);
         setCreativeTab(MuckraftCreativeTab.muckraftCreativeTab);
@@ -197,6 +197,6 @@ public class BlockPortalStageOneSlab extends BlockSlab
                 checkPos = pos.south();
         }
 
-        return worldIn.getBlockState(checkPos) == MuckBlocks.PORTAL_STAGE_ONE.getDefaultState().withProperty(BlockPortalStageOne.ACTIVATED, true);
+        return worldIn.getBlockState(checkPos) == MuckBlocks.PORTAL_STAGE_ONE.getDefaultState().withProperty(BlockPortalS1.ACTIVATED, true);
     }
 }
