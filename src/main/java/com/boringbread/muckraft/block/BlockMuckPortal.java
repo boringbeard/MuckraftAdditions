@@ -26,7 +26,7 @@ public abstract class BlockMuckPortal extends Block
         this.cooldown = cooldown;
     }
 
-    protected void teleportPlayer(Entity entityIn, World worldIn)
+    protected void teleportPlayer(Entity entityIn, World worldIn, BlockPos pos)
     {
         if (entityIn.timeUntilPortal > cooldown + 1) entityIn.timeUntilPortal = cooldown + 1;
 
@@ -34,19 +34,26 @@ public abstract class BlockMuckPortal extends Block
 
         if (entityIn.timeUntilPortal == 1)
         {
+            IBlockState state = worldIn.getBlockState(pos);
+
             if (worldIn.provider.getDimension() == Config.dimensionIDs[stage])
             {
-                entityIn.changeDimension(Config.dimensionIDs[stage + 1], new MuckTeleporter(stage));
+                entityIn.changeDimension(Config.dimensionIDs[stage + 1], new MuckTeleporter(state));
             }
             else
             {
-                entityIn.changeDimension(Config.dimensionIDs[stage], new MuckTeleporter(stage));
+                entityIn.changeDimension(Config.dimensionIDs[stage], new MuckTeleporter(state));
             }
 
             entityIn.timeUntilPortal -= 1;
         }
 
         entityIn.timeUntilPortal -= 1;
+    }
+
+    public int getStage()
+    {
+        return stage;
     }
 
     protected abstract PortalStatus getPortalStatus(BlockPos pos, World worldIn);

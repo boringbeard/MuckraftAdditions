@@ -73,7 +73,7 @@ public class BlockPortalStageOne extends BlockMuckPortal
                     worldIn.spawnParticle(EnumParticleTypes.FIREWORKS_SPARK, pos.getX() + 0.25 + Math.random() / 2, pos.getY() + 1.0F, pos.getZ() + 0.25 + Math.random() / 2, 0, 1, 0);
                 }
             }
-            else teleportPlayer(entityIn, worldIn);
+            else teleportPlayer(entityIn, worldIn, pos);
         }
         else if (!worldIn.isRemote) entityIn.timeUntilPortal = 300;
 

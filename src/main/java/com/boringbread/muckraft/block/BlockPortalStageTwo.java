@@ -4,6 +4,8 @@ import com.boringbread.muckraft.Muckraft;
 import com.boringbread.muckraft.client.gui.GuiHandler;
 import com.boringbread.muckraft.creativetab.MuckraftCreativeTab;
 import com.boringbread.muckraft.tileentity.TileEntityPortalStageTwo;
+import com.boringbread.muckraft.util.DimBlockPos;
+import com.boringbread.muckraft.world.MuckTeleporter;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -83,6 +85,7 @@ public class BlockPortalStageTwo extends BlockMuckPortal implements ITileEntityP
         if (worldIn.getRedstonePower(pos.offset(facing), facing) > 0 && tileentity instanceof TileEntityPortalStageTwo && ((TileEntityPortalStageTwo) tileentity).isSacrificeAccepted())
         {
             worldIn.setBlockState(pos, state.withProperty(ACTIVATED, true));
+            MuckTeleporter.DESTINATION_CACHE.add(new DimBlockPos(pos, worldIn.provider.getDimension()));
         }
     }
 
@@ -192,7 +195,7 @@ public class BlockPortalStageTwo extends BlockMuckPortal implements ITileEntityP
 
         if (isActivated)
         {
-            if (!worldIn.isRemote) teleportPlayer(entityIn, worldIn);
+            if (!worldIn.isRemote) teleportPlayer(entityIn, worldIn, pos);
         }
         else if (!worldIn.isRemote) entityIn.timeUntilPortal = 300;
 

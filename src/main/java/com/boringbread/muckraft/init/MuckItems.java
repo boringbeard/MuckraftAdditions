@@ -20,7 +20,6 @@ public class MuckItems
     {
         initModel(MUCK_CHEESE, "muck_cheese");
         initModel(PARASITE_SWORD, "parasite_sword");
-
     }
 
     @SideOnly(Side.CLIENT)
