@@ -4,10 +4,14 @@ import com.boringbread.muckraft.Muckraft;
 import com.boringbread.muckraft.creativetab.MuckraftCreativeTab;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 
 public class BlockPortalS3 extends BlockMuckPortal
 {
@@ -26,6 +30,18 @@ public class BlockPortalS3 extends BlockMuckPortal
     }
 
     @Override
+    public @NotNull IBlockState getStateFromMeta(int meta)
+    {
+        return getDefaultState().withProperty(ACTIVATED, meta != 0);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return state.getValue(ACTIVATED) ? 1 : 0;
+    }
+
+    @Override
     public void onLanded(World worldIn, Entity entityIn)
     {
         double x = entityIn.posX;
@@ -41,6 +57,22 @@ public class BlockPortalS3 extends BlockMuckPortal
         else if (!worldIn.isRemote) entityIn.timeUntilPortal = 300;
 
         entityIn.motionY = 0.0D;
+    }
+
+    @Override
+    public void onFallenUpon(World worldIn, @NotNull BlockPos pos, @NotNull Entity entityIn, float fallDistance)
+    {
+        if(!worldIn.isRemote)
+        {
+            super.onFallenUpon(worldIn, pos, entityIn, fallDistance);
+            entityIn.timeUntilPortal = 300;
+        }
+    }
+
+    @Override
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
+    {
+        return getDefaultState().withProperty(ACTIVATED, true);
     }
 
     @Override
