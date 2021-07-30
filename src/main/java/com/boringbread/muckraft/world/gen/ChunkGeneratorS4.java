@@ -5,6 +5,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.IChunkGenerator;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,14 +13,17 @@ import java.util.List;
 
 public class ChunkGeneratorS4 implements IChunkGenerator
 {
+    private final World world;
+
     public ChunkGeneratorS4(World worldIn, boolean p_i45637_2_, long seed)
     {
-
+        this.world = worldIn;
     }
 
     @Override
-    public Chunk generateChunk(int x, int z) {
-        return null;
+    public Chunk generateChunk(int x, int z)
+    {
+        return new Chunk(world, new ChunkPrimer(), x, z);
     }
 
     @Override
