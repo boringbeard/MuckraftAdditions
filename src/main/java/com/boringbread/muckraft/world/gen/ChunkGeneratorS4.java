@@ -23,10 +23,8 @@ public class ChunkGeneratorS4 implements IChunkGenerator
     private static final IBlockState AIR = Blocks.AIR.getDefaultState();
     private final Random rand;
     private final World world;
-    private NoiseGeneratorOctaves perlinNoise;
-    private double[] mainStructureX;
-    private double[] mainStructureY;
-    private double[] mainStructureZ;
+    private final NoiseGeneratorOctaves perlinNoise;
+    private double[] mainStructure;
 
     public ChunkGeneratorS4(World worldIn, boolean p_i45637_2_, long seed)
     {
@@ -39,10 +37,8 @@ public class ChunkGeneratorS4 implements IChunkGenerator
     public Chunk generateChunk(int x, int z)
     {
         ChunkPrimer primer = new ChunkPrimer();
-        mainStructureX = perlinNoise.generateNoiseOctaves(mainStructureX, x * 16, 0, z * 16, 1, 256, 16, 0, 0.25, 0.25);
-        mainStructureY = perlinNoise.generateNoiseOctaves(mainStructureY, x * 16, 0, z * 16, 16, 1, 16, 0.25, 0, 0.25);
-        mainStructureZ = perlinNoise.generateNoiseOctaves(mainStructureZ, x * 16, 0, z * 16, 16, 256, 1, 0.25, 0.25, 0);
-
+        mainStructure = perlinNoise.generateNoiseOctaves(mainStructure, x * 4, 0, z * 4, 4, 64, 4, 0.25, 0.25, 0.25);
+//
         for (int x1 = 0; x1 < 16; x1++)
         {
             for (int z1 = 0; z1 < 16; z1++)
@@ -50,7 +46,7 @@ public class ChunkGeneratorS4 implements IChunkGenerator
                 for (int y = 0; y < 256; y++)
                 {
                     IBlockState toFill = DEFAULT_BLOCK;
-                    double d = mainStructureX[z1 * 256 + y] + mainStructureY[x1 * 16 + z1] + mainStructureZ[x1 * 256 + y];
+                    double d = mainStructure[((x1 / 4) * 4 + (z1 / 4)) * 64 + y / 4];
                     if (d > 0) toFill = AIR;
                     if (y > 254 - this.rand.nextInt(5) || y < 1 + this.rand.nextInt(5)) toFill = BEDROCK;
 
