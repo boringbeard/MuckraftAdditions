@@ -19,6 +19,8 @@ import java.util.Random;
 public class ChunkGeneratorS4 implements IChunkGenerator
 {
     private static final IBlockState DEFAULT_BLOCK = Blocks.STONE.getDefaultState();
+    private static final IBlockState BEDROCK = Blocks.BEDROCK.getDefaultState();
+    private static final IBlockState AIR = Blocks.AIR.getDefaultState();
     private final Random rand;
     private final World world;
     private NoiseGeneratorOctaves perlinNoise;
@@ -47,8 +49,12 @@ public class ChunkGeneratorS4 implements IChunkGenerator
             {
                 for (int y = 0; y < 256; y++)
                 {
+                    IBlockState toFill = DEFAULT_BLOCK;
                     double d = mainStructureX[z1 * 256 + y] + mainStructureY[x1 * 16 + z1] + mainStructureZ[x1 * 256 + y];
-                    if (d > 0) primer.setBlockState(x1, y, z1, DEFAULT_BLOCK);  //noise generator fills in order of y, z, x
+                    if (d > 0) toFill = AIR;
+                    if (y > 254 - this.rand.nextInt(5) || y < 1 + this.rand.nextInt(5)) toFill = BEDROCK;
+
+                    primer.setBlockState(x1, y, z1, toFill);  //noise generator fills in order of y, z, x
                 }
             }
         }
