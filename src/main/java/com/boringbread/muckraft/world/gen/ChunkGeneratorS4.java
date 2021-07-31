@@ -37,9 +37,9 @@ public class ChunkGeneratorS4 implements IChunkGenerator
     public Chunk generateChunk(int x, int z)
     {
         ChunkPrimer primer = new ChunkPrimer();
-        mainStructureX = perlinNoise.generateNoiseOctaves(mainStructureX, x * 16, 0, z * 16, 0, 256, 16, 0.25, 0.25, 0.25);
-        mainStructureY = perlinNoise.generateNoiseOctaves(mainStructureY, x * 16, 0, z * 16, 16, 0, 16, 0.25, 0.25, 0.25);
-        mainStructureZ = perlinNoise.generateNoiseOctaves(mainStructureZ, x * 16, 0, z * 16, 16, 256, 0, 0.25, 0.25, 0.25);
+        mainStructureX = perlinNoise.generateNoiseOctaves(mainStructureX, x * 16, 0, z * 16, 1, 256, 16, 0, 0.25, 0.25);
+        mainStructureY = perlinNoise.generateNoiseOctaves(mainStructureY, x * 16, 0, z * 16, 16, 1, 16, 0.25, 0, 0.25);
+        mainStructureZ = perlinNoise.generateNoiseOctaves(mainStructureZ, x * 16, 0, z * 16, 16, 256, 1, 0.25, 0.25, 0);
 
         for (int x1 = 0; x1 < 16; x1++)
         {
@@ -47,7 +47,7 @@ public class ChunkGeneratorS4 implements IChunkGenerator
             {
                 for (int y = 0; y < 256; y++)
                 {
-                    double d = mainStructureX[z1 * 256 + y] + mainStructureY[x1 * 16 + z] + mainStructureZ[x1 * 256 + y];
+                    double d = mainStructureX[z1 * 256 + y] + mainStructureY[x1 * 16 + z1] + mainStructureZ[x1 * 256 + y];
                     if (d > 0) primer.setBlockState(x1, y, z1, DEFAULT_BLOCK);  //noise generator fills in order of y, z, x
                 }
             }
