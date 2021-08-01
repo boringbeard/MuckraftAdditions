@@ -1,5 +1,6 @@
 package com.boringbread.muckraft.world.gen;
 
+import com.dhanantry.scapeandrunparasites.block.BlockParasiteRubble;
 import com.dhanantry.scapeandrunparasites.init.SRPBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
@@ -19,12 +20,13 @@ import java.util.Random;
 
 public class ChunkGeneratorS4 implements IChunkGenerator
 {
-    private static final IBlockState DEFAULT_BLOCK = Blocks.STONE.getDefaultState();
+    private static final IBlockState DEFAULT_BLOCK = SRPBlocks.ParasiteRubble.getDefaultState().withProperty(BlockParasiteRubble.VARIANT, BlockParasiteRubble.EnumType.FLESH);
     private static final IBlockState BEDROCK = Blocks.BEDROCK.getDefaultState();
     private static final IBlockState AIR = Blocks.AIR.getDefaultState();
+    private static final IBlockState DEAD_BLOOD = SRPBlocks.DeadBlood.getDefaultState();
     private final Random rand;
     private final World world;
-    private NoiseGeneratorOctaves perlinNoise;
+    private final NoiseGeneratorOctaves perlinNoise;
     private double[] mainStructure;
 
     public ChunkGeneratorS4(World worldIn, boolean p_i45637_2_, long seed)
@@ -78,7 +80,11 @@ public class ChunkGeneratorS4 implements IChunkGenerator
                                 int z3 = z2 + 16 / zSize * z1;
 
                                 origin3 -= (MathHelper.clamp(Math.abs(128.0 - y2), 80, 128) - 80) / 48;
-                                if (origin3 > 0.2) toFill = AIR;
+                                if (origin3 > 0.2)
+                                {
+                                    if (y2 > 63) toFill = AIR;
+                                    else toFill = DEAD_BLOOD;
+                                }
                                 if (y2 > 254 - this.rand.nextInt(5) || y2 < 1 + this.rand.nextInt(5)) toFill = BEDROCK;
                                 primer.setBlockState(x3, y2, z3, toFill);  //noise generator fills in order of y, z, x
                                 origin2 += originIncY;
