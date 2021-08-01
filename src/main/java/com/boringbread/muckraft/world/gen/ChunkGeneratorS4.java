@@ -36,42 +36,45 @@ public class ChunkGeneratorS4 implements IChunkGenerator
     @Override
     public Chunk generateChunk(int x, int z)
     {
+        int xSize = 4;
+        int ySize = 64;
+        int zSize = 4;
         ChunkPrimer primer = new ChunkPrimer();
-        mainStructure = perlinNoise.generateNoiseOctaves(mainStructure, x * 4, 0, z * 4, 5, 33, 5, 0.25, 2.0, 0.25);
+        mainStructure = perlinNoise.generateNoiseOctaves(mainStructure, x * xSize, 0, z * zSize, xSize + 1, ySize + 1, zSize + 1, 0.25, 2.0, 0.25);
 
-        for (int x1 = 0; x1 < 4; x1++)
+        for (int x1 = 0; x1 < xSize; x1++)
         {
-            for (int z1 = 0; z1 < 4; z1++)
+            for (int z1 = 0; z1 < zSize; z1++)
             {
-                for (int y = 0; y < 32; y++)
+                for (int y = 0; y < ySize; y++)
                 {
-                    double origin = mainStructure[(x1 * 4 + z1) * 32 + y];
-                    double offZ = mainStructure[(x1 * 4 + (z1 + 1)) * 32 + y];
-                    double offY = mainStructure[(x1 * 4 + z1) * 32 + y + 1];
-                    double offZY = mainStructure[(x1 * 4 + (z1 + 1)) * 32 + y + 1];
-                    double originIncX = (mainStructure[((x1 + 1) * 4 + z1) * 32 + y] - origin) * 0.25;
-                    double plusZIncX = (mainStructure[((x1 + 1) * 4 + (z1 + 1)) * 32 + y] - offZ) * 0.25;
-                    double plusYIncX = (mainStructure[((x1 + 1) * 4 + z1) * 32 + y + 1] - offY) * 0.25;
-                    double plusZYIncX = (mainStructure[((x1 + 1) * 4 + (z1 + 1)) * 32 + y + 1] - offZY) * 0.25;
+                    double origin = mainStructure[(x1 * xSize + z1) * ySize + y];
+                    double offZ = mainStructure[(x1 * xSize + (z1 + 1)) * ySize + y];
+                    double offY = mainStructure[(x1 * xSize + z1) * ySize + y + 1];
+                    double offZY = mainStructure[(x1 * xSize + (z1 + 1)) * ySize + y + 1];
+                    double originIncX = (mainStructure[((x1 + 1) * xSize + z1) * ySize + y] - origin) * xSize / 16.0;
+                    double plusZIncX = (mainStructure[((x1 + 1) * xSize + (z1 + 1)) * ySize + y] - offZ) * xSize / 16.0;
+                    double plusYIncX = (mainStructure[((x1 + 1) * xSize + z1) * ySize + y + 1] - offY) * xSize / 16.0;
+                    double plusZYIncX = (mainStructure[((x1 + 1) * xSize + (z1 + 1)) * ySize + y + 1] - offZY) * xSize / 16.0;
 
-                    for (int x2 = 0; x2 < 4; x2++)
+                    for (int x2 = 0; x2 < 16 / xSize; x2++)
                     {
                         double origin1 = origin;
                         double offY1 = offY;
-                        double originIncZ = (offZ - origin) * 0.25;
-                        double offYIncZ = (offZY - offY) * 0.25;
+                        double originIncZ = (offZ - origin) * zSize / 16.0;
+                        double offYIncZ = (offZY - offY) * zSize / 16.0;
 
-                        for (int z2 = 0; z2 < 4; z2++)
+                        for (int z2 = 0; z2 < 16 / zSize; z2++)
                         {
                             double origin2 = origin1;
-                            double originIncY = (offY1 - origin1) * 0.125;
-                            for (int y1 = 0; y1 < 8; y1++)
+                            double originIncY = (offY1 - origin1) * ySize / 256.0;
+                            for (int y1 = 0; y1 < 256 / ySize; y1++)
                             {
                                 IBlockState toFill = DEFAULT_BLOCK;
                                 if (origin2 > 0) toFill = AIR;
-                                int x3 = x2 + 4 * x1;
-                                int y2 = y1 + 8 * y;
-                                int z3 = z2 + 4 * z1;
+                                int x3 = x2 + 16 / xSize * x1;
+                                int y2 = y1 + 256 / ySize * y;
+                                int z3 = z2 + 16 / zSize * z1;
                                 if (y2 > 254 - this.rand.nextInt(5) || y2 < 1 + this.rand.nextInt(5)) toFill = BEDROCK;
                                 primer.setBlockState(x3, y2, z3, toFill);  //noise generator fills in order of y, z, x
                                 origin2 += originIncY;
