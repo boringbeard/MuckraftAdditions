@@ -37,20 +37,34 @@ public class ChunkGeneratorS4 implements IChunkGenerator
     public Chunk generateChunk(int x, int z)
     {
         ChunkPrimer primer = new ChunkPrimer();
-        mainStructure = perlinNoise.generateNoiseOctaves(mainStructure, x * 4, 0, z * 4, 4, 64, 4, 0.25, 0.25, 0.25);
+        mainStructure = perlinNoise.generateNoiseOctaves(mainStructure, x * 4, 0, z * 4, 5, 17, 5, 0.25, 0.25, 0.25);
 
-        for (int x1 = 0; x1 < 16; x1++)
+        for (int x1 = 0; x1 < 4; x1++)
         {
-            for (int z1 = 0; z1 < 16; z1++)
+            for (int z1 = 0; z1 < 4; z1++)
             {
-                for (int y = 0; y < 256; y++)
+                for (int y = 0; y < 16; y++)
                 {
-                    IBlockState toFill = DEFAULT_BLOCK;
-                    double d = mainStructure[((x1 / 4) * 4 + z1 / 4) * 64 + y / 4];
-                    if (d > 0) toFill = AIR;
-                    if (y > 254 - this.rand.nextInt(5) || y < 1 + this.rand.nextInt(5)) toFill = BEDROCK;
+                    double d = mainStructure[(x1 * 4 + z1) * 16 + y];
+                    double d1 = mainStructure[(x1 * 4 + z1) * 16 + y];
 
-                    primer.setBlockState(x1, y, z1, toFill);  //noise generator fills in order of y, z, x
+                    for (int x2 = 0; x2 < 4; x2++)
+                    {
+                        for (int z2 = 0; z2 < 4; z2++)
+                        {
+                            for (int y1 = 0; y1 < 16; y1++)
+                            {
+                                IBlockState toFill = DEFAULT_BLOCK;
+                                if (d > 0) toFill = AIR;
+                                int x3 = x2 + 4 * x1;
+                                int y2 = y1 + 16 * y;
+                                int z3 = z2 + 4 * z1;
+
+                                //if (y2 > 254 - this.rand.nextInt(5) || y < 1 + this.rand.nextInt(5)) toFill = BEDROCK;
+                                primer.setBlockState(x3, y2, z3, toFill);  //noise generator fills in order of y, z, x
+                            }
+                        }
+                    }
                 }
             }
         }
