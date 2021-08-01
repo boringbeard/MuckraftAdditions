@@ -5,6 +5,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
@@ -30,7 +31,7 @@ public class ChunkGeneratorS4 implements IChunkGenerator
     {
         this.rand = new Random(seed);
         this.world = worldIn;
-        this.perlinNoise = new NoiseGeneratorOctaves(rand, 1);
+        this.perlinNoise = new NoiseGeneratorOctaves(rand, 2);
     }
 
     @Override
@@ -40,7 +41,7 @@ public class ChunkGeneratorS4 implements IChunkGenerator
         int ySize = 32;
         int zSize = 2;
         ChunkPrimer primer = new ChunkPrimer();
-        mainStructure = perlinNoise.generateNoiseOctaves(mainStructure, x * xSize + 1, 10, z * zSize + 1, xSize + 1, ySize + 1, zSize + 1, 0.25, 1, 0.25);
+        mainStructure = perlinNoise.generateNoiseOctaves(mainStructure, x * xSize + 1, 10, z * zSize + 1, xSize + 1, ySize + 1, zSize + 1, 1, 2, 1);
 
         for (int x1 = 0; x1 < xSize; x1++)
         {
@@ -70,11 +71,14 @@ public class ChunkGeneratorS4 implements IChunkGenerator
                             double originIncY = (offY1 - origin1) * ySize / 256.0;
                             for (int y1 = 0; y1 < 256 / ySize; y1++)
                             {
+                                double origin3 = origin2;
                                 IBlockState toFill = DEFAULT_BLOCK;
-                                if (origin2 > 0) toFill = AIR;
                                 int x3 = x2 + 16 / xSize * x1;
                                 int y2 = y1 + 256 / ySize * y;
                                 int z3 = z2 + 16 / zSize * z1;
+
+                                origin3 -= (MathHelper.clamp(Math.abs(128.0 - y2), 80, 128) - 80) / 48;
+                                if (origin3 > 0.2) toFill = AIR;
                                 if (y2 > 254 - this.rand.nextInt(5) || y2 < 1 + this.rand.nextInt(5)) toFill = BEDROCK;
                                 primer.setBlockState(x3, y2, z3, toFill);  //noise generator fills in order of y, z, x
                                 origin2 += originIncY;
