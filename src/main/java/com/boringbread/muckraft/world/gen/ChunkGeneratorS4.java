@@ -30,17 +30,17 @@ public class ChunkGeneratorS4 implements IChunkGenerator
     {
         this.rand = new Random(seed);
         this.world = worldIn;
-        this.perlinNoise = new NoiseGeneratorOctaves(rand, 4);
+        this.perlinNoise = new NoiseGeneratorOctaves(rand, 1);
     }
 
     @Override
     public Chunk generateChunk(int x, int z)
     {
-        int xSize = 4;
-        int ySize = 64;
-        int zSize = 4;
+        int xSize = 2;
+        int ySize = 32;
+        int zSize = 2;
         ChunkPrimer primer = new ChunkPrimer();
-        mainStructure = perlinNoise.generateNoiseOctaves(mainStructure, x * xSize, 0, z * zSize, xSize + 1, ySize + 1, zSize + 1, 0.25, 2.0, 0.25);
+        mainStructure = perlinNoise.generateNoiseOctaves(mainStructure, x * xSize + 1, 10, z * zSize + 1, xSize + 1, ySize + 1, zSize + 1, 0.25, 1, 0.25);
 
         for (int x1 = 0; x1 < xSize; x1++)
         {
@@ -48,14 +48,14 @@ public class ChunkGeneratorS4 implements IChunkGenerator
             {
                 for (int y = 0; y < ySize; y++)
                 {
-                    double origin = mainStructure[(x1 * xSize + z1) * ySize + y];
-                    double offZ = mainStructure[(x1 * xSize + (z1 + 1)) * ySize + y];
-                    double offY = mainStructure[(x1 * xSize + z1) * ySize + y + 1];
-                    double offZY = mainStructure[(x1 * xSize + (z1 + 1)) * ySize + y + 1];
-                    double originIncX = (mainStructure[((x1 + 1) * xSize + z1) * ySize + y] - origin) * xSize / 16.0;
-                    double plusZIncX = (mainStructure[((x1 + 1) * xSize + (z1 + 1)) * ySize + y] - offZ) * xSize / 16.0;
-                    double plusYIncX = (mainStructure[((x1 + 1) * xSize + z1) * ySize + y + 1] - offY) * xSize / 16.0;
-                    double plusZYIncX = (mainStructure[((x1 + 1) * xSize + (z1 + 1)) * ySize + y + 1] - offZY) * xSize / 16.0;
+                    double origin = mainStructure[(x1 * (xSize + 1) + z1) * (ySize + 1) + y];
+                    double offZ = mainStructure[(x1 * (xSize + 1) + (z1 + 1)) * (ySize + 1) + y];
+                    double offY = mainStructure[(x1 * (xSize + 1) + z1) * (ySize + 1) + y + 1];
+                    double offZY = mainStructure[(x1 * (xSize + 1) + (z1 + 1)) * (ySize + 1) + y + 1];
+                    double originIncX = (mainStructure[((x1 + 1) * (xSize + 1) + z1) * (ySize + 1) + y] - origin) * xSize / 16.0;
+                    double plusZIncX = (mainStructure[((x1 + 1) * (xSize + 1) + (z1 + 1)) * (ySize + 1) + y] - offZ) * xSize / 16.0;
+                    double plusYIncX = (mainStructure[((x1 + 1) * (xSize + 1) + z1) * (ySize + 1) + y + 1] - offY) * xSize / 16.0;
+                    double plusZYIncX = (mainStructure[((x1 + 1) * (xSize + 1) + (z1 + 1)) * (ySize + 1) + y + 1] - offZY) * xSize / 16.0;
 
                     for (int x2 = 0; x2 < 16 / xSize; x2++)
                     {
