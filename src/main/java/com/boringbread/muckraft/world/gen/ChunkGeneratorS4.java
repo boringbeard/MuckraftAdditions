@@ -1,6 +1,7 @@
 package com.boringbread.muckraft.world.gen;
 
 import com.dhanantry.scapeandrunparasites.block.BlockParasiteRubble;
+import com.dhanantry.scapeandrunparasites.block.BlockParasiteStain;
 import com.dhanantry.scapeandrunparasites.init.SRPBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
@@ -21,6 +22,7 @@ import java.util.Random;
 public class ChunkGeneratorS4 implements IChunkGenerator
 {
     private static final IBlockState DEFAULT_BLOCK = SRPBlocks.ParasiteRubble.getDefaultState().withProperty(BlockParasiteRubble.VARIANT, BlockParasiteRubble.EnumType.FLESH);
+    private static final IBlockState FLESH = SRPBlocks.ParasiteStain.getDefaultState().withProperty(BlockParasiteStain.VARIANT, BlockParasiteStain.EnumType.FLESH);
     private static final IBlockState BEDROCK = Blocks.BEDROCK.getDefaultState();
     private static final IBlockState AIR = Blocks.AIR.getDefaultState();
     private static final IBlockState DEAD_BLOOD = SRPBlocks.DeadBlood.getDefaultState();
@@ -80,6 +82,10 @@ public class ChunkGeneratorS4 implements IChunkGenerator
                                 int z3 = z2 + 16 / zSize * z1;
 
                                 origin3 -= (MathHelper.clamp(Math.abs(128.0 - y2), 80, 128) - 80) / 48;
+                                if (origin3 > -0.1)
+                                {
+                                    toFill = FLESH;
+                                }
                                 if (origin3 > 0.2)
                                 {
                                     if (y2 > 63) toFill = AIR;
