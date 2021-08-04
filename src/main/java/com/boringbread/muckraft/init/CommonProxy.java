@@ -8,6 +8,7 @@ import com.boringbread.muckraft.event.OreHandler;
 import com.boringbread.muckraft.network.MuckPacketHandler;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -49,5 +50,11 @@ public class CommonProxy
     {
         MuckItems.registerItems(event);
         MuckBlocks.registerItemBlocks(event);
+    }
+
+    @SubscribeEvent
+    public static void registerBiomes(RegistryEvent.Register<Biome> event)
+    {
+        MuckWorldGen.registerBiomes(event);
     }
 }

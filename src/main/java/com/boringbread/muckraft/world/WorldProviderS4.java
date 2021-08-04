@@ -45,7 +45,7 @@ public class WorldProviderS4 extends WorldProvider
 
     public IChunkGenerator createChunkGenerator()
     {
-        return new ChunkGeneratorS4(this.world, this.world.getWorldInfo().isMapFeaturesEnabled(), this.world.getSeed());
+        return new ChunkGeneratorS4(this.world, this.world.getSeed());
     }
 
     @Override
