@@ -35,6 +35,7 @@ public class ChunkGeneratorS4 implements IChunkGenerator
     private static final IBlockState INFESTED_BLOCK = SRPBlocks.InfestedStain.getDefaultState();
     private static final IBlockState PARASITE_STAIN = SRPBlocks.ParasiteStain.getDefaultState();
     private final WorldGenerator infestedBlockGenerator = new WorldGenMinable(INFESTED_BLOCK, 33, BlockMatcher.forBlock(DEFAULT_BLOCK.getBlock()));
+    private final WorldGenerator airPocketGenerator = new WorldGenMinable(AIR, 33, BlockMatcher.forBlock(DEFAULT_BLOCK.getBlock()));
     private final Random rand;
     private final World world;
     private final NoiseGeneratorOctaves perlinNoise;
@@ -152,6 +153,11 @@ public class ChunkGeneratorS4 implements IChunkGenerator
         int x1 = x * 16;
         int z1 = z * 16;
         BlockPos blockpos = new BlockPos(x1, 0, z1);
+
+        for (int i = 0; i < 16; i++)
+        {
+            infestedBlockGenerator.generate(world, rand, blockpos.add(this.rand.nextInt(16), this.rand.nextInt(246) + 10, this.rand.nextInt(16)));
+        }
     }
 
     //FOCUS ABOVE FOR NOW, STRUCTURES CAN COME LATER
