@@ -62,12 +62,12 @@ public class ChunkGeneratorS4 implements IChunkGenerator
         ChunkPrimer primer = new ChunkPrimer();
         mainStructure = perlinNoise.generateNoiseOctaves(mainStructure, x * xSize + 1, 10, z * zSize + 1, xSize + 1, ySize + 1, zSize + 1, 1, 2, 1);
         hugeCaverns = perlinNoise.generateNoiseOctaves(hugeCaverns, x * xSize + 1, 0, z * zSize + 1, xSize + 1, ySize + 1, zSize + 1, 0.0625, 0.125, 0.0625);
-        infectionPatches = perlinNoise1.generateNoiseOctaves(infectionPatches, x * 16, 0, z * 16, 16, 1, 16, 1, 0, 1);
-        infectionPatchesY = perlinNoise1.generateNoiseOctaves(infectionPatchesY, x * 16, 0, z * 16, 16, 128, 1, 1, 1, 0);
+        infectionPatches = perlinNoise1.generateNoiseOctaves(infectionPatches, x * 16, 0, z * 16, 16, 1, 16, 2, 0, 2);
+        infectionPatchesY = perlinNoise1.generateNoiseOctaves(infectionPatchesY, x * 16, 0, z * 16, 16, 128, 1, 2, 2, 0);
 
         for (int i = 0; i < mainStructure.length; i++)
         {
-            mainStructure[i] = hugeCaverns[i] > 2 ? hugeCaverns[i] : mainStructure[i];
+            mainStructure[i] = hugeCaverns[i] > 1.8 ? hugeCaverns[i] : mainStructure[i];
         }
 
         for (int x1 = 0; x1 < xSize; x1++)
