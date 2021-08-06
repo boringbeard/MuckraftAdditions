@@ -2,9 +2,7 @@ package com.boringbread.muckraft.world.gen;
 
 import com.dhanantry.scapeandrunparasites.block.BlockParasiteRubble;
 import com.dhanantry.scapeandrunparasites.block.BlockParasiteStain;
-import com.dhanantry.scapeandrunparasites.init.SRPBiomes;
 import com.dhanantry.scapeandrunparasites.init.SRPBlocks;
-import com.dhanantry.scapeandrunparasites.init.SRPEntities;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.state.pattern.BlockMatcher;
 import net.minecraft.entity.EnumCreatureType;
@@ -12,6 +10,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldEntitySpawner;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
@@ -21,7 +20,6 @@ import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -41,7 +39,7 @@ public class ChunkGeneratorS4 implements IChunkGenerator
     private final NoiseGeneratorOctaves perlinNoise;
     private final NoiseGeneratorOctaves perlinNoise1;
     private double[] mainStructure;
-    private double[] hugeCaverns;
+    private double[] largeCaverns;
     private double[] infectionPatches;
     private double[] infectionPatchesY;
 
@@ -61,13 +59,13 @@ public class ChunkGeneratorS4 implements IChunkGenerator
         int zSize = 2;
         ChunkPrimer primer = new ChunkPrimer();
         mainStructure = perlinNoise.generateNoiseOctaves(mainStructure, x * xSize + 1, 10, z * zSize + 1, xSize + 1, ySize + 1, zSize + 1, 1, 2, 1);
-        hugeCaverns = perlinNoise.generateNoiseOctaves(hugeCaverns, x * xSize + 1, 0, z * zSize + 1, xSize + 1, ySize + 1, zSize + 1, 0.0625, 0.125, 0.0625);
+        largeCaverns = perlinNoise.generateNoiseOctaves(largeCaverns, x * xSize + 1, 0, z * zSize + 1, xSize + 1, ySize + 1, zSize + 1, 0.0625, 0.125, 0.0625);
         infectionPatches = perlinNoise1.generateNoiseOctaves(infectionPatches, x * 16, 0, z * 16, 16, 1, 16, 2, 0, 2);
         infectionPatchesY = perlinNoise1.generateNoiseOctaves(infectionPatchesY, x * 16, 0, z * 16, 16, 128, 1, 2, 2, 0);
 
         for (int i = 0; i < mainStructure.length; i++)
         {
-            mainStructure[i] = hugeCaverns[i] > 1.8 ? hugeCaverns[i] : mainStructure[i];
+            mainStructure[i] = largeCaverns[i] > 1.8 ? largeCaverns[i] : mainStructure[i];
         }
 
         for (int x1 = 0; x1 < xSize; x1++)
@@ -153,11 +151,14 @@ public class ChunkGeneratorS4 implements IChunkGenerator
         int x1 = x * 16;
         int z1 = z * 16;
         BlockPos blockpos = new BlockPos(x1, 0, z1);
+        Biome biome = world.getBiome(blockpos.add(16, 0, 16));
 
         for (int i = 0; i < 16; i++)
         {
             infestedBlockGenerator.generate(world, rand, blockpos.add(this.rand.nextInt(16), this.rand.nextInt(246) + 10, this.rand.nextInt(16)));
         }
+
+        biome.decorate(world, rand, blockpos);
     }
 
     //FOCUS ABOVE FOR NOW, STRUCTURES CAN COME LATER
