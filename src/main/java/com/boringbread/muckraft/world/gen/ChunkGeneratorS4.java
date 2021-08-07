@@ -1,5 +1,7 @@
 package com.boringbread.muckraft.world.gen;
 
+import com.boringbread.muckraft.init.MuckWorldGen;
+import com.boringbread.muckraft.world.biome.BiomeFlesh;
 import com.dhanantry.scapeandrunparasites.block.BlockParasiteRubble;
 import com.dhanantry.scapeandrunparasites.block.BlockParasiteStain;
 import com.dhanantry.scapeandrunparasites.init.SRPBlocks;
@@ -10,7 +12,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldEntitySpawner;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
@@ -38,8 +39,10 @@ public class ChunkGeneratorS4 implements IChunkGenerator
     private final World world;
     private final NoiseGeneratorOctaves perlinNoise;
     private final NoiseGeneratorOctaves perlinNoise1;
+    private Biome[] biomesForGeneration;
     private double[] mainStructure;
     private double[] largeCaverns;
+    private double[] mainStructureInterpolated;
     private double[] infectionPatches;
     private double[] infectionPatchesY;
 
@@ -49,15 +52,30 @@ public class ChunkGeneratorS4 implements IChunkGenerator
         this.world = worldIn;
         this.perlinNoise = new NoiseGeneratorOctaves(rand, 2);
         this.perlinNoise1 = new NoiseGeneratorOctaves(rand, 8);
+        this.mainStructureInterpolated = new double[16 * 16 * 256];
     }
 
-    @Override
-    public Chunk generateChunk(int x, int z)
+    public void replaceBiomeBlocks(int x, int z, ChunkPrimer primer)
+    {
+        for (int x1 = 0; x1 < 16; ++x1)
+        {
+            for (int z1 = 0; z1 < 16; ++z1)
+            {
+                for (int y = 0; y < 256; y++)
+                {
+                    BiomeFlesh biome = (BiomeFlesh) MuckWorldGen.BIOME_FLESH;
+                    biome.genTerrainBlocks(this.world, this.rand, primer, x1, y, z1, this.mainStructureInterpolated[(z1 + x1 * 16) * 256 + y]);
+                }
+            }
+        }
+    }
+
+    public void genMainStructure(ChunkPrimer primer, int x, int z)
     {
         int xSize = 2;
         int ySize = 32;
         int zSize = 2;
-        ChunkPrimer primer = new ChunkPrimer();
+
         mainStructure = perlinNoise.generateNoiseOctaves(mainStructure, x * xSize + 1, 10, z * zSize + 1, xSize + 1, ySize + 1, zSize + 1, 1, 2, 1);
         largeCaverns = perlinNoise.generateNoiseOctaves(largeCaverns, x * xSize + 1, 0, z * zSize + 1, xSize + 1, ySize + 1, zSize + 1, 0.0625, 0.125, 0.0625);
         infectionPatches = perlinNoise1.generateNoiseOctaves(infectionPatches, x * 16, 0, z * 16, 16, 1, 16, 2, 0, 2);
@@ -101,17 +119,9 @@ public class ChunkGeneratorS4 implements IChunkGenerator
                                 int x3 = x2 + 16 / xSize * x1;
                                 int y2 = y1 + 256 / ySize * y;
                                 int z3 = z2 + 16 / zSize * z1;
+                                mainStructureInterpolated[(x3 * 16 + z3) * 256 + y2] = origin3;
                                 origin3 -= ((MathHelper.clamp(Math.abs(128.0 - y2), 80, 128) - 80) / 48) * 3;
 
-                                if (origin3 > -0.2)
-                                {
-                                    if (infectionPatches[x3 * 16 + z3] > -0.5 && infectionPatchesY[x3 * 128 + y2 / 2] > 0)
-                                    {
-                                        if (rand.nextInt(8) == 7) toFill = INFESTED_BLOCK;
-                                        else toFill = PARASITE_STAIN;
-                                    }
-                                    else toFill = FLESH;
-                                }
                                 if (origin3 > 0.2)
                                 {
                                     if (y2 > 63) toFill = AIR;
@@ -135,6 +145,19 @@ public class ChunkGeneratorS4 implements IChunkGenerator
             }
         }
 
+    }
+
+    @Override
+    public Chunk generateChunk(int x, int z)
+    {
+        int xSize = 2;
+        int ySize = 32;
+        int zSize = 2;
+        ChunkPrimer primer = new ChunkPrimer();
+        genMainStructure(primer, x, z);
+        replaceBiomeBlocks(x, z, primer);
+        infectionPatches = perlinNoise1.generateNoiseOctaves(infectionPatches, x * 16, 0, z * 16, 16, 1, 16, 2, 0, 2);
+        infectionPatchesY = perlinNoise1.generateNoiseOctaves(infectionPatchesY, x * 16, 0, z * 16, 16, 128, 1, 2, 2, 0);
         return new Chunk(world, primer, x, z);
     }
 

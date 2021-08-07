@@ -24,12 +24,12 @@ public class CommonProxy
         Config.preInitCommon(event);
         MinecraftForge.ORE_GEN_BUS.register(OreHandler.class);
         MuckraftCreativeTab.preInitCommon();
-        MuckWorldGen.preInitCommon();
         MuckPacketHandler.preInitCommon();
     }
 
     public void init()
     {
+        MuckWorldGen.initCommon();
         NetworkRegistry.INSTANCE.registerGuiHandler(Muckraft.instance, new GuiHandler());
     }
 
