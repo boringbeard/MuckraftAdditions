@@ -15,7 +15,7 @@ public class WorldProviderS4 extends WorldProvider
     @Override
     public void init()
     {
-        this.biomeProvider = new BiomeProviderS4();
+        this.biomeProvider = new BiomeProviderS4(world.getWorldInfo());
     }
 
     @Override

@@ -15,7 +15,7 @@ import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 
 import java.util.Random;
 
-public class BiomeFlesh extends Biome
+public class BiomeFlesh extends BiomeMuckParasite
 {
     private static final IBlockState FLESH = SRPBlocks.ParasiteStain.getDefaultState().withProperty(BlockParasiteStain.VARIANT, BlockParasiteStain.EnumType.FLESH);
     private static final WorldGenAbstractTree PARASITE_TREE = new WorldGenParasiteTree(false);
@@ -24,17 +24,14 @@ public class BiomeFlesh extends Biome
     {
         super(new BiomeProperties("Flesh").setRainDisabled().setTemperature(1.2F).setWaterColor(2660695));
         setRegistryName(Muckraft.MOD_ID, "flesh");
-        this.spawnableMonsterList.clear();
-        this.spawnableCreatureList.clear();
-        this.spawnableWaterCreatureList.clear();
-        this.spawnableCaveCreatureList.clear();
         this.spawnableMonsterList.add(new SpawnListEntry(EntityInhooS.class, 8, 4, 4));
         this.spawnableMonsterList.add(new SpawnListEntry(EntityInhooM.class, 8, 4, 4));
         this.spawnableMonsterList.add(new SpawnListEntry(EntityLesh.class, 8, 4, 4));
         this.decorator.treesPerChunk = 1;
     }
 
-    public void genTerrainBlocks(World worldIn, Random rand, ChunkPrimer chunkPrimerIn, int x, int y, int z, double noiseVal)
+    @Override
+    public void genTerrainBlock(World worldIn, Random rand, ChunkPrimer chunkPrimerIn, int x, int y, int z, double noiseVal)
     {
         if (noiseVal > -0.2 && noiseVal < 0.2)
         {

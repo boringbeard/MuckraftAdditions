@@ -2,6 +2,8 @@ package com.boringbread.muckraft.world.gen;
 
 import com.boringbread.muckraft.init.MuckWorldGen;
 import com.boringbread.muckraft.world.biome.BiomeFlesh;
+import com.boringbread.muckraft.world.biome.BiomeMuckParasite;
+import com.boringbread.muckraft.world.biome.BiomeProviderS4;
 import com.dhanantry.scapeandrunparasites.block.BlockParasiteRubble;
 import com.dhanantry.scapeandrunparasites.block.BlockParasiteStain;
 import com.dhanantry.scapeandrunparasites.init.SRPBlocks;
@@ -55,7 +57,7 @@ public class ChunkGeneratorS4 implements IChunkGenerator
         this.mainStructureInterpolated = new double[16 * 16 * 256];
     }
 
-    public void replaceBiomeBlocks(int x, int z, ChunkPrimer primer)
+    public void replaceBiomeBlocks(int x, int z, ChunkPrimer primer, Biome[] biomesIn)
     {
         for (int x1 = 0; x1 < 16; ++x1)
         {
@@ -63,8 +65,8 @@ public class ChunkGeneratorS4 implements IChunkGenerator
             {
                 for (int y = 0; y < 256; y++)
                 {
-                    BiomeFlesh biome = (BiomeFlesh) MuckWorldGen.BIOME_FLESH;
-                    biome.genTerrainBlocks(this.world, this.rand, primer, x1, y, z1, this.mainStructureInterpolated[(z1 + x1 * 16) * 256 + y]);
+                    BiomeMuckParasite biome = (BiomeMuckParasite) biomesIn[(z1 + x1 * 16) * 256 + y];
+                    biome.genTerrainBlock(this.world, this.rand, primer, x1, y, z1, this.mainStructureInterpolated[(z1 + x1 * 16) * 256 + y]);
                 }
             }
         }
@@ -155,9 +157,8 @@ public class ChunkGeneratorS4 implements IChunkGenerator
         int zSize = 2;
         ChunkPrimer primer = new ChunkPrimer();
         genMainStructure(primer, x, z);
-        replaceBiomeBlocks(x, z, primer);
-        infectionPatches = perlinNoise1.generateNoiseOctaves(infectionPatches, x * 16, 0, z * 16, 16, 1, 16, 2, 0, 2);
-        infectionPatchesY = perlinNoise1.generateNoiseOctaves(infectionPatchesY, x * 16, 0, z * 16, 16, 128, 1, 2, 2, 0);
+        biomesForGeneration = world.getBiomeProvider().getBiomesForGeneration(biomesForGeneration, x * 16, z * 16, 16, 16);
+        replaceBiomeBlocks(x, z, primer, biomesForGeneration);
         return new Chunk(world, primer, x, z);
     }
 
