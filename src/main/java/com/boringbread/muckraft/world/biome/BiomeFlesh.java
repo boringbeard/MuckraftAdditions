@@ -8,6 +8,7 @@ import com.dhanantry.scapeandrunparasites.entity.monster.infected.EntityLesh;
 import com.dhanantry.scapeandrunparasites.init.SRPBlocks;
 import com.dhanantry.scapeandrunparasites.world.gen.feature.WorldGenParasiteTree;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
@@ -35,7 +36,13 @@ public class BiomeFlesh extends BiomeMuckParasite
     {
         if (noiseVal > -0.2 && noiseVal < 0.2)
         {
-            chunkPrimerIn.setBlockState(x, y, z, FLESH);
+            int blockDecider = rand.nextInt(20);
+            IBlockState toSet = FLESH;
+
+            if (blockDecider < 2) toSet = Blocks.NETHERRACK.getDefaultState();
+            else if (blockDecider == 2) toSet = Blocks.NETHER_WART_BLOCK.getDefaultState();
+
+            chunkPrimerIn.setBlockState(x, y, z, toSet);
         }
     }
 

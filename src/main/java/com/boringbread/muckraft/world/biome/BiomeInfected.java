@@ -5,6 +5,7 @@ import com.dhanantry.scapeandrunparasites.block.BlockInfestedStain;
 import com.dhanantry.scapeandrunparasites.block.BlockParasiteStain;
 import com.dhanantry.scapeandrunparasites.init.SRPBlocks;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
 
@@ -13,6 +14,7 @@ import java.util.Random;
 public class BiomeInfected extends BiomeMuckParasite
 {
     private static final IBlockState INFESTED_DIRT = SRPBlocks.InfestedStain.getDefaultState();
+    private static final IBlockState PARASITE_STAIN_DIRT = SRPBlocks.ParasiteStain.getDefaultState();
 
     public BiomeInfected()
     {
@@ -25,7 +27,7 @@ public class BiomeInfected extends BiomeMuckParasite
     {
         if (noiseVal > -0.2 && noiseVal < 0.2)
         {
-            chunkPrimerIn.setBlockState(x, y, z, INFESTED_DIRT);
+            chunkPrimerIn.setBlockState(x, y, z, rand.nextInt(5) == 1 ? INFESTED_DIRT : PARASITE_STAIN_DIRT);
         }
     }
 }

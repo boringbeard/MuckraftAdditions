@@ -1,6 +1,7 @@
 package com.boringbread.muckraft.world.gen.layer;
 
 import com.boringbread.muckraft.init.MuckWorldGen;
+import com.boringbread.muckraft.util.WeightedInt;
 import net.minecraft.init.Biomes;
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.world.biome.Biome;
@@ -45,16 +46,5 @@ public class GenLayerParasite extends GenLayer
         }
 
         return ints;
-    }
-
-    private class WeightedInt extends WeightedRandom.Item
-    {
-        public int value;
-
-        public WeightedInt(int itemWeightIn, int value)
-        {
-            super(itemWeightIn);
-            this.value = value;
-        }
     }
 }
