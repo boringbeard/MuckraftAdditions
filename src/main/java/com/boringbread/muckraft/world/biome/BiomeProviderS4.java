@@ -31,7 +31,10 @@ public class BiomeProviderS4 extends BiomeProvider
 
         for (int i = 0; i < genBiomeLayers.length; i++)
         {
-            genBiomeLayers[i] = GenLayerZoom.magnify(4000, new GenLayerParasite(rand.nextLong()), 5);
+            GenLayer layer = new GenLayerParasite(rand.nextLong());
+            layer = new GenLayerFuzzyZoom(8000, layer);
+            layer = GenLayerZoom.magnify(4000, layer, 7);
+            genBiomeLayers[i] = layer;
         }
 
         genBiomes = new GenLayerParasiteStacker(worldInfo.getSeed(), genBiomeLayers);
