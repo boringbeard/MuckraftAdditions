@@ -4,10 +4,14 @@ import com.boringbread.muckraft.Muckraft;
 import com.dhanantry.scapeandrunparasites.block.BlockInfestedStain;
 import com.dhanantry.scapeandrunparasites.block.BlockParasiteStain;
 import com.dhanantry.scapeandrunparasites.init.SRPBlocks;
+import com.dhanantry.scapeandrunparasites.world.biome.BiomeParasiteDecorator;
+import net.minecraft.block.BlockTallGrass;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
+import net.minecraft.world.gen.feature.WorldGenTallGrass;
+import net.minecraft.world.gen.feature.WorldGenerator;
 
 import java.util.Random;
 
@@ -20,6 +24,7 @@ public class BiomeInfected extends BiomeMuckParasite
     {
         super(new BiomeProperties("infected"));
         setRegistryName(Muckraft.MOD_ID, "infected");
+        this.decorator = new BiomeInfectedDecorator();
     }
 
     @Override

@@ -29,12 +29,10 @@ import java.util.Random;
 public class ChunkGeneratorS4 implements IChunkGenerator
 {
     private static final IBlockState DEFAULT_BLOCK = SRPBlocks.ParasiteRubble.getDefaultState().withProperty(BlockParasiteRubble.VARIANT, BlockParasiteRubble.EnumType.FLESH);
-    private static final IBlockState FLESH = SRPBlocks.ParasiteStain.getDefaultState().withProperty(BlockParasiteStain.VARIANT, BlockParasiteStain.EnumType.FLESH);
     private static final IBlockState BEDROCK = Blocks.BEDROCK.getDefaultState();
     private static final IBlockState AIR = Blocks.AIR.getDefaultState();
     private static final IBlockState DEAD_BLOOD = SRPBlocks.DeadBlood.getDefaultState();
     private static final IBlockState INFESTED_BLOCK = SRPBlocks.InfestedStain.getDefaultState();
-    private static final IBlockState PARASITE_STAIN = SRPBlocks.ParasiteStain.getDefaultState();
     private final WorldGenerator infestedBlockGenerator = new WorldGenMinable(INFESTED_BLOCK, 33, BlockMatcher.forBlock(DEFAULT_BLOCK.getBlock()));
     private final WorldGenerator airPocketGenerator = new WorldGenMinable(AIR, 33, BlockMatcher.forBlock(DEFAULT_BLOCK.getBlock()));
     private final Random rand;
@@ -122,7 +120,7 @@ public class ChunkGeneratorS4 implements IChunkGenerator
                                 int y2 = y1 + 256 / ySize * y;
                                 int z3 = z2 + 16 / zSize * z1;
                                 mainStructureInterpolated[(x3 * 16 + z3) * 256 + y2] = origin3;
-                                origin3 -= ((MathHelper.clamp(Math.abs(128.0 - y2), 80, 128) - 80) / 48) * 3;
+                                origin3 -= ((MathHelper.clamp(Math.abs(128.0 - y2), 80, 128) - 80) / 48);
 
                                 if (origin3 > 0.2)
                                 {
@@ -175,14 +173,21 @@ public class ChunkGeneratorS4 implements IChunkGenerator
         int x1 = x * 16;
         int z1 = z * 16;
         BlockPos blockpos = new BlockPos(x1, 0, z1);
-        Biome biome = world.getBiome(blockpos.add(16, 0, 16));
+
+        for (int y = 0; y < 8; y++)
+        {
+            BlockPos pos = blockpos.add(blockpos.add(16, y * 32, 16));
+            Biome biome = world.getBiome(pos);
+            biome.decorate(world, rand, blockpos.up(y * 32));
+        }
 
         for (int i = 0; i < 16; i++)
         {
-            infestedBlockGenerator.generate(world, rand, blockpos.add(this.rand.nextInt(16), this.rand.nextInt(246) + 10, this.rand.nextInt(16)));
+            int i1 = this.rand.nextInt(16);
+            int j = this.rand.nextInt(256);
+            int k = this.rand.nextInt(16);
+            infestedBlockGenerator.generate(world, rand, blockpos.add(i1, j, k));
         }
-
-        biome.decorate(world, rand, blockpos);
     }
 
     //FOCUS ABOVE FOR NOW, STRUCTURES CAN COME LATER
