@@ -15,9 +15,9 @@ import java.util.Random;
 
 public class GenLayerParasite extends GenLayer
 {
-    public GenLayerParasite(long seed)
+    public GenLayerParasite(long l)
     {
-        super(seed);
+        super(l);
     }
 
     @Override
@@ -30,7 +30,6 @@ public class GenLayerParasite extends GenLayer
             for (int z = 0; z < areaHeight; z++)
             {
                 int biomeForGeneration;
-                initWorldGenSeed(baseSeed);
                 initChunkSeed(areaX + x, areaY + z);
 
                 WeightedInt[] weightedInts = {
@@ -40,8 +39,9 @@ public class GenLayerParasite extends GenLayer
                 };
 
                 int totalWeight = WeightedRandom.getTotalWeight(Arrays.asList(weightedInts));
+                int biomeId = WeightedRandom.getRandomItem(Arrays.asList(weightedInts), nextInt(totalWeight)).value;
 
-                ints[x * areaHeight + z] = WeightedRandom.getRandomItem(Arrays.asList(weightedInts), nextInt(totalWeight)).value;
+                ints[x * areaHeight + z] = biomeId;
             }
         }
 

@@ -84,6 +84,8 @@ public class ChunkGeneratorS4 implements IChunkGenerator
         for (int i = 0; i < mainStructure.length; i++)
         {
             mainStructure[i] = largeCaverns[i] > 1.8 ? largeCaverns[i] : mainStructure[i];
+            if (largeCaverns[i] > 1.6 && largeCaverns[i] <= 1.8) mainStructure[i] += largeCaverns[i];
+
         }
 
         for (int x1 = 0; x1 < xSize; x1++)

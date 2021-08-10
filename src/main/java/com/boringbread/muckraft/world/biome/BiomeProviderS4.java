@@ -9,10 +9,7 @@ import net.minecraft.init.Biomes;
 import net.minecraft.util.ReportedException;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeProvider;
-import net.minecraft.world.gen.layer.GenLayer;
-import net.minecraft.world.gen.layer.GenLayerFuzzyZoom;
-import net.minecraft.world.gen.layer.GenLayerZoom;
-import net.minecraft.world.gen.layer.IntCache;
+import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.WorldInfo;
 
 import java.util.Random;
@@ -32,8 +29,10 @@ public class BiomeProviderS4 extends BiomeProvider
         for (int i = 0; i < genBiomeLayers.length; i++)
         {
             GenLayer layer = new GenLayerParasite(rand.nextLong());
-            layer = new GenLayerFuzzyZoom(8000, layer);
-            layer = GenLayerZoom.magnify(4000, layer, 7);
+            layer = GenLayerFuzzyZoom.magnify(1000, layer, 6);
+            layer = new GenLayerVoronoiZoom(10, layer);
+            layer.initWorldGenSeed(worldInfo.getSeed());
+
             genBiomeLayers[i] = layer;
         }
 
