@@ -4,7 +4,6 @@ import com.boringbread.muckraft.Muckraft;
 import com.dhanantry.scapeandrunparasites.block.BlockParasiteStain;
 import com.dhanantry.scapeandrunparasites.entity.monster.infected.EntityInhooM;
 import com.dhanantry.scapeandrunparasites.entity.monster.infected.EntityInhooS;
-import com.dhanantry.scapeandrunparasites.entity.monster.infected.EntityLesh;
 import com.dhanantry.scapeandrunparasites.init.SRPBlocks;
 import com.dhanantry.scapeandrunparasites.world.gen.feature.WorldGenParasiteTree;
 import net.minecraft.block.state.IBlockState;
@@ -27,7 +26,6 @@ public class BiomeFlesh extends BiomeMuckParasite
         setRegistryName(Muckraft.MOD_ID, "flesh");
         this.spawnableMonsterList.add(new SpawnListEntry(EntityInhooS.class, 8, 4, 4));
         this.spawnableMonsterList.add(new SpawnListEntry(EntityInhooM.class, 8, 4, 4));
-        this.spawnableMonsterList.add(new SpawnListEntry(EntityLesh.class, 8, 4, 4));
         this.decorator.treesPerChunk = 1;
     }
 
