@@ -17,7 +17,7 @@ public class WorldProviderS4 extends WorldProvider
     public void init()
     {
         this.biomeProvider = new BiomeProviderS4(world.getWorldInfo());
-        SRPWorldData.get(world).setEvolutionPhase((byte) 6, true, world);
+        SRPWorldData.get(world).setEvolutionPhase((byte) 8, true, world);
     }
 
     @Override

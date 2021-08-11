@@ -22,7 +22,7 @@ public class BiomeFlesh extends BiomeMuckParasite
 
     public BiomeFlesh()
     {
-        super(new BiomeProperties("Flesh").setRainDisabled().setTemperature(1.2F).setWaterColor(2660695));
+        super(new BiomeProperties("flesh").setRainDisabled().setTemperature(1.2F).setWaterColor(2660695));
         setRegistryName(Muckraft.MOD_ID, "flesh");
         this.spawnableMonsterList.add(new SpawnListEntry(EntityInhooS.class, 8, 4, 4));
         this.spawnableMonsterList.add(new SpawnListEntry(EntityInhooM.class, 8, 4, 4));

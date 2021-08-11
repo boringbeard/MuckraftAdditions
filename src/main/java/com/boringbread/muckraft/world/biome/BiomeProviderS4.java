@@ -7,15 +7,19 @@ import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.init.Biomes;
 import net.minecraft.util.ReportedException;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeCache;
 import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.WorldInfo;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
 public class BiomeProviderS4 extends BiomeProvider
 {
+    private final BiomeCache3D biomeCache;
     private GenLayer[] genBiomeLayers;
     private GenLayer genBiomes;
     private Random rand;
@@ -24,7 +28,8 @@ public class BiomeProviderS4 extends BiomeProvider
     {
         super(worldInfo);
         genBiomeLayers = new GenLayer[8];
-        this.rand = new Random(worldInfo.getSeed());
+        biomeCache = new BiomeCache3D(this);
+        rand = new Random(worldInfo.getSeed());
 
         for (int i = 0; i < genBiomeLayers.length; i++)
         {
@@ -38,6 +43,13 @@ public class BiomeProviderS4 extends BiomeProvider
 
         genBiomes = new GenLayerParasiteStacker(worldInfo.getSeed(), genBiomeLayers);
     }
+
+    @Override
+    public Biome getBiome(BlockPos pos, Biome defaultBiome)
+    {
+        return this.biomeCache.getBiome(pos.getX(), pos.getY(), pos.getZ(), defaultBiome);
+    }
+
 
     @Override
     public Biome[] getBiomesForGeneration(Biome[] biomes, int x, int z, int width, int height)
@@ -57,5 +69,36 @@ public class BiomeProviderS4 extends BiomeProvider
         }
 
         return biomes;
+    }
+
+    @Override
+    public Biome[] getBiomes(@Nullable Biome[] listToReuse, int x, int z, int width, int length, boolean cacheFlag)
+    {
+        IntCache.resetIntCache();
+
+        if (listToReuse == null || listToReuse.length < width * length)
+        {
+            listToReuse = new Biome[width * length * 256];
+        }
+
+        if (cacheFlag && width == 16 && length == 16 && (x & 15) == 0 && (z & 15) == 0)
+        {
+            Biome[] abiome = this.biomeCache.getCachedBiomes(x, z);
+            System.arraycopy(abiome, 0, listToReuse, 0, width * length * 256);
+            return listToReuse;
+        }
+        else
+        {
+            //Correct.
+
+            int[] aint = this.genBiomes.getInts(x, z, width, length);
+
+            for (int i = 0; i < width * length; ++i)
+            {
+                listToReuse[i] = Biome.getBiome(aint[i], Biomes.DEFAULT);
+            }
+
+            return listToReuse;
+        }
     }
 }
