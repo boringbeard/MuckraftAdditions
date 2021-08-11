@@ -3,6 +3,7 @@ package com.boringbread.muckraft.world;
 import com.boringbread.muckraft.init.MuckWorldGen;
 import com.boringbread.muckraft.world.biome.BiomeProviderS4;
 import com.boringbread.muckraft.world.gen.ChunkGeneratorS4;
+import com.dhanantry.scapeandrunparasites.world.SRPWorldData;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.WorldProvider;
@@ -16,6 +17,7 @@ public class WorldProviderS4 extends WorldProvider
     public void init()
     {
         this.biomeProvider = new BiomeProviderS4(world.getWorldInfo());
+        SRPWorldData.get(world).setEvolutionPhase((byte) 6, true, world);
     }
 
     @Override
