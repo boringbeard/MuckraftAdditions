@@ -37,8 +37,8 @@ public class GenLayerParasiteStacker extends GenLayer
             {
                 for (int z = 0; z < areaHeight; z++)
                 {
-                    int previousHeight = (int) MathHelper.clamp(previousNoise[x * areaHeight + z] * 10, -16, 16);
-                    int currentHeight = y == 7 ? 32 : (int) MathHelper.clamp(noise[x * areaHeight + z] * 10, -16, 16) + 32;
+                    int previousHeight = (int) MathHelper.clamp(previousNoise[x * areaHeight + z] * 5, -8, 8);
+                    int currentHeight = y == 7 ? 32 : (int) MathHelper.clamp(noise[x * areaHeight + z] * 5, -8, 8) + 32;
                     for (int y1 = previousHeight; y1 < currentHeight; y1++)
                     {
                         ints[(x * areaHeight + z) * 256 + y * 32 + y1] = layerInts[x * areaHeight + z];

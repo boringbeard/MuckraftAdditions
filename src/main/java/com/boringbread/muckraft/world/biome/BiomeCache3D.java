@@ -42,7 +42,6 @@ public class BiomeCache3D
     public Biome getBiome(int x, int y, int z, Biome defaultValue)
     {
         Biome biome = this.getEntry(x, z).getBiome(x, y, z);
-        if (biome != null) System.out.println(biome.getBiomeName());
         return biome == null ? defaultValue : biome;
     }
 

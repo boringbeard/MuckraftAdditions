@@ -89,8 +89,6 @@ public class BiomeProviderS4 extends BiomeProvider
         }
         else
         {
-            //Correct.
-
             int[] aint = this.genBiomes.getInts(x, z, width, length);
 
             for (int i = 0; i < width * length; ++i)
