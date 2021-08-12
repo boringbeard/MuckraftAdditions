@@ -32,7 +32,7 @@ public class BiomeInfected extends BiomeMuckParasite
     {
         if (noiseVal > -0.2 && noiseVal < 0.2)
         {
-            chunkPrimerIn.setBlockState(x, y, z, rand.nextInt(5) == 1 ? INFESTED_DIRT : PARASITE_STAIN_DIRT);
+            chunkPrimerIn.setBlockState(x, y, z, rand.nextInt(5) == 1 ? INFESTED_DIRT.withProperty(BlockInfestedStain.STAGE, (int) MathHelper.clamp(Math.abs(rand.nextGaussian()) * 2, 0, 4)) : PARASITE_STAIN_DIRT);
         }
     }
 }
