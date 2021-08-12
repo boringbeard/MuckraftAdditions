@@ -5,6 +5,7 @@ import com.dhanantry.scapeandrunparasites.init.SRPBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import scala.actors.threadpool.Arrays;
@@ -26,11 +27,21 @@ public class WorldGenParasiteGrass extends WorldGenerator
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos position)
     {
-        BlockPos pos = position.add(rand.nextInt(8) - rand.nextInt(8), 32, rand.nextInt(8) - rand.nextInt(8));
+        position = position.add(rand.nextInt(8) - rand.nextInt(8), 32, rand.nextInt(8) - rand.nextInt(8));
         IBlockState blockState = ((BlockStateEntry) WeightedRandom.getRandomItem(rand, Arrays.asList(GRASS_LIST))).state;
-        List<BlockPos> validSpots = getValidSurfaces(worldIn, pos, 32);
+        List<BlockPos> validSpots = getValidSurfaces(worldIn, position, 32);
 
-        if (!validSpots.isEmpty()) worldIn.setBlockState(validSpots.get(rand.nextInt(validSpots.size())), blockState);
+        if (!validSpots.isEmpty())
+        {
+            BlockPos placementPos = validSpots.get(rand.nextInt(validSpots.size()));
+
+            for (int i = 0; i < (blockState == SPINE ? (int) MathHelper.clamp(rand.nextGaussian() + 3, 1, 8) : 1); i++)
+            {
+                if (worldIn.isAirBlock(placementPos)) worldIn.setBlockState(placementPos, blockState);
+                else break;
+                placementPos = placementPos.up();
+            }
+        }
 
         return true;
     }
