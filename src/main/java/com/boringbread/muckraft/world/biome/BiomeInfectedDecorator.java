@@ -18,7 +18,7 @@ public class BiomeInfectedDecorator extends BiomeDecorator
     @Override
     protected void genDecorations(Biome biomeIn, World worldIn, Random random)
     {
-        for (int i = 0; i < 32; i++)
+        for (int i = 0; i < 128; i++)
         {
             int j = random.nextInt(16) + 8;
             int k = random.nextInt(16) + 8;
