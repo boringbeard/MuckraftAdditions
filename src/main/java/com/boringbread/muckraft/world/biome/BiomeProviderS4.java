@@ -47,6 +47,7 @@ public class BiomeProviderS4 extends BiomeProvider
     @Override
     public Biome getBiome(BlockPos pos, Biome defaultBiome)
     {
+        defaultBiome = MuckWorldGen.INFECTED;
         return this.biomeCache.getBiome(pos.getX(), pos.getY(), pos.getZ(), defaultBiome);
     }
 
@@ -76,7 +77,7 @@ public class BiomeProviderS4 extends BiomeProvider
     {
         IntCache.resetIntCache();
 
-        if (listToReuse == null || listToReuse.length < width * length)
+        if (listToReuse == null || listToReuse.length < width * length * 256)
         {
             listToReuse = new Biome[width * length * 256];
         }
@@ -91,12 +92,18 @@ public class BiomeProviderS4 extends BiomeProvider
         {
             int[] aint = this.genBiomes.getInts(x, z, width, length);
 
-            for (int i = 0; i < width * length; ++i)
+            for (int i = 0; i < width * length * 256; ++i)
             {
-                listToReuse[i] = Biome.getBiome(aint[i], Biomes.DEFAULT);
+                listToReuse[i] = Biome.getBiome(aint[i], MuckWorldGen.INFECTED);
             }
 
             return listToReuse;
         }
+    }
+
+    @Override
+    public void cleanupCache()
+    {
+        this.biomeCache.cleanupCache();
     }
 }

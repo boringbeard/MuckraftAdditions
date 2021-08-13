@@ -86,13 +86,18 @@ public class BiomeCache3D
             this.x = x;
             this.z = z;
             BiomeCache3D.this.provider.getBiomes(this.biomes, x << 4, z << 4, 16, 16, false);
+            for (int i = 0; i < biomes.length; i++)
+            {
+                if (biomes[i] == null) System.out.println(i);
+            }
         }
 
         public Biome getBiome(int x, int y, int z)
         {
             x = x & 15;
             z = z & 15;
-            return this.biomes[(x * 16 + z) * 256 + y];
+            y = y & 255;
+            return this.biomes[(((x << 4) | z) << 8) | y];
         }
     }
 }

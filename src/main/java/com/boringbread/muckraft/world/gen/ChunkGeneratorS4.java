@@ -159,7 +159,15 @@ public class ChunkGeneratorS4 implements IChunkGenerator
         genMainStructure(primer, x, z);
         biomesForGeneration = world.getBiomeProvider().getBiomesForGeneration(biomesForGeneration, x * 16, z * 16, 16, 16);
         replaceBiomeBlocks(x, z, primer, biomesForGeneration);
-        return new Chunk(world, primer, x, z);
+
+        Chunk chunk = new Chunk(world, primer, x, z);
+        byte[] abyte = chunk.getBiomeArray();
+        for (int i = 0; i < abyte.length; ++i)
+        {
+            abyte[i] = (byte)Biome.getIdForBiome(biomesForGeneration[i * 256 + 128]);
+        }
+        chunk.resetRelightChecks();
+        return chunk;
     }
 
     @Override
