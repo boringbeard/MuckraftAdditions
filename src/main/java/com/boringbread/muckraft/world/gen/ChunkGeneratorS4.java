@@ -7,6 +7,8 @@ import com.boringbread.muckraft.world.biome.BiomeProviderS4;
 import com.dhanantry.scapeandrunparasites.block.BlockParasiteRubble;
 import com.dhanantry.scapeandrunparasites.block.BlockParasiteStain;
 import com.dhanantry.scapeandrunparasites.init.SRPBlocks;
+import com.dhanantry.scapeandrunparasites.util.SRPConfig;
+import com.dhanantry.scapeandrunparasites.world.SRPWorldData;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.state.pattern.BlockMatcher;
 import net.minecraft.entity.EnumCreatureType;
@@ -180,6 +182,8 @@ public class ChunkGeneratorS4 implements IChunkGenerator
     @Override
     public void populate(int x, int z)
     {
+        SRPWorldData data = SRPWorldData.get(world);
+        if (data.getEvolutionPhase() != 8 && rand.nextInt(100) == 0) data.setEvolutionPhase((byte) 8, true, world);
         int x1 = x * 16;
         int z1 = z * 16;
         BlockPos blockpos = new BlockPos(x1, 0, z1);
