@@ -3,12 +3,13 @@ package com.boringbread.muckraft.world.biome;
 import com.boringbread.muckraft.Muckraft;
 import com.dhanantry.scapeandrunparasites.block.BlockInfestedStain;
 import com.dhanantry.scapeandrunparasites.block.BlockParasiteStain;
+import com.dhanantry.scapeandrunparasites.entity.monster.adapted.*;
 import com.dhanantry.scapeandrunparasites.entity.monster.ancient.EntityAncientPod;
 import com.dhanantry.scapeandrunparasites.entity.monster.ancient.EntityOronco;
 import com.dhanantry.scapeandrunparasites.entity.monster.ancient.EntityTerla;
+import com.dhanantry.scapeandrunparasites.entity.monster.inborn.*;
 import com.dhanantry.scapeandrunparasites.entity.monster.primitive.*;
-import com.dhanantry.scapeandrunparasites.entity.monster.pure.EntityAlafha;
-import com.dhanantry.scapeandrunparasites.entity.monster.pure.EntityOmboo;
+import com.dhanantry.scapeandrunparasites.entity.monster.pure.*;
 import com.dhanantry.scapeandrunparasites.entity.monster.venkrol.*;
 import com.dhanantry.scapeandrunparasites.init.SRPBlocks;
 import com.dhanantry.scapeandrunparasites.world.biome.BiomeParasiteDecorator;
@@ -32,18 +33,6 @@ public class BiomeInfected extends BiomeMuckParasite
         super(new BiomeProperties("infected"));
         setRegistryName(Muckraft.MOD_ID, "infected");
         this.decorator = new BiomeInfectedDecorator();
-        spawnableMonsterList.add(new SpawnListEntry(EntityOronco.class, 1, 1, 1));
-        spawnableMonsterList.add(new SpawnListEntry(EntityTerla.class, 1, 1, 1));
-        spawnableMonsterList.add(new SpawnListEntry(EntityOmboo.class, 4, 1, 2));
-        spawnableMonsterList.add(new SpawnListEntry(EntityAlafha.class, 4, 1, 2));
-        spawnableMonsterList.add(new SpawnListEntry(EntityBano.class, 100, 2, 4));
-        spawnableMonsterList.add(new SpawnListEntry(EntityEmana.class, 100, 2, 4));
-        spawnableMonsterList.add(new SpawnListEntry(EntityWymo.class, 100, 2, 4));
-        spawnableMonsterList.add(new SpawnListEntry(EntityCanra.class, 100, 2, 4));
-        spawnableMonsterList.add(new SpawnListEntry(EntityHull.class, 100, 2, 4));
-        spawnableMonsterList.add(new SpawnListEntry(EntityNogla.class, 100, 2, 4));
-        spawnableMonsterList.add(new SpawnListEntry(EntityRanrac.class, 100, 2, 4));
-        spawnableMonsterList.add(new SpawnListEntry(EntityShyco.class, 100, 2, 4));
     }
 
     @Override
