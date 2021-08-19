@@ -22,6 +22,7 @@ public class BiomeBone extends BiomeMuckParasite
     {
         super(new BiomeProperties("bone"));
         setRegistryName(Muckraft.MOD_ID, "bone");
+        this.decorator = new BiomeBoneDecorator();
     }
 
     @Override
