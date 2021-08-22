@@ -76,7 +76,7 @@ public class BiomeCache3D
 
     public class Block
     {
-        public Biome[] biomes = new Biome[256 * 256];
+        public Biome[] biomes = new Biome[256 * 8];
         public int x;
         public int z;
         public long lastAccessTime;
@@ -96,8 +96,8 @@ public class BiomeCache3D
         {
             x = x & 15;
             z = z & 15;
-            y = y & 255;
-            return this.biomes[(((x << 4) | z) << 8) | y];
+            y = y / 32;
+            return this.biomes[(((x << 4) | z) << 3) | y];
         }
     }
 }

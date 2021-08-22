@@ -57,14 +57,14 @@ public class BiomeProviderS4 extends BiomeProvider
     {
         IntCache.resetIntCache();
 
-        if (biomes == null || biomes.length < width * height * 256)
+        if (biomes == null || biomes.length < width * height * 8)
         {
-            biomes = new Biome[width * height * 256];
+            biomes = new Biome[width * height * 8];
         }
 
         int[] aint = this.genBiomes.getInts(x, z, width, height);
 
-        for (int i = 0; i < width * height * 256; ++i)
+        for (int i = 0; i < width * height * 8; ++i)
         {
             biomes[i] = Biome.getBiome(aint[i], MuckWorldGen.BIOME_FLESH);
         }
@@ -77,22 +77,22 @@ public class BiomeProviderS4 extends BiomeProvider
     {
         IntCache.resetIntCache();
 
-        if (listToReuse == null || listToReuse.length < width * length * 256)
+        if (listToReuse == null || listToReuse.length < width * length * 8)
         {
-            listToReuse = new Biome[width * length * 256];
+            listToReuse = new Biome[width * length * 8];
         }
 
         if (cacheFlag && width == 16 && length == 16 && (x & 15) == 0 && (z & 15) == 0)
         {
             Biome[] abiome = this.biomeCache.getCachedBiomes(x, z);
-            System.arraycopy(abiome, 0, listToReuse, 0, width * length * 256);
+            System.arraycopy(abiome, 0, listToReuse, 0, width * length * 8);
             return listToReuse;
         }
         else
         {
             int[] aint = this.genBiomes.getInts(x, z, width, length);
 
-            for (int i = 0; i < width * length * 256; ++i)
+            for (int i = 0; i < width * length * 8; ++i)
             {
                 listToReuse[i] = Biome.getBiome(aint[i], MuckWorldGen.INFECTED);
             }

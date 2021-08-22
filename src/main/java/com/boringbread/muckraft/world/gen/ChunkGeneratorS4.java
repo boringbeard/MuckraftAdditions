@@ -4,6 +4,7 @@ import com.boringbread.muckraft.init.MuckWorldGen;
 import com.boringbread.muckraft.world.biome.BiomeFlesh;
 import com.boringbread.muckraft.world.biome.BiomeMuckParasite;
 import com.boringbread.muckraft.world.biome.BiomeProviderS4;
+import com.boringbread.muckraft.world.chunk.Chunk3DBiomes;
 import com.dhanantry.scapeandrunparasites.block.BlockParasiteRubble;
 import com.dhanantry.scapeandrunparasites.block.BlockParasiteStain;
 import com.dhanantry.scapeandrunparasites.init.SRPBlocks;
@@ -25,6 +26,7 @@ import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -47,6 +49,7 @@ public class ChunkGeneratorS4 implements IChunkGenerator
     private double[] mainStructureInterpolated;
     private double[] infectionPatches;
     private double[] infectionPatchesY;
+    private double[] noise;
 
     public ChunkGeneratorS4(World worldIn, long seed)
     {
@@ -59,14 +62,26 @@ public class ChunkGeneratorS4 implements IChunkGenerator
 
     public void replaceBiomeBlocks(int x, int z, ChunkPrimer primer, Biome[] biomesIn)
     {
-        for (int x1 = 0; x1 < 16; ++x1)
+        noise = new double[16 * 16];
+        Arrays.fill(noise, 0);
+
+        for (int i = 0; i < 8; i++)
         {
-            for (int z1 = 0; z1 < 16; ++z1)
+            double[] previousNoise = noise.clone();
+            noise = perlinNoise.generateNoiseOctaves(noise, x, z, 16, 16, 0.125, 0.125, 0);
+            for (int x1 = 0; x1 < 16; ++x1)
             {
-                for (int y = 0; y < 256; y++)
+                for (int z1 = 0; z1 < 16; ++z1)
                 {
-                    BiomeMuckParasite biome = (BiomeMuckParasite) biomesIn[(z1 + x1 * 16) * 256 + y];
-                    biome.genTerrainBlock(this.world, this.rand, primer, x1, y, z1, this.mainStructureInterpolated[(z1 + x1 * 16) * 256 + y]);
+                    for (int y = 0; y < 32; y++)
+                    {
+                        int previousHeight = (int) MathHelper.clamp(previousNoise[x1 * 16 + z1] * 5, -8, 8);
+                        int currentHeight = i == 7 ? 32 : (int) MathHelper.clamp(noise[x1 * 16 + z1] * 5, -8, 8) + 32;
+                        int waviness = y >= currentHeight ? 1 : (y < previousHeight ? -1 : 0);
+
+                        BiomeMuckParasite biome = (BiomeMuckParasite) biomesIn[(z1 + x1 * 16) * 8 + i + waviness];
+                        biome.genTerrainBlock(this.world, this.rand, primer, x1, i * 32 + y, z1, this.mainStructureInterpolated[(z1 + x1 * 16) * 256 + i * 32 + y]);
+                    }
                 }
             }
         }
@@ -87,7 +102,6 @@ public class ChunkGeneratorS4 implements IChunkGenerator
         {
             mainStructure[i] = largeCaverns[i] > 1.8 ? largeCaverns[i] : mainStructure[i];
             if (largeCaverns[i] > 1.6 && largeCaverns[i] <= 1.8) mainStructure[i] += largeCaverns[i];
-
         }
 
         for (int x1 = 0; x1 < xSize; x1++)
@@ -162,12 +176,16 @@ public class ChunkGeneratorS4 implements IChunkGenerator
         biomesForGeneration = world.getBiomeProvider().getBiomesForGeneration(biomesForGeneration, x * 16, z * 16, 16, 16);
         replaceBiomeBlocks(x, z, primer, biomesForGeneration);
 
-        Chunk chunk = new Chunk(world, primer, x, z);
+        Chunk chunk = new Chunk3DBiomes(world, primer, x, z);
+        chunk.blockBiomeArray = new byte[2048];
+
         byte[] abyte = chunk.getBiomeArray();
+
         for (int i = 0; i < abyte.length; ++i)
         {
-            abyte[i] = (byte)Biome.getIdForBiome(biomesForGeneration[i * 256 + 128]);
+            abyte[i] = (byte)Biome.getIdForBiome(biomesForGeneration[i]);
         }
+
         chunk.resetRelightChecks();
         return chunk;
     }
