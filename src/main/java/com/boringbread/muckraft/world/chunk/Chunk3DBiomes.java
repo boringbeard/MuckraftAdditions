@@ -33,23 +33,6 @@ public class Chunk3DBiomes extends Chunk
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void read(PacketBuffer buf, int availableSections, boolean groundUpContinuous)
-    {
-        super.read(buf, availableSections, groundUpContinuous);
-        if (groundUpContinuous)
-        {
-            buf.readBytes(this.blockBiomeArray);
-        }
-    }
-
-    @Override
-    public byte[] getBiomeArray()
-    {
-        return this.blockBiomeArray;
-    }
-
-    @Override
     public Biome getBiome(BlockPos pos, BiomeProvider provider)
     {
         int i = pos.getX() & 15;
@@ -67,18 +50,5 @@ public class Chunk3DBiomes extends Chunk
         Biome biome1 = Biome.getBiome(k);
         System.out.println(biome1.getBiomeName() + ": " + i + ", " + j + ", " + y);
         return biome1 == null ? Biomes.PLAINS : biome1;
-    }
-
-    @Override
-    public void setBiomeArray(byte[] biomeArray)
-    {
-        if (this.blockBiomeArray.length != biomeArray.length)
-        {
-            LOGGER.warn("Could not set level chunk biomes, array length is {} instead of {}", Integer.valueOf(biomeArray.length), Integer.valueOf(this.blockBiomeArray.length));
-        }
-        else
-        {
-            System.arraycopy(biomeArray, 0, this.blockBiomeArray, 0, this.blockBiomeArray.length);
-        }
     }
 }
