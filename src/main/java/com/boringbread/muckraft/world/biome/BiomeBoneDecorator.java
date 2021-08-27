@@ -17,14 +17,14 @@ public class BiomeBoneDecorator extends BiomeDecorator
     @Override
     protected void genDecorations(Biome biomeIn, World worldIn, Random random)
     {
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 2; i++)
         {
             int j = random.nextInt(16) + 8;
             int k = random.nextInt(16) + 8;
             this.stalactites.generate(worldIn, random, this.chunkPos.add(j, 0, k));
         }
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 2; i++)
         {
             int j = random.nextInt(16) + 8;
             int k = random.nextInt(16) + 8;
