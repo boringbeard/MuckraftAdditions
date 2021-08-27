@@ -37,7 +37,7 @@ public class Chunk3DBiomes extends Chunk
     {
         int i = pos.getX() & 15;
         int j = pos.getZ() & 15;
-        int y = pos.getY() >> 5;
+        int y = pos.getY() / 32;
         int k = this.blockBiomeArray[(j << 4 | i) << 3 | y] & 255;
 
         if (k == 255)
@@ -48,7 +48,6 @@ public class Chunk3DBiomes extends Chunk
         }
 
         Biome biome1 = Biome.getBiome(k);
-        System.out.println(biome1.getBiomeName() + ": " + i + ", " + j + ", " + y);
         return biome1 == null ? Biomes.PLAINS : biome1;
     }
 }
