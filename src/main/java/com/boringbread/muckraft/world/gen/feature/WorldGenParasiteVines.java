@@ -38,7 +38,7 @@ public class WorldGenParasiteVines extends WorldGenerator
         return true;
     }
 
-    private List<BlockPos> getValidSurfaces(World worldIn, BlockPos pos, int layerDepth)
+    protected List<BlockPos> getValidSurfaces(World worldIn, BlockPos pos, int layerDepth)
     {
         List<BlockPos> positions = new LinkedList<>();
 

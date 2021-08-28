@@ -56,7 +56,7 @@ public class WorldGenBoneSpikes extends WorldGenerator
         for (BlockPos pos: spikeFootprint)
         {
             double distance = basePos.getDistance(pos.getX(), pos.getY(), pos.getZ());
-            int lengthForGen = (int) (length - (distance * 6 + rand.nextGaussian() * length / 12));
+            int lengthForGen = (int) (length - (distance * 8 + rand.nextGaussian() * length / 16));
             for (int i = 0; i < lengthForGen; i++)
             {
                 if (worldIn.isAirBlock(pos)) worldIn.setBlockState(pos, BONE);
