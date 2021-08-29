@@ -1,9 +1,7 @@
 package com.boringbread.muckraft.network;
 
-import com.boringbread.muckraft.block.BlockPortalStageTwo;
-import com.boringbread.muckraft.tileentity.TileEntityPortalStageTwo;
+import com.boringbread.muckraft.tileentity.TileEntityPortalS2;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -41,10 +39,10 @@ public class MessageConfirmPortal implements IMessage
         public IMessage onMessage(MessageConfirmPortal message, MessageContext ctx)
         {
             TileEntity tileEntity = ctx.getServerHandler().player.world.getTileEntity(message.pos);
-            if (tileEntity instanceof TileEntityPortalStageTwo)
+            if (tileEntity instanceof TileEntityPortalS2)
             {
-                ItemStackHandler portalInventory = ((TileEntityPortalStageTwo) tileEntity).getItemStackHandler();
-                ((TileEntityPortalStageTwo) tileEntity).setSacrificeAccepted(true);
+                ItemStackHandler portalInventory = ((TileEntityPortalS2) tileEntity).getItemStackHandler();
+                ((TileEntityPortalS2) tileEntity).setSacrificeAccepted(true);
                 for (int i = 0; i < portalInventory.getSlots(); i++)
                 {
                     portalInventory.setStackInSlot(i, ItemStack.EMPTY);

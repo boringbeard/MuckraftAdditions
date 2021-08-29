@@ -1,33 +1,18 @@
 package com.boringbread.muckraft.client.gui;
 
-import com.boringbread.muckraft.inventory.ContainerPortalStageTwo;
+import com.boringbread.muckraft.inventory.ContainerPortalS2;
 import com.boringbread.muckraft.network.MessageConfirmPortal;
 import com.boringbread.muckraft.network.MuckPacketHandler;
-import com.boringbread.muckraft.tileentity.TileEntityPortalStageTwo;
-import io.netty.buffer.Unpooled;
+import com.boringbread.muckraft.tileentity.TileEntityPortalS2;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.inventory.GuiBeacon;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.MobEffects;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.network.play.client.CPacketCloseWindow;
-import net.minecraft.network.play.client.CPacketCustomPayload;
-import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.SlotItemHandler;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
@@ -36,11 +21,11 @@ public class GuiPortalStageTwo extends GuiContainer
 {
     private static final ResourceLocation GUI_TEXTURES = new ResourceLocation("muckraft:textures/gui/container/gui_portal_stage_two.png");
     private ConfirmButton confirmButton;
-    private TileEntityPortalStageTwo portalStageTwo;
+    private TileEntityPortalS2 portalStageTwo;
 
-    public GuiPortalStageTwo(InventoryPlayer playerInventory, TileEntityPortalStageTwo tilePortalStageTwo)
+    public GuiPortalStageTwo(InventoryPlayer playerInventory, TileEntityPortalS2 tilePortalStageTwo)
     {
-        super(new ContainerPortalStageTwo(playerInventory, tilePortalStageTwo));
+        super(new ContainerPortalS2(playerInventory, tilePortalStageTwo));
         this.portalStageTwo = tilePortalStageTwo;
         this.xSize = 174;
         this.ySize = 152;

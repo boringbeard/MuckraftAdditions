@@ -1,7 +1,7 @@
 package com.boringbread.muckraft.client.gui;
 
-import com.boringbread.muckraft.inventory.ContainerPortalStageTwo;
-import com.boringbread.muckraft.tileentity.TileEntityPortalStageTwo;
+import com.boringbread.muckraft.inventory.ContainerPortalS2;
+import com.boringbread.muckraft.tileentity.TileEntityPortalS2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -26,9 +26,9 @@ public class GuiHandler implements IGuiHandler
 
         BlockPos xyz = new BlockPos(x, y, z);
         TileEntity tileEntity = world.getTileEntity(xyz);
-        if (tileEntity instanceof TileEntityPortalStageTwo) {
-            TileEntityPortalStageTwo tileEntityPortalStageTwo = (TileEntityPortalStageTwo) tileEntity;
-            return new ContainerPortalStageTwo(player.inventory, tileEntityPortalStageTwo);
+        if (tileEntity instanceof TileEntityPortalS2) {
+            TileEntityPortalS2 tileEntityPortalS2 = (TileEntityPortalS2) tileEntity;
+            return new ContainerPortalS2(player.inventory, tileEntityPortalS2);
         }
         return null;
     }
@@ -44,9 +44,9 @@ public class GuiHandler implements IGuiHandler
 
         BlockPos xyz = new BlockPos(x, y, z);
         TileEntity tileEntity = world.getTileEntity(xyz);
-        if (tileEntity instanceof TileEntityPortalStageTwo) {
-            TileEntityPortalStageTwo tileEntityPortalStageTwo = (TileEntityPortalStageTwo) tileEntity;
-            return new GuiPortalStageTwo(player.inventory, tileEntityPortalStageTwo);
+        if (tileEntity instanceof TileEntityPortalS2) {
+            TileEntityPortalS2 tileEntityPortalS2 = (TileEntityPortalS2) tileEntity;
+            return new GuiPortalStageTwo(player.inventory, tileEntityPortalS2);
         }
         return null;
     }

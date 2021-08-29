@@ -9,7 +9,14 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.Logger;
 
-@Mod(modid = Muckraft.MOD_ID, name = Muckraft.NAME, version = Muckraft.VERSION, acceptedMinecraftVersions = Muckraft.MC_VERSION, useMetadata = true)
+@Mod(
+    modid = Muckraft.MOD_ID,
+    name = Muckraft.NAME,
+    version = Muckraft.VERSION,
+    acceptedMinecraftVersions = Muckraft.MC_VERSION,
+    useMetadata = true,
+    dependencies = "required-after:srparasites@[1.9.0,);"
+)
 public class Muckraft
 {
     public static final String MOD_ID = "muckraft";
