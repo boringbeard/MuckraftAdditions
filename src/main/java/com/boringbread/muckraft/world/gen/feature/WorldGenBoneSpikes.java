@@ -1,7 +1,5 @@
 package com.boringbread.muckraft.world.gen.feature;
 
-import com.dhanantry.scapeandrunparasites.block.BlockParasiteBush;
-import com.dhanantry.scapeandrunparasites.init.SRPBlocks;
 import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -11,36 +9,40 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
-import java.awt.*;
-import java.text.NumberFormat;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class WorldGenBoneStalactites extends WorldGenerator
+public class WorldGenBoneSpikes extends WorldGenerator
 {
     private static final IBlockState BONE = Blocks.BONE_BLOCK.getDefaultState().withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.Y);
+    private final EnumFacing direction;
+
+    public WorldGenBoneSpikes(EnumFacing direction)
+    {
+        this.direction = direction;
+    }
 
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos position)
     {
         position = position.add(rand.nextInt(8) - rand.nextInt(8), 32, rand.nextInt(8) - rand.nextInt(8));
-        List<BlockPos> validSpots = getValidSurfaces(worldIn, position, 32);
+        List<BlockPos> validSpots = getValidSurfaces(worldIn, position, 32, direction);
 
         if (!validSpots.isEmpty())
         {
             BlockPos placementPos = validSpots.get(rand.nextInt(validSpots.size()));
 
-            genLargeStalactite(worldIn, rand, placementPos);
+            genLargeStalactite(worldIn, rand, placementPos, rand.nextInt(16) == 0 ? 36 : 16, direction.getOpposite());
         }
         return true;
     }
 
-    private void genLargeStalactite(World worldIn, Random rand, BlockPos basePos)
+    private void genLargeStalactite(World worldIn, Random rand, BlockPos basePos, int size, EnumFacing direction)
     {
         List<BlockPos> spikeFootprint = new LinkedList<>();
-        int length = (int) MathHelper.clamp((rand.nextGaussian() + 12), 8, 20);
-        int radius = MathHelper.clamp(length / 6 + (int) rand.nextGaussian(), 1, 4);
+        int length = (int) MathHelper.clamp((rand.nextGaussian() + size), 0, 50);
+        int radius = MathHelper.clamp(length / 8 + (int) rand.nextGaussian(), 1, 20);
 
         for (int y = -radius; y <= radius; y++)
         {
@@ -54,35 +56,35 @@ public class WorldGenBoneStalactites extends WorldGenerator
         for (BlockPos pos: spikeFootprint)
         {
             double distance = basePos.getDistance(pos.getX(), pos.getY(), pos.getZ());
-            int lengthForGen = (int) (length - (distance * 6 + rand.nextGaussian()));
+            int lengthForGen = (int) (length - (distance * 8 + rand.nextGaussian() * length / 16));
             for (int i = 0; i < lengthForGen; i++)
             {
                 if (worldIn.isAirBlock(pos)) worldIn.setBlockState(pos, BONE);
-                pos = pos.down();
+                pos = pos.offset(direction);
             }
         }
     }
 
-    private List<BlockPos> getValidSurfaces(World worldIn, BlockPos pos, int layerDepth)
+    private List<BlockPos> getValidSurfaces(World worldIn, BlockPos pos, int layerDepth, EnumFacing direction)
     {
         List<BlockPos> positions = new LinkedList<>();
 
         for (int i = 0; i < layerDepth; i++)
         {
-            BlockPos newPos = pos.up();
+            BlockPos newPos = pos.offset(direction);
 
             for (int j = 0; j < 8; j++)
             {
-                EnumFacing direction = scanSurroundingBlocks(newPos, worldIn);
-                if (direction == null)
+                EnumFacing direction1 = scanSurroundingBlocks(newPos, worldIn);
+                if (direction1 == null)
                 {
-                    if (worldIn.isAirBlock(newPos.down()) && !worldIn.isAirBlock(newPos)) positions.add(newPos.down());
+                    if (worldIn.isAirBlock(newPos.offset(direction.getOpposite())) && !worldIn.isAirBlock(newPos)) positions.add(newPos.offset(direction.getOpposite()));
                     else break;
                 }
-                else newPos = newPos.offset(direction.getOpposite());
+                else newPos = newPos.offset(direction1.getOpposite());
             }
 
-            pos = pos.up();
+            pos = pos.offset(direction);
         }
 
         return positions;
