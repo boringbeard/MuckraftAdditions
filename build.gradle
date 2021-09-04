@@ -43,8 +43,14 @@ minecraft {
 
 dependencies {
     implementation 'org.jetbrains:annotations:20.1.0'
+    implementation files('libs/AbyssalCraft-1.12.2-1.10.4.jar')
+    implementation files('libs/appliedenergistics2-rv6-stable-7.jar')
     implementation files('libs/SRParasites-1.12.2v1.9.0ALPHA18.jar')
     implementation files('libs/Mekanism-1.12.2-9.8.3.390.jar')
+    implementation files('libs/Draconic-Evolution-1.12.2-2.3.28.354-universal.jar')
+    implementation files('libs/GalacticraftCore-1.12.2-4.0.2.280.jar')
+    implementation files('libs/MatterOverdrive-1.12.2-0.7.1.0-universal.jar')
+    implementation files('libs/NuclearCraft-2o.5.5-1.12.2.jar')
 
     minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2855'
 }
