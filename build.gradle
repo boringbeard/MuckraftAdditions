@@ -44,7 +44,6 @@ minecraft {
 dependencies {
     implementation 'org.jetbrains:annotations:20.1.0'
     implementation files('libs/AbyssalCraft-1.12.2-1.10.4.jar')
-    implementation files('libs/appliedenergistics2-rv6-stable-7.jar')
     implementation files('libs/SRParasites-1.12.2v1.9.0ALPHA18.jar')
     implementation files('libs/Mekanism-1.12.2-9.8.3.390.jar')
     implementation files('libs/Draconic-Evolution-1.12.2-2.3.28.354-universal.jar')
