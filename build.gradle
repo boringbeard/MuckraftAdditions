@@ -44,6 +44,7 @@ minecraft {
 dependencies {
     implementation 'org.jetbrains:annotations:20.1.0'
     implementation files('libs/SRParasites-1.12.2v1.9.0ALPHA18.jar')
+    implementation files('libs/Mekanism-1.12.2-9.8.3.390.jar')
 
     minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2855'
 }
