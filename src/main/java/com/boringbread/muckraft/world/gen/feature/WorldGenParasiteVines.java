@@ -3,6 +3,7 @@ package com.boringbread.muckraft.world.gen.feature;
 import com.dhanantry.scapeandrunparasites.block.BlockParasiteBush;
 import com.dhanantry.scapeandrunparasites.init.SRPBlocks;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -14,7 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class WorldGenParasiteVines extends WorldGenerator
+public class WorldGenParasiteVines extends WorldGenerator implements IWorldGenMuck
 {
     private static final IBlockState HANGING_VINE = SRPBlocks.ParasiteBush.getDefaultState().withProperty(BlockParasiteBush.VARIANT, BlockParasiteBush.EnumType.VINE);
 
@@ -22,7 +23,7 @@ public class WorldGenParasiteVines extends WorldGenerator
     public boolean generate(World worldIn, Random rand, BlockPos position)
     {
         position = position.add(rand.nextInt(8) - rand.nextInt(8), 32, rand.nextInt(8) - rand.nextInt(8));
-        List<BlockPos> validSpots = getValidSurfaces(worldIn, position, 32);
+        List<BlockPos> validSpots = getValidSurfaces(worldIn, position, 32, EnumFacing.UP, SRPBlocks.ParasiteStain.getDefaultState());
 
         if (!validSpots.isEmpty())
         {
@@ -36,18 +37,5 @@ public class WorldGenParasiteVines extends WorldGenerator
             }
         }
         return true;
-    }
-
-    protected List<BlockPos> getValidSurfaces(World worldIn, BlockPos pos, int layerDepth)
-    {
-        List<BlockPos> positions = new LinkedList<>();
-
-        for (int i = 0; i < layerDepth; i++)
-        {
-            if (worldIn.isAirBlock(pos) && worldIn.getBlockState(pos.up()) == SRPBlocks.ParasiteStain.getDefaultState()) positions.add(pos);
-            pos = pos.up();
-        }
-
-        return positions;
     }
 }

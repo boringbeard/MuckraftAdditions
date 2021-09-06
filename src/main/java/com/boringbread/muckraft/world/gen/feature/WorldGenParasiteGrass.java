@@ -3,6 +3,7 @@ package com.boringbread.muckraft.world.gen.feature;
 import com.dhanantry.scapeandrunparasites.block.BlockParasiteBush;
 import com.dhanantry.scapeandrunparasites.init.SRPBlocks;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -15,7 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class WorldGenParasiteGrass extends WorldGenerator
+public class WorldGenParasiteGrass extends WorldGenerator implements IWorldGenMuck
 {
     private static final IBlockState INFECTED = SRPBlocks.ParasiteBush.getDefaultState();
     private static final IBlockState ARC = INFECTED.withProperty(BlockParasiteBush.VARIANT, BlockParasiteBush.EnumType.ARC);
@@ -29,7 +30,7 @@ public class WorldGenParasiteGrass extends WorldGenerator
     {
         position = position.add(rand.nextInt(8) - rand.nextInt(8), 32, rand.nextInt(8) - rand.nextInt(8));
         IBlockState blockState = ((BlockStateEntry) WeightedRandom.getRandomItem(rand, Arrays.asList(GRASS_LIST))).state;
-        List<BlockPos> validSpots = getValidSurfaces(worldIn, position, 32);
+        List<BlockPos> validSpots = getValidSurfaces(worldIn, position, 32, EnumFacing.DOWN, SRPBlocks.ParasiteStain.getDefaultState());
 
         if (!validSpots.isEmpty())
         {
@@ -44,19 +45,6 @@ public class WorldGenParasiteGrass extends WorldGenerator
         }
 
         return true;
-    }
-
-    private List<BlockPos> getValidSurfaces(World worldIn, BlockPos pos, int layerDepth)
-    {
-        List<BlockPos> positions = new LinkedList<>();
-
-        for (int i = 0; i < layerDepth; i++)
-        {
-            if (worldIn.isAirBlock(pos) && worldIn.getBlockState(pos.down()) == SRPBlocks.ParasiteStain.getDefaultState()) positions.add(pos);
-            pos = pos.down();
-        }
-
-        return positions;
     }
 
     public static class BlockStateEntry extends WeightedRandom.Item
