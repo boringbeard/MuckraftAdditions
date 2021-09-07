@@ -1,5 +1,6 @@
 package com.boringbread.muckraft.world.gen.feature;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -59,7 +60,7 @@ public class WorldGenBoneSpikes extends WorldGenerator
             int lengthForGen = (int) (length - (distance * 8 + rand.nextGaussian() * length / 16));
             for (int i = 0; i < lengthForGen; i++)
             {
-                if (worldIn.isAirBlock(pos)) worldIn.setBlockState(pos, BONE);
+                if (worldIn.getBlockState(pos) != Blocks.BEDROCK.getDefaultState()) worldIn.setBlockState(pos, BONE);
                 pos = pos.offset(direction);
             }
         }

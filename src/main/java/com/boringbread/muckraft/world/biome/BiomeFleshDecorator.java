@@ -9,12 +9,10 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 
 import java.util.Random;
 
-public class BiomeInfectedDecorator extends BiomeDecorator
+public class BiomeFleshDecorator extends BiomeDecorator
 {
-    public WorldGenerator veins = new WorldGenParasiteGrass();
-    public WorldGenerator hangingVines = new WorldGenParasiteVines();
-    public WorldGenerator thickVines = new WorldGenThickVines();
-    public WorldGenerator trees = new WorldGenInfestedTrees();
+    public WorldGenerator grass = new WorldGenFleshGrass();
+    public WorldGenerator sacs = new WorldGenParasiteSacs();
     public WorldGenerator stalactites = new WorldGenBoneSpikes(EnumFacing.UP);
     public WorldGenerator stalagmites = new WorldGenBoneSpikes(EnumFacing.DOWN);
 
@@ -25,28 +23,14 @@ public class BiomeInfectedDecorator extends BiomeDecorator
         {
             int j = random.nextInt(16) + 8;
             int k = random.nextInt(16) + 8;
-            this.hangingVines.generate(worldIn, random, this.chunkPos.add(j, 0, k));
+            this.grass.generate(worldIn, random, this.chunkPos.add(j, 0, k));
         }
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 16; i++)
         {
             int j = random.nextInt(16) + 8;
             int k = random.nextInt(16) + 8;
-            this.thickVines.generate(worldIn, random, this.chunkPos.add(j, 0, k));
-        }
-
-        for (int i = 0; i < 64; i++)
-        {
-            int j = random.nextInt(16) + 8;
-            int k = random.nextInt(16) + 8;
-            this.veins.generate(worldIn, random, this.chunkPos.add(j, 0, k));
-        }
-
-        if (random.nextGaussian() > 0.5)
-        {
-            int j = random.nextInt(16) + 8;
-            int k = random.nextInt(16) + 8;
-            this.trees.generate(worldIn, random, this.chunkPos.add(j, 0, k));
+            this.sacs.generate(worldIn, random, this.chunkPos.add(j, 0, k));
         }
 
         if (random.nextGaussian() > 1)

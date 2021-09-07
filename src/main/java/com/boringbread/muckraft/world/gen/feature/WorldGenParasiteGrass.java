@@ -8,6 +8,7 @@ import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import scala.actors.threadpool.Arrays;
 
@@ -23,13 +24,13 @@ public class WorldGenParasiteGrass extends WorldGenerator implements IWorldGenMu
     private static final IBlockState GRASS = INFECTED.withProperty(BlockParasiteBush.VARIANT, BlockParasiteBush.EnumType.GRASS1);
     private static final IBlockState FLOWER = INFECTED.withProperty(BlockParasiteBush.VARIANT, BlockParasiteBush.EnumType.FLOWER1);
     private static final IBlockState SPINE = INFECTED.withProperty(BlockParasiteBush.VARIANT, BlockParasiteBush.EnumType.SPINE);
-    private static final BlockStateEntry[] GRASS_LIST = {new BlockStateEntry(2, INFECTED), new BlockStateEntry(3, ARC), new BlockStateEntry(3, FLOWER), new BlockStateEntry(3, SPINE), new BlockStateEntry(22, GRASS)};
+    private static final Biome.FlowerEntry[] GRASS_LIST = {new Biome.FlowerEntry(INFECTED, 2), new Biome.FlowerEntry(ARC, 3), new Biome.FlowerEntry(FLOWER, 3), new Biome.FlowerEntry(SPINE, 3), new Biome.FlowerEntry(GRASS, 22)};
 
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos position)
     {
         position = position.add(rand.nextInt(8) - rand.nextInt(8), 32, rand.nextInt(8) - rand.nextInt(8));
-        IBlockState blockState = ((BlockStateEntry) WeightedRandom.getRandomItem(rand, Arrays.asList(GRASS_LIST))).state;
+        IBlockState blockState = ((Biome.FlowerEntry) WeightedRandom.getRandomItem(rand, Arrays.asList(GRASS_LIST))).state;
         List<BlockPos> validSpots = getValidSurfaces(worldIn, position, 32, EnumFacing.DOWN, SRPBlocks.ParasiteStain.getDefaultState());
 
         if (!validSpots.isEmpty())
@@ -45,16 +46,5 @@ public class WorldGenParasiteGrass extends WorldGenerator implements IWorldGenMu
         }
 
         return true;
-    }
-
-    public static class BlockStateEntry extends WeightedRandom.Item
-    {
-        public final IBlockState state;
-
-        public BlockStateEntry(int itemWeightIn, IBlockState state)
-        {
-            super(itemWeightIn);
-            this.state = state;
-        }
     }
 }

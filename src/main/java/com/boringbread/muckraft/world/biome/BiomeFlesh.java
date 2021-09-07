@@ -24,6 +24,7 @@ public class BiomeFlesh extends BiomeMuckParasite
     {
         super(new BiomeProperties("flesh").setRainDisabled().setTemperature(1.2F).setWaterColor(2660695));
         setRegistryName(Muckraft.MOD_ID, "flesh");
+        this.decorator = new BiomeFleshDecorator();
     }
 
     @Override

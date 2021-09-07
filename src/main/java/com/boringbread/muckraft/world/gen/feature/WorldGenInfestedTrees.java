@@ -1,5 +1,6 @@
 package com.boringbread.muckraft.world.gen.feature;
 
+import com.dhanantry.scapeandrunparasites.block.BlockParasiteStain;
 import com.dhanantry.scapeandrunparasites.init.SRPBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -12,11 +13,12 @@ import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import java.util.List;
 import java.util.Random;
 
-public class WorldGenFleshTrees extends WorldGenAbstractTree implements IWorldGenMuck
+public class WorldGenInfestedTrees extends WorldGenAbstractTree implements IWorldGenMuck
 {
     private static final IBlockState TRUNK = SRPBlocks.InfestedTrunk.getDefaultState();
+    private static final IBlockState VEINS = SRPBlocks.ParasiteStain.getDefaultState().withProperty(BlockParasiteStain.VARIANT, BlockParasiteStain.EnumType.FEELER);
 
-    public WorldGenFleshTrees()
+    public WorldGenInfestedTrees()
     {
         super(false);
     }
@@ -29,6 +31,14 @@ public class WorldGenFleshTrees extends WorldGenAbstractTree implements IWorldGe
         if (!validSpots.isEmpty())
         {
             position = validSpots.get(rand.nextInt(validSpots.size()));
+
+            for (EnumFacing direction: EnumFacing.HORIZONTALS)
+            {
+                worldIn.setBlockState(position.offset(direction), VEINS);
+                worldIn.setBlockState(position.offset(direction, 2).down(), VEINS);
+                worldIn.setBlockState(position.offset(direction, 3).down(), VEINS);
+            }
+
             for (int i = 0; i < rand.nextGaussian() + 4; i++)
             {
                 worldIn.setBlockState(position, TRUNK);
@@ -67,7 +77,7 @@ public class WorldGenFleshTrees extends WorldGenAbstractTree implements IWorldGe
                 x++;
                 z += rand.nextDouble() < slope ? 1 : 0;
             }
-            int y = rand.nextBoolean() ? -1 : 0;
+            int y = i == 2 ? -1 : 0;
 
             worldIn.setBlockState(position.add(x, y, z), TRUNK);
             worldIn.setBlockState(position.add(z, y, -x), TRUNK);
