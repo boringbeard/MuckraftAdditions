@@ -4,7 +4,6 @@ import com.boringbread.muckraft.init.MuckWorldGen;
 import com.boringbread.muckraft.world.biome.BiomeFlesh;
 import com.boringbread.muckraft.world.biome.BiomeMuckParasite;
 import com.boringbread.muckraft.world.biome.BiomeProviderS4;
-import com.boringbread.muckraft.world.chunk.Chunk3DBiomes;
 import com.dhanantry.scapeandrunparasites.block.BlockParasiteRubble;
 import com.dhanantry.scapeandrunparasites.block.BlockParasiteStain;
 import com.dhanantry.scapeandrunparasites.init.SRPBlocks;
@@ -64,24 +63,14 @@ public class ChunkGeneratorS4 implements IChunkGenerator
     {
         noise = new double[16 * 16];
         Arrays.fill(noise, 0);
-
-        for (int i = 0; i < 8; i++)
+        for (int x1 = 0; x1 < 16; ++x1)
         {
-            double[] previousNoise = noise.clone();
-            noise = perlinNoise.generateNoiseOctaves(noise, x, z, 16, 16, 0.125, 0.125, 0);
-            for (int x1 = 0; x1 < 16; ++x1)
+            for (int z1 = 0; z1 < 16; ++z1)
             {
-                for (int z1 = 0; z1 < 16; ++z1)
+                BiomeMuckParasite biome = (BiomeMuckParasite) biomesIn[z1 + x1 * 16];
+                for (int y = 0; y < 256; y++)
                 {
-                    for (int y = 0; y < 32; y++)
-                    {
-                        int previousHeight = (int) MathHelper.clamp(previousNoise[x1 * 16 + z1] * 5, -8, 8);
-                        int currentHeight = i == 7 ? 32 : (int) MathHelper.clamp(noise[x1 * 16 + z1] * 5, -8, 8) + 32;
-                        int waviness = y >= currentHeight ? 1 : (y < previousHeight ? -1 : 0);
-
-                        BiomeMuckParasite biome = (BiomeMuckParasite) biomesIn[(z1 + x1 * 16) * 8 + i + waviness];
-                        biome.genTerrainBlock(this.world, this.rand, primer, x1, i * 32 + y, z1, this.mainStructureInterpolated[(z1 + x1 * 16) * 256 + i * 32 + y]);
-                    }
+                    biome.genTerrainBlock(this.world, this.rand, primer, x1, y, z1, this.mainStructureInterpolated[(z1 + x1 * 16) * 256 + y]);
                 }
             }
         }
@@ -176,8 +165,7 @@ public class ChunkGeneratorS4 implements IChunkGenerator
         biomesForGeneration = world.getBiomeProvider().getBiomesForGeneration(biomesForGeneration, x * 16, z * 16, 16, 16);
         replaceBiomeBlocks(x, z, primer, biomesForGeneration);
 
-        Chunk chunk = new Chunk3DBiomes(world, primer, x, z);
-        chunk.blockBiomeArray = new byte[2048];
+        Chunk chunk = new Chunk(world, primer, x, z);
 
         byte[] abyte = chunk.getBiomeArray();
 
