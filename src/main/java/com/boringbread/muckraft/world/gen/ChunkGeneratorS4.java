@@ -196,7 +196,7 @@ public class ChunkGeneratorS4 implements IChunkGenerator
 
         for (int y = 0; y < 8; y++)
         {
-            BlockPos pos = blockpos.add(blockpos.add(16, y * 32, 16));
+            BlockPos pos = blockpos.add(16, y * 32, 16);
             Biome biome = world.getBiome(pos);
             biome.decorate(world, rand, blockpos.up(y * 32));
         }
