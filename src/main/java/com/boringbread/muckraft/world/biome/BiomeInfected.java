@@ -10,7 +10,6 @@ import com.dhanantry.scapeandrunparasites.entity.monster.ancient.EntityTerla;
 import com.dhanantry.scapeandrunparasites.entity.monster.inborn.*;
 import com.dhanantry.scapeandrunparasites.entity.monster.primitive.*;
 import com.dhanantry.scapeandrunparasites.entity.monster.pure.*;
-import com.dhanantry.scapeandrunparasites.entity.monster.venkrol.*;
 import com.dhanantry.scapeandrunparasites.init.SRPBlocks;
 import com.dhanantry.scapeandrunparasites.world.biome.BiomeParasiteDecorator;
 import net.minecraft.block.BlockTallGrass;

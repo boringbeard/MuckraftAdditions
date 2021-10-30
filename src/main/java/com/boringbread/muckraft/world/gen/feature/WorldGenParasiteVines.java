@@ -17,7 +17,7 @@ import java.util.Random;
 
 public class WorldGenParasiteVines extends WorldGenerator implements IWorldGenMuck
 {
-    private static final IBlockState HANGING_VINE = SRPBlocks.ParasiteBush.getDefaultState().withProperty(BlockParasiteBush.VARIANT, BlockParasiteBush.EnumType.VINE);
+    private static final IBlockState HANGING_VINE = SRPBlocks.ParasiteBush.getDefaultState().withProperty(BlockParasiteBush.VARIANT, BlockParasiteBush.EnumType.BINE);
 
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos position)
