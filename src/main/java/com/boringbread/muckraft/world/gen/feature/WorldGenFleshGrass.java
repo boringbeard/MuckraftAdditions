@@ -20,7 +20,7 @@ import java.util.Random;
 
 public class WorldGenFleshGrass extends WorldGenerator implements IWorldGenMuck
 {
-    private static final IBlockState VEINS = SRPBlocks.ParasiteBush.getDefaultState().withProperty(BlockParasiteBush.VARIANT, BlockParasiteBush.EnumType.EYE);
+    private static final IBlockState VEINS = SRPBlocks.ParasiteBush.getDefaultState().withProperty(BlockParasiteBush.VARIANT, BlockParasiteBush.EnumType.TENDRIL);
     private static final IBlockState SPINE = SRPBlocks.ParasiteBush.getDefaultState().withProperty(BlockParasiteBush.VARIANT, BlockParasiteBush.EnumType.BINE);
     private static final IBlockState MOUTH = SRPBlocks.ParasiteMouth.getDefaultState();
     private static final IBlockState LUMP = SRPBlocks.ParasiteCanister.getDefaultState().withProperty(BlockParasiteCanister.VARIANT, BlockParasiteCanister.EnumType.LUMP);

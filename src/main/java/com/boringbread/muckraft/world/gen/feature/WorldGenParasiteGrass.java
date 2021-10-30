@@ -1,5 +1,6 @@
 package com.boringbread.muckraft.world.gen.feature;
 
+import com.dhanantry.scapeandrunparasites.block.BlockInfestedBush;
 import com.dhanantry.scapeandrunparasites.block.BlockParasiteBush;
 import com.dhanantry.scapeandrunparasites.init.SRPBlocks;
 import net.minecraft.block.state.IBlockState;
@@ -19,11 +20,11 @@ import java.util.Random;
 
 public class WorldGenParasiteGrass extends WorldGenerator implements IWorldGenMuck
 {
-    private static final IBlockState INFECTED = SRPBlocks.ParasiteBush.getDefaultState();
-    private static final IBlockState ARC = INFECTED.withProperty(BlockParasiteBush.VARIANT, BlockParasiteBush.EnumType.TOOH);
-    private static final IBlockState GRASS = INFECTED.withProperty(BlockParasiteBush.VARIANT, BlockParasiteBush.EnumType.EYE);
-    private static final IBlockState FLOWER = INFECTED.withProperty(BlockParasiteBush.VARIANT, BlockParasiteBush.EnumType.TENDRIL);
-    private static final IBlockState SPINE = INFECTED.withProperty(BlockParasiteBush.VARIANT, BlockParasiteBush.EnumType.POP);
+    private static final IBlockState INFECTED = SRPBlocks.InfestedBush.getDefaultState();
+    private static final IBlockState ARC = INFECTED.withProperty(BlockInfestedBush.VARIANT, BlockInfestedBush.EnumType.ARC);
+    private static final IBlockState GRASS = INFECTED.withProperty(BlockInfestedBush.VARIANT, BlockInfestedBush.EnumType.GRASS1);
+    private static final IBlockState FLOWER = INFECTED.withProperty(BlockInfestedBush.VARIANT, BlockInfestedBush.EnumType.FLOWER1);
+    private static final IBlockState SPINE = INFECTED.withProperty(BlockInfestedBush.VARIANT, BlockInfestedBush.EnumType.SPINE);
     private static final Biome.FlowerEntry[] GRASS_LIST = {new Biome.FlowerEntry(INFECTED, 2), new Biome.FlowerEntry(ARC, 3), new Biome.FlowerEntry(FLOWER, 3), new Biome.FlowerEntry(SPINE, 3), new Biome.FlowerEntry(GRASS, 22)};
 
     @Override

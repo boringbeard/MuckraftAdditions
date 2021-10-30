@@ -1,5 +1,6 @@
 package com.boringbread.muckraft.world.gen.feature;
 
+import com.dhanantry.scapeandrunparasites.block.BlockInfestedBush;
 import com.dhanantry.scapeandrunparasites.block.BlockParasiteBush;
 import com.dhanantry.scapeandrunparasites.init.SRPBlocks;
 import net.minecraft.block.state.IBlockState;
@@ -17,7 +18,7 @@ import java.util.Random;
 
 public class WorldGenParasiteVines extends WorldGenerator implements IWorldGenMuck
 {
-    private static final IBlockState HANGING_VINE = SRPBlocks.ParasiteBush.getDefaultState().withProperty(BlockParasiteBush.VARIANT, BlockParasiteBush.EnumType.BINE);
+    private static final IBlockState HANGING_VINE = SRPBlocks.InfestedBush.getDefaultState().withProperty(BlockInfestedBush.VARIANT, BlockInfestedBush.EnumType.VINE);
 
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos position)
