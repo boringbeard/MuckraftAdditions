@@ -35,6 +35,9 @@ public class BlockParasiteJuice extends BlockFluidClassic
         super(parasiteJuice, Material.WATER);
         setCreativeTab(MuckraftCreativeTab.muckraftCreativeTab);
         setRegistryName(NAME);
+        setLightLevel(1);
+        setQuantaPerBlock(5);
+        setDensity(2);
         setUnlocalizedName(Muckraft.MOD_ID + "_" + NAME);
     }
 
