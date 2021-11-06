@@ -82,7 +82,7 @@ public class BlockPortalS2 extends BlockMuckPortal implements ITileEntityProvide
         EnumFacing facing = (EnumFacing) state.getValue(FACING);
         TileEntity tileentity = worldIn.getTileEntity(pos);
 
-        if (worldIn.getRedstonePower(pos.offset(facing), facing) > 0 && tileentity instanceof TileEntityPortalS2 && ((TileEntityPortalS2) tileentity).isSacrificeAccepted())
+        if (!worldIn.isRemote && worldIn.isBlockPowered(pos) && tileentity instanceof TileEntityPortalS2 && ((TileEntityPortalS2) tileentity).isSacrificeAccepted())
         {
             worldIn.setBlockState(pos, state.withProperty(ACTIVATED, true));
             MuckTeleporter.DESTINATION_CACHE.add(new DimBlockPos(pos, worldIn.provider.getDimension()));
