@@ -12,6 +12,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MuckItems
 {
+    //Stores instances of items
     public static final ItemMuckCheese MUCK_CHEESE = new ItemMuckCheese();
     public static final ItemParasiteSword PARASITE_SWORD = new ItemParasiteSword();
 
@@ -25,6 +26,7 @@ public class MuckItems
     @SideOnly(Side.CLIENT)
     public static void initModel(Item item, String name)
     {
+        //assigns model resource locatiion and sets it
         ModelResourceLocation location = new ModelResourceLocation(Muckraft.MOD_ID + ":" + name, "inventory");
         ModelLoader.setCustomModelResourceLocation(item, 0, location);
     }

@@ -10,6 +10,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class WorldProviderS1 extends WorldProvider
 {
+    //world provider for S1
+    //TO DO: give this world a gimmick and make generation more unique
     @Override
     protected void init()
     {

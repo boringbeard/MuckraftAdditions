@@ -14,19 +14,23 @@ import java.util.Random;
 
 public class WorldGenThickVines extends WorldGenerator implements IWorldGenMuck
 {
+    //TO DO: get rid of the old stuff from stacked biomes
     public static final IBlockState HANGING_VINE = SRPBlocks.ParasiteStain.getDefaultState().withProperty(BlockParasiteStain.VARIANT, BlockParasiteStain.EnumType.FEELER);
 
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos position)
     {
+        //TO DO: get rid of the position randomization code inside the worldgen classes and just keep it in here
         position = position.add(rand.nextInt(8) - rand.nextInt(8), 32, rand.nextInt(8) - rand.nextInt(8));
+        //search for ceilings that the vines can grow on
         List<BlockPos> validSpots = getValidSurfaces(worldIn, position, 32, EnumFacing.UP, SRPBlocks.ParasiteStain.getDefaultState());
 
         if (!validSpots.isEmpty())
         {
-            BlockPos placementPos = validSpots.get(rand.nextInt(validSpots.size()));
-            int length = (int) MathHelper.clamp(rand.nextGaussian() * 4 + 12, 1, 30);
+            BlockPos placementPos = validSpots.get(rand.nextInt(validSpots.size())); //choose random surface from list earlier
+            int length = (int) MathHelper.clamp(rand.nextGaussian() * 4 + 12, 1, 30); //determine random length (gaussian distribution)
 
+            //start from surface point we chose and go down length times or until it hits another block, each time randomly shifting a bit to the left or right
             for (int i = 0; i < length; i++)
             {
                 if (worldIn.isAirBlock(placementPos)) worldIn.setBlockState(placementPos, HANGING_VINE);

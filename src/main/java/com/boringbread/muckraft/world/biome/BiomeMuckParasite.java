@@ -13,6 +13,7 @@ import java.util.Random;
 
 public abstract class BiomeMuckParasite extends Biome
 {
+    //pretty much for default muck parasite biome - adds default spawn list
     public BiomeMuckParasite(BiomeProperties properties)
     {
         super(properties);
@@ -36,5 +37,6 @@ public abstract class BiomeMuckParasite extends Biome
         spawnableMonsterList.add(new SpawnListEntry(EntityShycoAdapted.class, 32, 2, 4));
     }
 
+    //method to generate single surface terrain block because terrain is 3D here, so the other one doesn't work
     public abstract void genTerrainBlock(World worldIn, Random rand, ChunkPrimer chunkPrimerIn, int x, int y, int z, double noiseVal);
 }

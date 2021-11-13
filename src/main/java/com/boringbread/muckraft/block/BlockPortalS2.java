@@ -29,6 +29,10 @@ import java.util.UUID;
 
 public class BlockPortalS2 extends BlockMuckPortal implements ITileEntityProvider
 {
+    //portal to transport between S2 and S3
+    //TO DO: implement energy storage + varying speed based on energy input + make multiblock
+    //Idea: no more GUI, everything is done in the actual minecraft world; pedestal-like sacrifice receivers, some sort
+    //of energy index reader, and visual indicators for everything
     public static final String NAME = "portal_stage_two";
     public static PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
@@ -54,6 +58,7 @@ public class BlockPortalS2 extends BlockMuckPortal implements ITileEntityProvide
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
+        //opens GUI on right click
         if (worldIn.isRemote) return true;
 
         TileEntity tileentity = worldIn.getTileEntity(pos);
@@ -74,19 +79,21 @@ public class BlockPortalS2 extends BlockMuckPortal implements ITileEntityProvide
     @Override
     public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, @org.jetbrains.annotations.Nullable EnumFacing side)
     {
+        //only connects to redstone on the redstone side
         return side.getOpposite() == state.getValue(FACING);
     }
 
     @Override
     public void updateTick(World worldIn, @NotNull BlockPos pos, @NotNull IBlockState state, @NotNull Random rand)
     {
+        //activates if sacrifice is accepted and is redstone powered
         EnumFacing facing = (EnumFacing) state.getValue(FACING);
         TileEntity tileentity = worldIn.getTileEntity(pos);
 
         if (!worldIn.isRemote && worldIn.isBlockPowered(pos) && tileentity instanceof TileEntityPortalS2 && ((TileEntityPortalS2) tileentity).isSacrificeAccepted())
         {
             worldIn.setBlockState(pos, state.withProperty(ACTIVATED, true));
-            MuckTeleporter.DESTINATION_CACHE.add(new DimBlockPos(pos, worldIn.provider.getDimension()));
+            MuckTeleporter.DESTINATION_CACHE.add(new DimBlockPos(pos, worldIn.provider.getDimension())); //adds portal to a cache once it gets activated
         }
     }
 
@@ -126,6 +133,8 @@ public class BlockPortalS2 extends BlockMuckPortal implements ITileEntityProvide
     @Override
     public @NotNull IBlockState getStateFromMeta(int meta)
     {
+        //TO DO: fix these ones too
+        //converts int into booleans in the worst way possible
         IBlockState blockState = this.getDefaultState();
 
         boolean activated = (meta + 1) > 4;
@@ -156,6 +165,7 @@ public class BlockPortalS2 extends BlockMuckPortal implements ITileEntityProvide
     @Override
     public int getMetaFromState(IBlockState state)
     {
+        //same thing as in S1 and above
         int activated = state.getValue(ACTIVATED) ? 2 : 1;
         int direction;
         switch (state.getValue(FACING))
@@ -187,15 +197,18 @@ public class BlockPortalS2 extends BlockMuckPortal implements ITileEntityProvide
             boolean isActivated = worldIn.getBlockState(pos).getValue(ACTIVATED);
             TileEntityPortalS2 tileEntity = (TileEntityPortalS2) worldIn.getTileEntity(pos);
 
+            //checks tile entity to see if the stored UUID is null. If so set it to the entities UUID to make this entity the one to teleport
+            //look in TileEntityPortalS2 for more info
             if (tileEntity.getToTeleport() == null) tileEntity.setToTeleport(entityIn.getUniqueID());
 
+            //start timer if entity to teleport matches this entity
             if (isActivated && tileEntity.getToTeleport().equals(entityIn.getUniqueID()))
             {
-                if (tileEntity.getTimer() > 0)
+                if (tileEntity.getTimer() > 0) //decrements timer value if timer is greater than 0
                 {
                     tileEntity.setTimer(tileEntity.getTimer() - 1);
                 }
-                else
+                else //else reset timer and to teleport slot and teleport player to correct dimension
                 {
                     tileEntity.setTimer(300);
                     tileEntity.setToTeleport(null);
@@ -203,13 +216,13 @@ public class BlockPortalS2 extends BlockMuckPortal implements ITileEntityProvide
                 }
             }
 
-            entityIn.motionY = 0.0D;
+            entityIn.motionY = 0.0D; //stop player falling once it lands on this block
         }
     }
 
     @Override
     protected PortalStatus getPortalStatus(BlockPos pos, World worldIn)
     {
-        return PortalStatus.ACTIVE_COMPLETE_X;
+        return PortalStatus.ACTIVE_COMPLETE_X; //stupid thing get rid of this later. Byproduct of multiblock checker for S1 and bad code organization.
     }
 }

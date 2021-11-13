@@ -6,6 +6,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class MuckPacketHandler
 {
+    //registers confirm portal message
     public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel("muckraft");
     private static int id = 0;
 

@@ -21,6 +21,8 @@ public class BiomeInfectedDecorator extends BiomeDecorator
     @Override
     protected void genDecorations(Biome biomeIn, World worldIn, Random random)
     {
+        //Each of these loops just generate a certain amount of decorations in a chunk. they also randomize the position within the chunk of each one
+        //generate 32 vines
         for (int i = 0; i < 32; i++)
         {
             int j = random.nextInt(16) + 8;
@@ -28,6 +30,7 @@ public class BiomeInfectedDecorator extends BiomeDecorator
             this.hangingVines.generate(worldIn, random, this.chunkPos.add(j, 0, k));
         }
 
+        //generate 4 thick vines
         for (int i = 0; i < 4; i++)
         {
             int j = random.nextInt(16) + 8;
@@ -35,6 +38,7 @@ public class BiomeInfectedDecorator extends BiomeDecorator
             this.thickVines.generate(worldIn, random, this.chunkPos.add(j, 0, k));
         }
 
+        //generate 64 grass
         for (int i = 0; i < 64; i++)
         {
             int j = random.nextInt(16) + 8;
@@ -42,6 +46,7 @@ public class BiomeInfectedDecorator extends BiomeDecorator
             this.veins.generate(worldIn, random, this.chunkPos.add(j, 0, k));
         }
 
+        //generate trees sometimes
         if (random.nextGaussian() > 0.5)
         {
             int j = random.nextInt(16) + 8;
@@ -49,6 +54,7 @@ public class BiomeInfectedDecorator extends BiomeDecorator
             this.trees.generate(worldIn, random, this.chunkPos.add(j, 0, k));
         }
 
+        //generates upward spikes
         if (random.nextGaussian() > 1)
         {
             int j = random.nextInt(16) + 8;
@@ -56,6 +62,7 @@ public class BiomeInfectedDecorator extends BiomeDecorator
             this.stalactites.generate(worldIn, random, this.chunkPos.add(j, 0, k));
         }
 
+        //generate downward spikes
         if (random.nextGaussian() > 1)
         {
             int j = random.nextInt(16) + 8;

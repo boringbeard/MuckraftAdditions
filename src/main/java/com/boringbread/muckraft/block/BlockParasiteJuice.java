@@ -28,6 +28,8 @@ import javax.annotation.Nullable;
 
 public class BlockParasiteJuice extends BlockFluidClassic
 {
+    //fluid block to spawn in parasite dimension
+    //TO DO figure out how textures/models work for fluids
     public static final String NAME = "parasite_juice";
 
     public BlockParasiteJuice(Fluid parasiteJuice)
@@ -36,7 +38,7 @@ public class BlockParasiteJuice extends BlockFluidClassic
         setCreativeTab(MuckraftCreativeTab.muckraftCreativeTab);
         setRegistryName(NAME);
         setLightLevel(1);
-        setQuantaPerBlock(5);
+        setQuantaPerBlock(5); //how far the fluid spreads
         setDensity(2);
         setUnlocalizedName(Muckraft.MOD_ID + "_" + NAME);
     }
@@ -44,8 +46,9 @@ public class BlockParasiteJuice extends BlockFluidClassic
     @Override
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
-        if(entityIn instanceof EntityLivingBase && !worldIn.isRemote)
+        if(entityIn instanceof EntityLivingBase && !worldIn.isRemote) //first checks if the creature is 'living' so it's eligible for potion effects and that the side is server
         {
+            //add potion effects to creatures that touch it
             ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(MobEffects.POISON, 200, 1));
             ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 60, 0));
             ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 100, 0));

@@ -31,7 +31,9 @@ import java.util.Random;
 
 public class ChunkGeneratorS4 implements IChunkGenerator
 {
-    private static final IBlockState DEFAULT_BLOCK = SRPBlocks.ParasiteRubble.getDefaultState().withProperty(BlockParasiteRubble.VARIANT, BlockParasiteRubble.EnumType.FLESH);
+    //Chunk generator for parasite dimension
+    //TO DO: replace old biome stacking stuff
+    private static final IBlockState DEFAULT_BLOCK = SRPBlocks.ParasiteRubble.getDefaultState().withProperty(BlockParasiteRubble.VARIANT, BlockParasiteRubble.EnumType.FLESH); //default will be compressed flesh
     private static final IBlockState BEDROCK = Blocks.BEDROCK.getDefaultState();
     private static final IBlockState AIR = Blocks.AIR.getDefaultState();
     private static final IBlockState DEAD_BLOOD = SRPBlocks.DeadBlood.getDefaultState();
@@ -63,6 +65,7 @@ public class ChunkGeneratorS4 implements IChunkGenerator
     {
         noise = new double[16 * 16];
         Arrays.fill(noise, 0);
+        //goes through each block in the chunk and replaces surface blocks; theres probably a more efficient way to do this
         for (int x1 = 0; x1 < 16; ++x1)
         {
             for (int z1 = 0; z1 < 16; ++z1)
@@ -78,6 +81,7 @@ public class ChunkGeneratorS4 implements IChunkGenerator
 
     public void genMainStructure(ChunkPrimer primer, int x, int z)
     {
+        //starts off with low res 3D perlin noise and then interpolates for efficiency
         int xSize = 2;
         int ySize = 32;
         int zSize = 2;
@@ -89,8 +93,8 @@ public class ChunkGeneratorS4 implements IChunkGenerator
 
         for (int i = 0; i < mainStructure.length; i++)
         {
-            mainStructure[i] = largeCaverns[i] > 1.8 ? largeCaverns[i] : mainStructure[i];
-            if (largeCaverns[i] > 1.6 && largeCaverns[i] <= 1.8) mainStructure[i] += largeCaverns[i];
+            mainStructure[i] = largeCaverns[i] > 1.8 ? largeCaverns[i] : mainStructure[i]; //clear out areas that are in the large caverns areas
+            if (largeCaverns[i] > 1.6 && largeCaverns[i] <= 1.8) mainStructure[i] += largeCaverns[i]; // areas around large caverns areas kind of ease in
         }
 
         for (int x1 = 0; x1 < xSize; x1++)
@@ -99,6 +103,7 @@ public class ChunkGeneratorS4 implements IChunkGenerator
             {
                 for (int y = 0; y < ySize; y++)
                 {
+                    //interpolation
                     double origin = mainStructure[(x1 * (xSize + 1) + z1) * (ySize + 1) + y];
                     double offZ = mainStructure[(x1 * (xSize + 1) + (z1 + 1)) * (ySize + 1) + y];
                     double offY = mainStructure[(x1 * (xSize + 1) + z1) * (ySize + 1) + y + 1];
@@ -110,6 +115,7 @@ public class ChunkGeneratorS4 implements IChunkGenerator
 
                     for (int x2 = 0; x2 < 16 / xSize; x2++)
                     {
+                        //interpolation
                         double origin1 = origin;
                         double offY1 = offY;
                         double originIncZ = (offZ - origin) * zSize / 16.0;
@@ -117,32 +123,42 @@ public class ChunkGeneratorS4 implements IChunkGenerator
 
                         for (int z2 = 0; z2 < 16 / zSize; z2++)
                         {
+                            //interpolation
                             double origin2 = origin1;
                             double originIncY = (offY1 - origin1) * ySize / 256.0;
+
                             for (int y1 = 0; y1 < 256 / ySize; y1++)
                             {
                                 double origin3 = origin2;
-                                IBlockState toFill = DEFAULT_BLOCK;
+                                IBlockState toFill = DEFAULT_BLOCK; //default fill the block with the default block (compressed flesh)
                                 int x3 = x2 + 16 / xSize * x1;
                                 int y2 = y1 + 256 / ySize * y;
                                 int z3 = z2 + 16 / zSize * z1;
+
+                                // make top and bottom a bit more solid/less air pockets
                                 mainStructureInterpolated[(x3 * 16 + z3) * 256 + y2] = origin3;
                                 origin3 -= ((MathHelper.clamp(Math.abs(128.0 - y2), 80, 128) - 80) / 48);
 
+                                //fills slots that have a perlin value over 0.2 with air if over y 63, otherwise dead blood fluid
                                 if (origin3 > 0.2)
                                 {
                                     if (y2 > 63) toFill = AIR;
                                     else toFill = DEAD_BLOOD;
                                 }
 
+                                //generate bedrock floor and ceiling
                                 if (y2 > 254 - this.rand.nextInt(5) || y2 < 1 + this.rand.nextInt(5)) toFill = BEDROCK;
+
                                 primer.setBlockState(x3, y2, z3, toFill);
+
+                                //interpolation
                                 origin2 += originIncY;
                             }
-
+                            //interpolation
                             origin1 += originIncZ;
                             offY1 += offYIncZ;
                         }
+                        //interpolation
                         origin += originIncX;
                         offZ += plusZIncX;
                         offY += plusYIncX;
@@ -162,6 +178,8 @@ public class ChunkGeneratorS4 implements IChunkGenerator
         int zSize = 2;
         ChunkPrimer primer = new ChunkPrimer();
         genMainStructure(primer, x, z);
+
+        //get biomes from biome provider
         biomesForGeneration = world.getBiomeProvider().getBiomesForGeneration(biomesForGeneration, x * 16, z * 16, 16, 16);
         replaceBiomeBlocks(x, z, primer, biomesForGeneration);
 
@@ -169,6 +187,7 @@ public class ChunkGeneratorS4 implements IChunkGenerator
 
         byte[] abyte = chunk.getBiomeArray();
 
+        //set biomes
         for (int i = 0; i < abyte.length; ++i)
         {
             abyte[i] = (byte)Biome.getIdForBiome(biomesForGeneration[i]);
@@ -189,13 +208,14 @@ public class ChunkGeneratorS4 implements IChunkGenerator
     public void populate(int x, int z)
     {
         SRPWorldData data = SRPWorldData.get(world);
-        if (data.getEvolutionPhase() != 8 && rand.nextInt(100) == 0) data.setEvolutionPhase((byte) 8, true, world);
+        if (data.getEvolutionPhase() != 8) data.setEvolutionPhase((byte) 8, true, world); //always set parasite evolution phase to 8 (maximum)
         int x1 = x * 16;
         int z1 = z * 16;
         BlockPos blockpos = new BlockPos(x1, 0, z1);
 
         for (int y = 0; y < 8; y++)
         {
+            //Add biome decorations
             BlockPos pos = blockpos.add(16, y * 32, 16);
             Biome biome = world.getBiome(pos);
             biome.decorate(world, rand, blockpos.up(y * 32));
@@ -203,6 +223,7 @@ public class ChunkGeneratorS4 implements IChunkGenerator
 
         for (int i = 0; i < 16; i++)
         {
+            //generates a few random pockets of infested blocks
             int i1 = this.rand.nextInt(16);
             int j = this.rand.nextInt(256);
             int k = this.rand.nextInt(16);

@@ -4,6 +4,8 @@ import net.minecraft.util.math.BlockPos;
 
 public class DimBlockPos
 {
+    //used by portal cache
+    //just stores a pos and dimID
     private final BlockPos pos;
     private final int DimID;
 

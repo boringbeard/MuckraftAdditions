@@ -16,6 +16,8 @@ import java.util.Random;
 
 public class BiomeBone extends BiomeMuckParasite
 {
+    //Biome filled with bones
+    //TO DO: make terrain more interesting, add block variation; potentially also more structures or different mobs
     private static final IBlockState BONE = Blocks.BONE_BLOCK.getDefaultState().withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.Y);
 
     public BiomeBone()
@@ -30,7 +32,7 @@ public class BiomeBone extends BiomeMuckParasite
     {
         if (noiseVal > -0.2 && noiseVal < 0.2)
         {
-            chunkPrimerIn.setBlockState(x, y, z, BONE);
+            chunkPrimerIn.setBlockState(x, y, z, BONE); //fills surface blocks with bones
         }
     }
 }

@@ -19,6 +19,7 @@ public class BiomeFleshDecorator extends BiomeDecorator
     @Override
     protected void genDecorations(Biome biomeIn, World worldIn, Random random)
     {
+        //each of these just generates decorations and randomizes the position within the chunk
         for (int i = 0; i < 32; i++)
         {
             int j = random.nextInt(16) + 8;

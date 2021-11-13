@@ -19,17 +19,14 @@ import java.util.UUID;
 
 public class TileEntityPortalS2 extends TileEntity
 {
+    //TO DO: implement energy
     private static final int CAPACITY = 1_000_000;
-    private final ItemStack[] heldItems = new ItemStack[5];
-    private boolean sacrificeAccepted;
-    private UUID toTeleport = null;
-    private int energy;
-    private int timer = 300;
-
-    public TileEntityPortalS2() {
-        Arrays.fill(heldItems, ItemStack.EMPTY);
-    }
-
+    private final ItemStack[] heldItems = new ItemStack[5]; //items held in sacrifice slots
+    private boolean sacrificeAccepted; //whether or not the item sacrifice has been made
+    private UUID toTeleport = null; //entity queued up for transport
+    private int energy; //stored energy - currently unused
+    private int timer = 300; //used to time the amount of time the player is on the portal
+    //handles items and storage
     private ItemStackHandler itemStackHandler = new ItemStackHandler(heldItems.length)
     {
         @Override
@@ -44,8 +41,11 @@ public class TileEntityPortalS2 extends TileEntity
             TileEntityPortalS2.this.markDirty();
         }
     };
+    private EnergyStorage energyStorage = new EnergyStorage(1000000, 1000); //handles energy storage
 
-    private EnergyStorage energyStorage = new EnergyStorage(1000000, 1000);
+    public TileEntityPortalS2() {
+        Arrays.fill(heldItems, ItemStack.EMPTY);
+    }
 
     @Override
     public void readFromNBT(NBTTagCompound compound)
@@ -80,20 +80,22 @@ public class TileEntityPortalS2 extends TileEntity
 
     public boolean isUsableByPlayer(EntityPlayer player)
     {
+        //only can use if its within 8 blocks
         if (this.world.getTileEntity(this.pos) != this)
         {
             return false;
         }
         else
         {
-            return player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) <= 64.0D;
+            return player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) <= 8.0D;
         }
     }
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing)
     {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || (capability == CapabilityEnergy.ENERGY && facing == world.getBlockState(pos).getValue(BlockPortalS2.FACING).getOpposite()))
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
+                || (capability == CapabilityEnergy.ENERGY && facing == world.getBlockState(pos).getValue(BlockPortalS2.FACING).getOpposite()))
         {
             return true;
         }
@@ -115,6 +117,7 @@ public class TileEntityPortalS2 extends TileEntity
         return super.getCapability(capability, facing);
     }
 
+    //getter and setter methods
     public EnergyStorage getEnergyStorage()
     {
         return energyStorage;

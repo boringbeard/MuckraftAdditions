@@ -19,6 +19,8 @@ import java.util.Random;
 
 public class BiomeProviderS1 extends BiomeProvider
 {
+    //pretty much a copy of the normal biome provider except it replaces some biomes with other biomes
+    //TO DO: make this more custom and interesting. Potentially add custom worldgen
     private ChunkGeneratorSettings settings;
     private GenLayer genBiomes;
     private GenLayer biomeIndexLayer;

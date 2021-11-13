@@ -18,6 +18,8 @@ import java.util.List;
 
 public class MuckTeleporter implements ITeleporter
 {
+    //figures out how to teleport entities to different dimensions
+    //TO DO: fix destination cache and setting the muck portal down at the new location
     public static final List<DimBlockPos> DESTINATION_CACHE = new ArrayList<>();
     private final IBlockState portal;
 
@@ -31,13 +33,14 @@ public class MuckTeleporter implements ITeleporter
     {
         if(!world.isRemote)
         {
+            //tries to find acceptable location
             BlockPos pos = new BlockPos(entity);
             BlockPos newPos = findAcceptableLocation(1024, pos, world);
             IBlockState state = world.getBlockState(newPos);
 
             if(state != portal.withProperty(BlockMuckPortal.ACTIVATED, true))
             {
-                makePortal(newPos, world, this.portal);
+                makePortal(newPos, world, this.portal); //TO DO: make this a muckportal method
             }
 
             entity.setLocationAndAngles(newPos.getX() + 0.5, newPos.getY() + 1, newPos.getZ() + 0.5, yaw, 0.0F);
@@ -53,7 +56,7 @@ public class MuckTeleporter implements ITeleporter
         int y = pos.getY();
         int z = pos.getZ();
 
-        BlockPos existingPortalPos = findExistingPortal(range, pos, world);
+        BlockPos existingPortalPos = findExistingPortal(range, pos, world); //first check if a portal exists within range
 
         if(existingPortalPos != null) return existingPortalPos;
 
@@ -64,16 +67,20 @@ public class MuckTeleporter implements ITeleporter
 
             if (r == 0)
             {
+                //only check once if range is 0 (it's at the origin point)
                 int y1 = getGoodHeight(new BlockPos(x, y, z), world);
                 isAcceptableLocation = y1 != -1;
                 newLocation = new BlockPos(x, y1, z);
             }
             else
             {
+                //checks 16 times in concentric circles around origin point for suitable locations
+                //TO DO: cos and sin are kind of inefficient, can replace with square or something instead of being fancy with the circle
                 int checksPerRing = 16;
 
                 for (int i = 0; i <= checksPerRing; i++)
                 {
+                    //math. basically finds the location on a circle of 16 equally spaced out locations
                     double tau = 2 * Math.PI;
                     int changeX = (int) Math.round(r * Math.cos(i * tau / checksPerRing));
                     int changeZ = (int) Math.round(r * Math.sin(i * tau / checksPerRing));
@@ -96,8 +103,12 @@ public class MuckTeleporter implements ITeleporter
     @Nullable
     private BlockPos findExistingPortal(int range, BlockPos pos, World world)
     {
+        //checks cache for portals within range
+        //does not actually work well
+        //Probably move this into separate class for a cache
         DimBlockPos[] destinationCache = DESTINATION_CACHE.toArray(new DimBlockPos[0]); //there's no way this is the best way to do it but at least for now it solves the co-modification problem
 
+        //iterates through each portal location in the cache. Theres probably a way more efficient algorithm for this - TO DO: replace with more efficient algorithm.
         for(DimBlockPos portalLocation : destinationCache)
         {
             IBlockState state = world.getBlockState(portalLocation.getPos());
@@ -118,6 +129,8 @@ public class MuckTeleporter implements ITeleporter
 
     private void makePortal(BlockPos pos, World world, IBlockState portal)
     {
+        //TO DO: make this a muckportal method
+        //builds a portal at a location
         switch (((BlockMuckPortal) portal.getBlock()).getStage())
         {
             case 0:
@@ -135,14 +148,17 @@ public class MuckTeleporter implements ITeleporter
 
     private int getGoodHeight(BlockPos pos, World world)
     {
+        //checks for a 3x3 flat area with sun at every height, returns the height where its found
+        //TO DO: make it be able to check for other conditions based on parameters
         if (!world.isRemote)
         {
             int x = pos.getX();
             int z = pos.getZ();
             int y1 = -1;
-
+            //checks from y 63 to y 129
             for (int y = 63; y < 130; y++)
             {
+                //counts each block that satisfies a. has sunlight b. is 1 block above ground
                 int counter = 0;
 
                 for (int x1 = x - 1; x1 < x + 2; x1++)
@@ -158,13 +174,13 @@ public class MuckTeleporter implements ITeleporter
 
                 if (counter == 9)
                 {
-                    y1 = y;
+                    y1 = y; // if all 9 squares in the 3x3 area has sunlight and are 1 block above ground set return value to y
                     break;
                 }
             }
-            return y1;
+            return y1; // return y1, the return value. Will be -1 if it found no suitable height
         }
 
-        return -1;
+        return -1; //only happens if world is clientside
     }
 }

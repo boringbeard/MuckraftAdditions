@@ -19,6 +19,7 @@ import java.io.IOException;
 @SideOnly(Side.CLIENT)
 public class GuiPortalStageTwo extends GuiContainer
 {
+    //TO DO: add energy indicator or get rid of this entirely and make it in-world
     private static final ResourceLocation GUI_TEXTURES = new ResourceLocation("muckraft:textures/gui/container/gui_portal_stage_two.png");
     private ConfirmButton confirmButton;
     private TileEntityPortalS2 portalStageTwo;
@@ -34,10 +35,11 @@ public class GuiPortalStageTwo extends GuiContainer
     @Override
     public void initGui()
     {
+        //sets up all the buttons and stuff
         super.initGui();
-        this.confirmButton = new ConfirmButton(0, this.guiLeft + 144, this.guiTop + 24);
-        this.buttonList.add(this.confirmButton);
-        this.confirmButton.enabled = false;
+        this.confirmButton = new ConfirmButton(0, this.guiLeft + 144, this.guiTop + 24); //new confirm button left 144 and down 24 from top left corner (i think)
+        this.buttonList.add(this.confirmButton); //add confirm button to list of buttons
+        this.confirmButton.enabled = false; //means it can't be pressed until slots filled
     }
 
     @Override
@@ -51,6 +53,8 @@ public class GuiPortalStageTwo extends GuiContainer
     @Override
     public void updateScreen()
     {
+        //checks if slots are empty - if all sacrifice slots filled unlock confirm button
+        //TO DO: make this more efficient
         super.updateScreen();
         int i = 0;
         for (int j = 0; j < portalStageTwo.getItemStackHandler().getSlots(); j++)
@@ -71,6 +75,7 @@ public class GuiPortalStageTwo extends GuiContainer
         {
             if (guibutton.isMouseOver())
             {
+                //highlights button if hovered over
                 guibutton.drawButtonForegroundLayer(mouseX - this.guiLeft, mouseY - this.guiTop);
                 break;
             }
@@ -82,6 +87,7 @@ public class GuiPortalStageTwo extends GuiContainer
     {
         if (button.id == 0)
         {
+            //sends message to server if button clicked to tell it that the sacrifice was confirmed
             MuckPacketHandler.INSTANCE.sendToServer(new MessageConfirmPortal(portalStageTwo.getPos()));
         }
     }
@@ -99,6 +105,7 @@ public class GuiPortalStageTwo extends GuiContainer
     @SideOnly(Side.CLIENT)
     static class Button extends GuiButton
     {
+        //class for a button. Pretty much copied from vanilla Beacon code
         private final ResourceLocation iconTexture;
         private final int iconX;
         private final int iconY;

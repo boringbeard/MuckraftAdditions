@@ -8,5 +8,6 @@ import java.lang.reflect.Method;
 
 public class MuckReflections
 {
+    //forge reflections. Normal java reflections wont work when compiled
     public static final Method CREATE_SPAWN_POSITION = ObfuscationReflectionHelper.findMethod(WorldServer.class, "func_73052_b", void.class, WorldSettings.class);
 }

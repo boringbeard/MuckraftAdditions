@@ -9,9 +9,10 @@ import java.io.File;
 
 public class Config
 {
-
+    //creates config file
     private static final String CATEGORY_DIMENSIONS = "dimensions";
 
+    //access these for config values
     public static Configuration config;
     public static int stageOneID;
     public static int stageTwoID;
@@ -61,6 +62,7 @@ public class Config
 
     private static void initDimensionConfig(Configuration cfg)
     {
+        //get config values and assign them to variables
         Muckraft.logger.log(Level.DEBUG, "Initializing Dimension Configs");
         stageOneID = cfg.getInt("Stage One Dimension ID", CATEGORY_DIMENSIONS, 6969, -9999, 9999, "Set the dimension ID for stage one: ");
         stageTwoID = cfg.getInt("Stage Two Dimension ID", CATEGORY_DIMENSIONS, 6970, -9999, 9999, "Set the dimension ID for stage two: ");

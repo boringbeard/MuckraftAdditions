@@ -28,6 +28,7 @@ import java.util.Random;
 
 public class BlockPortalS1 extends BlockMuckPortal
 {
+    //first portal; transports players between stage 1 and 2
     public static final String NAME = "portal_stage_one";
 
     public BlockPortalS1()

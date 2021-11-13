@@ -17,6 +17,9 @@ import java.util.Random;
 
 public class OreHandler
 {
+    //generates ores for different dimensions
+    //input values for various ores in dimensions
+    //Order for values goes Coal, Iron, Gold, Redstone, Diamond, Lapis, Osmium, Tin, Copper
     private static final int[] S1_COUNTS = {24, 15, 1, 2, 0, 0, 0, 0, 0};
     private static final int[] S1_SIZES = {26, 7, 6, 4, 0, 0, 0, 0, 0};
     private static final int[] S2_COUNTS = {20, 20, 5, 8, 1, 1, 8, 14, 16};
@@ -75,6 +78,7 @@ public class OreHandler
 
     private static void generateMuckraftOres(World worldIn, Random random, int[] counts, int[] sizes)
     {
+        //generate ores standard throughout muckraft, takes arrays as input to figure out different values
         genStandardOre1(worldIn, random, 10, dirtGen, 0, 256);
         genStandardOre1(worldIn, random, 10, gravelOreGen, 0, 256);
         genStandardOre1(worldIn, random, 10, dioriteGen, 0, 80);
@@ -95,6 +99,7 @@ public class OreHandler
 
     private static void genStandardOre1(World worldIn, Random random, int blockCount, WorldGenerator generator, int minHeight, int maxHeight)
     {
+        //sets random blocks in chunk to ore block
         if (maxHeight < minHeight)
         {
             int i = minHeight;
@@ -122,6 +127,7 @@ public class OreHandler
 
     private static void genStandardOre2(World worldIn, Random random, int blockCount, WorldGenerator generator, int centerHeight, int spread)
     {
+        //Generates ores from a certain height with a certain amount of spread
         for (int i = 0; i < blockCount; ++i)
         {
             BlockPos blockpos = chunkPos.add(random.nextInt(16), random.nextInt(spread) + random.nextInt(spread) + centerHeight - spread, random.nextInt(16));

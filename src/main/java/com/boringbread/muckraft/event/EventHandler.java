@@ -22,9 +22,11 @@ import java.util.Random;
 @Mod.EventBusSubscriber
 public class EventHandler
 {
+    //non init events here
     private static boolean createdSpawn;
     private static World overWorld;
 
+    //fix this - supposed to spawn you in S1
     @SubscribeEvent
     public static void onCreateSpawnPosition(WorldEvent.CreateSpawnPosition event) throws InvocationTargetException, IllegalAccessException, IOException
     {

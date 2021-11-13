@@ -20,6 +20,9 @@ import java.util.Random;
 
 public class WorldGenFleshGrass extends WorldGenerator implements IWorldGenMuck
 {
+    //TO DO: get rid of the old stuff from stacked biomes
+    //TO DO: turn all these random grass generators and stuff into a single class with different inputs for this stuff
+    //does the same stuff as parasite grass but with different list
     private static final IBlockState VEINS = SRPBlocks.ParasiteBush.getDefaultState().withProperty(BlockParasiteBush.VARIANT, BlockParasiteBush.EnumType.TENDRIL);
     private static final IBlockState SPINE = SRPBlocks.ParasiteBush.getDefaultState().withProperty(BlockParasiteBush.VARIANT, BlockParasiteBush.EnumType.BINE);
     private static final IBlockState MOUTH = SRPBlocks.ParasiteMouth.getDefaultState();
@@ -29,6 +32,7 @@ public class WorldGenFleshGrass extends WorldGenerator implements IWorldGenMuck
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos position)
     {
+        //TO DO: get rid of the position randomization code inside the worldgen classes and just keep it in here
         position = position.add(rand.nextInt(8) - rand.nextInt(8), 32, rand.nextInt(8) - rand.nextInt(8));
 
         IBlockState blockState = ((Biome.FlowerEntry) WeightedRandom.getRandomItem(rand, Arrays.asList(GRASS_LIST))).state;

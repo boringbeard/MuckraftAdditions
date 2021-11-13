@@ -27,6 +27,7 @@ public class BiomeProviderS4 extends BiomeProvider
         rand = new Random(worldInfo.getSeed());
 
         GenLayer layer = new GenLayerParasite(rand.nextLong());
+        //magnifies and zooms biomes a ton in order to make the biomes larger than 1 block each
         layer = GenLayerFuzzyZoom.magnify(1000, layer, 6);
         layer = new GenLayerVoronoiZoom(10, layer);
         layer.initWorldGenSeed(worldInfo.getSeed());
@@ -38,6 +39,7 @@ public class BiomeProviderS4 extends BiomeProvider
     @Override
     public Biome[] getBiomesForGeneration(Biome[] biomes, int x, int z, int width, int height)
     {
+        //fills in biomes array with generated biome array from the genlayer
         IntCache.resetIntCache();
 
         if (biomes == null || biomes.length < width * height)

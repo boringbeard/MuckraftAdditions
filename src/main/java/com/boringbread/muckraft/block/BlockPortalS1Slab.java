@@ -25,6 +25,7 @@ import java.util.Random;
 
 public class BlockPortalS1Slab extends BlockSlab
 {
+    //required part of portalS1 multiblock
     public static final String NAME = "portal_stage_one_slab";
     public static final String UNLOCALIZED_NAME = Muckraft.MOD_ID + "_" + NAME;
     public static final PropertyBool ACTIVATED = PropertyBool.create("activated");
@@ -73,6 +74,8 @@ public class BlockPortalS1Slab extends BlockSlab
     @Override
     public @NotNull IBlockState getStateFromMeta(int meta)
     {
+        //TO DO: use bitwise operators to make this shorter and more concise
+        //Converts boolean values into integer in the worst way possible by manually having each binary place value
         int[] digitValues = {8, 4, 1};
         int totalValue = meta;
         List<Integer> digits = new LinkedList<>();
@@ -118,6 +121,7 @@ public class BlockPortalS1Slab extends BlockSlab
     @Override
     public int getMetaFromState(IBlockState state)
     {
+        //converts booleans into int in the worst way possible - use bitwise operators to make better
         boolean activated = state.getValue(ACTIVATED);
         EnumFacing direction = state.getValue(FACING);
         EnumBlockHalf half = state.getValue(HALF);
@@ -152,6 +156,7 @@ public class BlockPortalS1Slab extends BlockSlab
     @Override
     public void updateTick(@NotNull World worldIn, @NotNull BlockPos pos, @NotNull IBlockState state, @NotNull Random rand)
     {
+        //turns off portal if multiblock is broken - again, transfer to separate class
         if(!connectedToActivePortal(worldIn, pos, state) && !worldIn.isRemote)
         {
             worldIn.setBlockState(pos, state.withProperty(ACTIVATED, false));
@@ -180,6 +185,7 @@ public class BlockPortalS1Slab extends BlockSlab
 
     private boolean connectedToActivePortal(World worldIn, BlockPos pos, IBlockState state)
     {
+        //Multiblock checker - transfer into a more general version in a separate class or something
         BlockPos checkPos;
 
         switch(state.getValue(FACING))

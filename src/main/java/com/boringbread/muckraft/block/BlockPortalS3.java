@@ -15,6 +15,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class BlockPortalS3 extends BlockMuckPortal
 {
+    //TO DO: texture and finish this block. Currently temporary thing to test parasite dimension. End goal is to have
+    //a cool modular portal that can transport to multiple dimensions
     public static final String NAME = "portal_stage_four";
 
     public BlockPortalS3()
@@ -44,6 +46,7 @@ public class BlockPortalS3 extends BlockMuckPortal
     @Override
     public void onLanded(World worldIn, Entity entityIn)
     {
+        //temporary teleportation code that uses built in portal timer in entities. Rework to be more like S2 and only accept 1 passenger at a time
         double x = entityIn.posX;
         double y = entityIn.posY;
         double z = entityIn.posZ;
@@ -62,6 +65,7 @@ public class BlockPortalS3 extends BlockMuckPortal
     @Override
     public void onFallenUpon(World worldIn, @NotNull BlockPos pos, @NotNull Entity entityIn, float fallDistance)
     {
+        //resets timer on jump/fall onto block
         if(!worldIn.isRemote)
         {
             super.onFallenUpon(worldIn, pos, entityIn, fallDistance);

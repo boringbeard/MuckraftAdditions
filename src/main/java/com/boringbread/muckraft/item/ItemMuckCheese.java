@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class ItemMuckCheese extends ItemFood
 {
+    //TO DO: maybe turn it into food you can feed wolf
     public static final String NAME = "muck_cheese";
 
     public ItemMuckCheese()
@@ -25,13 +26,14 @@ public class ItemMuckCheese extends ItemFood
     }
 
     @Override
-    public @NotNull EnumRarity getRarity(@NotNull ItemStack stack) { return EnumRarity.EPIC; }
+    public @NotNull EnumRarity getRarity(@NotNull ItemStack stack) { return EnumRarity.EPIC; } //makes name purple
 
     @Override
     protected void onFoodEaten(@NotNull ItemStack stack, World worldIn, @NotNull EntityPlayer player)
     {
         if(!worldIn.isRemote)
         {
+            //applies effects when eaten
             player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 1200, 2));
             player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 12000, 3));
             player.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 12000, 0));

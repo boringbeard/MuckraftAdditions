@@ -37,6 +37,7 @@ public class BiomeInfected extends BiomeMuckParasite
     @Override
     public void genTerrainBlock(World worldIn, Random rand, ChunkPrimer chunkPrimerIn, int x, int y, int z, double noiseVal)
     {
+        //sets surface blocks to parasite stain dirt with a 1/5 chance of being infested dirt instead
         if (noiseVal > -0.2 && noiseVal < 0.2)
         {
             chunkPrimerIn.setBlockState(x, y, z, rand.nextInt(5) == 1 ? INFESTED_DIRT.withProperty(BlockInfestedStain.STAGE, (int) MathHelper.clamp(Math.abs(rand.nextGaussian()) * 2, 0, 4)) : PARASITE_STAIN_DIRT);

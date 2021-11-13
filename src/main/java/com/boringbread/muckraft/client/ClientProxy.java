@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Mod.EventBusSubscriber
 public class ClientProxy extends CommonProxy
 {
+    //place for clientside events
     @Override
     public void preInit(FMLPreInitializationEvent event)
     {

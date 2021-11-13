@@ -20,6 +20,7 @@ public class ContainerPortalS2 extends Container
         int inventoryColumns = 9;
         int inventoryRows = 3;
 
+        //creates player inventory
         for (int row = 0; row < inventoryRows; ++row)
         {
             for (int column = 0; column < inventoryColumns; ++column)
@@ -33,8 +34,10 @@ public class ContainerPortalS2 extends Container
             this.addSlotToContainer(new Slot(playerInventory, column1, 7 + column1 * 18, 128));
         }
 
+        //gets portal ItemHandler (stores the Items)
         IItemHandler itemHandler = this.tilePortalStageTwo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 
+        //creates sacrifice slots in GUI
         for (int sacrificeSlotNumber = 0; sacrificeSlotNumber < 5; sacrificeSlotNumber++)
         {
             sacrificeSlots[sacrificeSlotNumber] = new SacrificeSlot(itemHandler, sacrificeSlotNumber, 10 + sacrificeSlotNumber * 27, 27);
@@ -51,14 +54,17 @@ public class ContainerPortalS2 extends Container
     @Override
     public ItemStack transferStackInSlot(EntityPlayer playerIn, int index)
     {
+        //code for what happens when shift clicking a stack
+        //index is the index of the slot that the player clicked
         ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = this.inventorySlots.get(index);
+        Slot slot = this.inventorySlots.get(index); //gets the slot of the index
 
-        if (slot != null && slot.getHasStack())
+        if (slot != null && slot.getHasStack()) //checks that slot isn't null and slot contains a stack
         {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
+            //random logic for what should happen and where the stack should go. Pretty much consistent with vanilla. No need to change
             if (index == 0)
             {
                 if (!this.mergeItemStack(itemstack1, 1, 37, true))

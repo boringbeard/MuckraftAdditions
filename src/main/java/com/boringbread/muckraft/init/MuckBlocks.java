@@ -15,6 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MuckBlocks
 {
+    //Store instances of all blocks and register them
     public static final Fluid FLUID_PARASITE_JUICE = new Fluid("parasite_juice", new ResourceLocation("muckraft:parasite_juice_still"), new ResourceLocation("muckraft:portal_juice_flowing"), 2752289);
     public static final BlockPortalS1 PORTAL_STAGE_ONE = new BlockPortalS1();
     public static final BlockPortalS1Slab PORTAL_STAGE_ONE_SLAB = new BlockPortalS1Slab();
@@ -66,6 +67,7 @@ public class MuckBlocks
 
     private static Item createItemBlock(Block block, int stackSize)
     {
+        //creates new ItemBlock for given block
         Item itemBlock = new ItemBlock(block);
         assert block.getRegistryName() != null;
         itemBlock.setRegistryName(block.getRegistryName());

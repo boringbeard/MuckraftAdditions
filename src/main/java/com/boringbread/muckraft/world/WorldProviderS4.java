@@ -14,6 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class WorldProviderS4 extends WorldProvider
 {
+    //world provider for parasite dimension
     @Override
     public void init()
     {
@@ -42,6 +43,8 @@ public class WorldProviderS4 extends WorldProvider
     @SideOnly(Side.CLIENT)
     public Vec3d getFogColor(float p_76562_1_, float p_76562_2_)
     {
+        //dark green fog
+        //TO DO: find a way to make fog closer
         return new Vec3d(0.03921568627D, 0.34117647058D, 0.16470588235D);
     }
 

@@ -30,6 +30,7 @@ public class BiomeFlesh extends BiomeMuckParasite
     @Override
     public void genTerrainBlock(World worldIn, Random rand, ChunkPrimer chunkPrimerIn, int x, int y, int z, double noiseVal)
     {
+        //sets surface blocks with a 2/20 chance of being netherrack, 1/20 chance of being netherwart and 17/20 chance of being flesh
         if (noiseVal > -0.2 && noiseVal < 0.2)
         {
             int blockDecider = rand.nextInt(20);
