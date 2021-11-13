@@ -48,6 +48,7 @@ public class BlockPortalS1 extends BlockMuckPortal
         if(!worldIn.isRemote)
         {
             PortalStatus status = getPortalStatus(pos, worldIn);
+
             if (status != PortalStatus.ACTIVE_COMPLETE_X && status != PortalStatus.ACTIVE_COMPLETE_Z)
             {
                 worldIn.setBlockState(pos, state.withProperty(ACTIVATED, false));
@@ -102,10 +103,12 @@ public class BlockPortalS1 extends BlockMuckPortal
             BlockPos pos1 = status == PortalStatus.COMPLETE_X ? pos.east() : pos.north();
             BlockPos pos2 = status == PortalStatus.COMPLETE_X ? pos.west() : pos.south();
             worldIn.playSound(null, pos, SoundEvents.BLOCK_END_PORTAL_SPAWN, SoundCategory.HOSTILE, 1.0F, 1.0F);
+
             for (int i = 0; i < 180; i++)
             {
                 worldIn.spawnParticle(EnumParticleTypes.CRIT, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 2 * Math.random() - 1, 0, 2 * Math.random() - 1);
             }
+
             worldIn.setBlockState(pos, state.withProperty(ACTIVATED, true));
             worldIn.setBlockState(pos1, worldIn.getBlockState(pos1).withProperty(activated, true));
             worldIn.setBlockState(pos2, worldIn.getBlockState(pos2).withProperty(activated, true));

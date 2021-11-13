@@ -43,11 +43,13 @@ public class MessageConfirmPortal implements IMessage
             World world = ctx.getServerHandler().player.world;
             BlockPos pos = message.pos;
             TileEntity tileEntity = world.getTileEntity(pos);
+
             if (tileEntity instanceof TileEntityPortalS2)
             {
                 ItemStackHandler portalInventory = ((TileEntityPortalS2) tileEntity).getItemStackHandler();
                 ((TileEntityPortalS2) tileEntity).setSacrificeAccepted(true);
                 world.scheduleUpdate(message.pos, world.getBlockState(pos).getBlock(), 0);
+
                 for (int i = 0; i < portalInventory.getSlots(); i++)
                 {
                     portalInventory.setStackInSlot(i, ItemStack.EMPTY);

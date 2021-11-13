@@ -15,14 +15,16 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.UUID;
 
-public class TileEntityPortalS2 extends TileEntity implements ITickable
+public class TileEntityPortalS2 extends TileEntity
 {
-    private static final int[] SLOTS = {0, 1, 2, 3, 4};
+    private static final int CAPACITY = 1_000_000;
     private final ItemStack[] heldItems = new ItemStack[5];
-    private final int capacity = 1_000_000;
     private boolean sacrificeAccepted;
+    private UUID toTeleport = null;
     private int energy;
+    private int timer = 300;
 
     public TileEntityPortalS2() {
         Arrays.fill(heldItems, ItemStack.EMPTY);
@@ -51,6 +53,9 @@ public class TileEntityPortalS2 extends TileEntity implements ITickable
         super.readFromNBT(compound);
         if (compound.hasKey("items")) itemStackHandler.deserializeNBT((NBTTagCompound) compound.getTag("items"));
         if (compound.hasKey("energy")) energy = compound.getInteger("energy");
+        if (compound.hasKey("timer")) timer = compound.getInteger("timer");
+        if (compound.hasKey("UUID")) toTeleport = compound.getUniqueId("UUID");
+        else toTeleport = null;
         if (compound.hasKey("sacrificeAccepted")) sacrificeAccepted = compound.getBoolean("sacrificeAccepted");
     }
 
@@ -60,6 +65,15 @@ public class TileEntityPortalS2 extends TileEntity implements ITickable
         super.writeToNBT(compound);
         compound.setTag("items", itemStackHandler.serializeNBT());
         compound.setInteger("energy", energyStorage.getEnergyStored());
+        compound.setInteger("timer", timer);
+        if (toTeleport != null)
+        {
+            compound.setUniqueId("UUID", toTeleport);
+        }
+        else
+        {
+            compound.removeTag("UUID");
+        }
         compound.setBoolean("sacrificeAccepted", sacrificeAccepted);
         return compound;
     }
@@ -74,12 +88,6 @@ public class TileEntityPortalS2 extends TileEntity implements ITickable
         {
             return player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) <= 64.0D;
         }
-    }
-
-    @Override
-    public void update()
-    {
-
     }
 
     @Override
@@ -125,5 +133,25 @@ public class TileEntityPortalS2 extends TileEntity implements ITickable
     public void setSacrificeAccepted(boolean sacrificeAccepted)
     {
         this.sacrificeAccepted = sacrificeAccepted;
+    }
+
+    public void setTimer(int timer)
+    {
+        this.timer = timer;
+    }
+
+    public int getTimer()
+    {
+        return timer;
+    }
+
+    public void setToTeleport(UUID uuid)
+    {
+        this.toTeleport = uuid;
+    }
+
+    public UUID getToTeleport()
+    {
+        return toTeleport;
     }
 }

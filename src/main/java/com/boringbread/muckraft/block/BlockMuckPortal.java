@@ -29,27 +29,16 @@ public abstract class BlockMuckPortal extends Block
 
     protected void teleportPlayer(Entity entityIn, World worldIn, BlockPos pos)
     {
-        if (entityIn.timeUntilPortal > cooldown + 1) entityIn.timeUntilPortal = cooldown + 1;
+        IBlockState state = worldIn.getBlockState(pos);
 
-        if (entityIn.timeUntilPortal < 0) entityIn.timeUntilPortal = -1;
-
-        if (entityIn.timeUntilPortal == 1)
+        if (worldIn.provider.getDimension() == Config.dimensionIDs[stage])
         {
-            IBlockState state = worldIn.getBlockState(pos);
-
-            if (worldIn.provider.getDimension() == Config.dimensionIDs[stage])
-            {
-                entityIn.changeDimension(Config.dimensionIDs[stage + 1], new MuckTeleporter(state));
-            }
-            else
-            {
-                entityIn.changeDimension(Config.dimensionIDs[stage], new MuckTeleporter(state));
-            }
-
-            entityIn.timeUntilPortal -= 1;
+            entityIn.changeDimension(Config.dimensionIDs[stage + 1], new MuckTeleporter(state));
         }
-
-        entityIn.timeUntilPortal -= 1;
+        else
+        {
+            entityIn.changeDimension(Config.dimensionIDs[stage], new MuckTeleporter(state));
+        }
     }
 
     @Override

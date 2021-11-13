@@ -25,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.Random;
+import java.util.UUID;
 
 public class BlockPortalS2 extends BlockMuckPortal implements ITileEntityProvider
 {
@@ -175,31 +176,35 @@ public class BlockPortalS2 extends BlockMuckPortal implements ITileEntityProvide
     }
 
     @Override
-    public void onFallenUpon(World worldIn, @NotNull BlockPos pos, @NotNull Entity entityIn, float fallDistance)
+    public void onLanded(World worldIn, Entity entityIn)
     {
         if (!worldIn.isRemote)
         {
-            super.onFallenUpon(worldIn, pos, entityIn, fallDistance);
-            entityIn.timeUntilPortal = 300;
+            double x = entityIn.posX;
+            double y = entityIn.posY;
+            double z = entityIn.posZ;
+            BlockPos pos = new BlockPos(x, y - 1, z);
+            boolean isActivated = worldIn.getBlockState(pos).getValue(ACTIVATED);
+            TileEntityPortalS2 tileEntity = (TileEntityPortalS2) worldIn.getTileEntity(pos);
+
+            if (tileEntity.getToTeleport() == null) tileEntity.setToTeleport(entityIn.getUniqueID());
+
+            if (isActivated && tileEntity.getToTeleport().equals(entityIn.getUniqueID()))
+            {
+                if (tileEntity.getTimer() > 0)
+                {
+                    tileEntity.setTimer(tileEntity.getTimer() - 1);
+                }
+                else
+                {
+                    tileEntity.setTimer(300);
+                    tileEntity.setToTeleport(null);
+                    teleportPlayer(entityIn, worldIn, pos);
+                }
+            }
+
+            entityIn.motionY = 0.0D;
         }
-    }
-
-    @Override
-    public void onLanded(World worldIn, Entity entityIn)
-    {
-        double x = entityIn.posX;
-        double y = entityIn.posY;
-        double z = entityIn.posZ;
-        BlockPos pos = new BlockPos(x, y - 1, z);
-        boolean isActivated = worldIn.getBlockState(pos).getValue(ACTIVATED);
-
-        if (isActivated)
-        {
-            if (!worldIn.isRemote) teleportPlayer(entityIn, worldIn, pos);
-        }
-        else if (!worldIn.isRemote) entityIn.timeUntilPortal = 300;
-
-        entityIn.motionY = 0.0D;
     }
 
     @Override
