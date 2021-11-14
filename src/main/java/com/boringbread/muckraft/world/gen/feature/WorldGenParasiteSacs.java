@@ -21,9 +21,6 @@ public class WorldGenParasiteSacs extends WorldGenerator implements IWorldGenMuc
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos position)
     {
-        //TO DO: get rid of the position randomization code inside the worldgen classes and just keep it in here
-        //randomize position in chunk
-        position = position.add(rand.nextInt(8) - rand.nextInt(8), 32, rand.nextInt(8) - rand.nextInt(8));
         //get vertical surfaces (ceilings)
         List<BlockPos> validSpots = getValidSurfaces(worldIn, position, 32, EnumFacing.UP, SRPBlocks.ParasiteStain.getDefaultState().withProperty(BlockParasiteStain.VARIANT, BlockParasiteStain.EnumType.FLESH));
 

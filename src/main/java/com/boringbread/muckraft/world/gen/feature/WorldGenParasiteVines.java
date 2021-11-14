@@ -24,10 +24,7 @@ public class WorldGenParasiteVines extends WorldGenerator implements IWorldGenMu
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos position)
     {
-        //TO DO: get rid of the position randomization code inside the worldgen classes and just keep it in here
-        //randomize block position within chunk
-        position = position.add(rand.nextInt(8) - rand.nextInt(8), 32, rand.nextInt(8) - rand.nextInt(8));
-        //find vertical surfaces given x and y coordinates
+        //find vertical surfaces
         List<BlockPos> validSpots = getValidSurfaces(worldIn, position, 32, EnumFacing.UP, SRPBlocks.ParasiteStain.getDefaultState());
 
         if (!validSpots.isEmpty())

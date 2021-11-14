@@ -27,9 +27,6 @@ public class WorldGenBoneSpikes extends WorldGenerator
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos position)
     {
-        //randomize block position within chunk
-        //TO DO: get rid of the position randomization code inside the worldgen classes and just keep it in here
-        position = position.add(rand.nextInt(8) - rand.nextInt(8), 32, rand.nextInt(8) - rand.nextInt(8));
         //find random surfaces in the given direction
         List<BlockPos> validSpots = getValidSurfaces(worldIn, position, 32, direction);
 

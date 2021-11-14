@@ -96,7 +96,7 @@ public class WorldGenInfestedTrees extends WorldGenAbstractTree implements IWorl
                 z += rand.nextDouble() < slope ? 1 : 0;
             }
             //will shift in the y axis once the length of the branch exceeds 2
-            int y = i == 2 ? -1 : 0;
+            int y = i >= 2 ? -1 : 0;
 
             //sets blocks with offsets in each of the 4 directions
             //different directions are done by turning the offsets in either x, z, or both negative

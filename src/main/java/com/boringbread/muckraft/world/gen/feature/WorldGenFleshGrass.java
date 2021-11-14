@@ -32,9 +32,6 @@ public class WorldGenFleshGrass extends WorldGenerator implements IWorldGenMuck
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos position)
     {
-        //TO DO: get rid of the position randomization code inside the worldgen classes and just keep it in here
-        position = position.add(rand.nextInt(8) - rand.nextInt(8), 32, rand.nextInt(8) - rand.nextInt(8));
-
         IBlockState blockState = ((Biome.FlowerEntry) WeightedRandom.getRandomItem(rand, Arrays.asList(GRASS_LIST))).state;
         List<BlockPos> validSpots = getValidSurfaces(worldIn, position, 32, EnumFacing.DOWN, SRPBlocks.ParasiteStain.getDefaultState().withProperty(BlockParasiteStain.VARIANT, BlockParasiteStain.EnumType.FLESH));
 

@@ -34,9 +34,6 @@ public class WorldGenParasiteGrass extends WorldGenerator implements IWorldGenMu
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos position)
     {
-        //TO DO: get rid of the position randomization code inside the worldgen classes and just keep it in here
-        //randomize position in chunk
-        position = position.add(rand.nextInt(8) - rand.nextInt(8), 32, rand.nextInt(8) - rand.nextInt(8));
         //get weighted random entry from our list of potential grasses
         IBlockState blockState = ((Biome.FlowerEntry) WeightedRandom.getRandomItem(rand, Arrays.asList(GRASS_LIST))).state;
         //find valid ground surfaces

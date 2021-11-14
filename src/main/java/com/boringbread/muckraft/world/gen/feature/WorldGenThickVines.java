@@ -20,8 +20,6 @@ public class WorldGenThickVines extends WorldGenerator implements IWorldGenMuck
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos position)
     {
-        //TO DO: get rid of the position randomization code inside the worldgen classes and just keep it in here
-        position = position.add(rand.nextInt(8) - rand.nextInt(8), 32, rand.nextInt(8) - rand.nextInt(8));
         //search for ceilings that the vines can grow on
         List<BlockPos> validSpots = getValidSurfaces(worldIn, position, 32, EnumFacing.UP, SRPBlocks.ParasiteStain.getDefaultState());
 
