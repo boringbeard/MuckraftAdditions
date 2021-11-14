@@ -1,6 +1,8 @@
 package com.boringbread.muckraft.block;
 
 import com.boringbread.muckraft.config.Config;
+import com.boringbread.muckraft.init.MuckBlocks;
+import com.boringbread.muckraft.util.DimBlockPos;
 import com.boringbread.muckraft.world.MuckTeleporter;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -8,6 +10,7 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
@@ -47,6 +50,8 @@ public abstract class BlockMuckPortal extends Block
             entityIn.changeDimension(Config.dimensionIDs[stage], new MuckTeleporter(state));
         }
     }
+
+    public abstract void makePortal(BlockPos pos, World world, IBlockState portal);
 
     @Override
     protected @NotNull BlockStateContainer createBlockState()

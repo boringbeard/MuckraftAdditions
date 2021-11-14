@@ -53,11 +53,16 @@ public class BlockPortalS3 extends BlockMuckPortal
         BlockPos pos = new BlockPos(x, y - 1, z);
         boolean isActivated = worldIn.getBlockState(pos).getValue(ACTIVATED);
 
-        if (isActivated)
+        if (!worldIn.isRemote)
         {
-            if (!worldIn.isRemote) teleportPlayer(entityIn, worldIn, pos);
+            //decrements timer if activated
+            if (isActivated)
+            {
+                if (entityIn.timeUntilPortal > 0) entityIn.timeUntilPortal--;
+                else teleportPlayer(entityIn, worldIn, pos);
+            }
+            else entityIn.timeUntilPortal = 300;
         }
-        else if (!worldIn.isRemote) entityIn.timeUntilPortal = 300;
 
         entityIn.motionY = 0.0D;
     }
@@ -83,5 +88,10 @@ public class BlockPortalS3 extends BlockMuckPortal
     protected PortalStatus getPortalStatus(BlockPos pos, World worldIn)
     {
         return PortalStatus.ACTIVE_COMPLETE_X;
+    }
+
+    @Override
+    public void makePortal(BlockPos pos, World world, IBlockState portal)
+    {
     }
 }

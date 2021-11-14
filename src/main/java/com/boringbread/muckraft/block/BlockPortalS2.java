@@ -225,4 +225,10 @@ public class BlockPortalS2 extends BlockMuckPortal implements ITileEntityProvide
     {
         return PortalStatus.ACTIVE_COMPLETE_X; //stupid thing get rid of this later. Byproduct of multiblock checker for S1 and bad code organization.
     }
+
+    @Override
+    public void makePortal(BlockPos pos, World world, IBlockState portal)
+    {
+        world.setBlockState(pos, portal.withProperty(BlockMuckPortal.ACTIVATED, true));
+    }
 }

@@ -75,7 +75,15 @@ public class BlockPortalS1 extends BlockMuckPortal
                     worldIn.spawnParticle(EnumParticleTypes.FIREWORKS_SPARK, pos.getX() + 0.25 + Math.random() / 2, pos.getY() + 1.0F, pos.getZ() + 0.25 + Math.random() / 2, 0, 1, 0);
                 }
             }
-            else teleportPlayer(entityIn, worldIn, pos);
+            else
+            {
+                if (entityIn.timeUntilPortal > 0) entityIn.timeUntilPortal--;
+                else
+                {
+                    teleportPlayer(entityIn, worldIn, pos);
+                    entityIn.timeUntilPortal = 300;
+                }
+            }
         }
         else if (!worldIn.isRemote) entityIn.timeUntilPortal = 300;
 
@@ -118,6 +126,15 @@ public class BlockPortalS1 extends BlockMuckPortal
         }
 
         return true;
+    }
+
+    @Override
+    public void makePortal(BlockPos pos, World world, IBlockState portal)
+    {
+        IBlockState activePortalSlab = MuckBlocks.PORTAL_STAGE_ONE_SLAB.getDefaultState().withProperty(BlockPortalS1Slab.ACTIVATED, true);
+        world.setBlockState(pos.north(), activePortalSlab.withProperty(BlockPortalS1Slab.FACING, EnumFacing.NORTH));
+        world.setBlockState(pos.south(), activePortalSlab.withProperty(BlockPortalS1Slab.FACING, EnumFacing.SOUTH));
+        world.setBlockState(pos, portal.withProperty(BlockMuckPortal.ACTIVATED, true));
     }
 
     @Override

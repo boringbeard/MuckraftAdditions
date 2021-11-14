@@ -38,9 +38,11 @@ public class MuckTeleporter implements ITeleporter
             BlockPos newPos = findAcceptableLocation(1024, pos, world);
             IBlockState state = world.getBlockState(newPos);
 
+            //makes portal on other side if no portal there already
             if(state != portal.withProperty(BlockMuckPortal.ACTIVATED, true))
             {
-                makePortal(newPos, world, this.portal); //TO DO: make this a muckportal method
+                ((BlockMuckPortal) portal.getBlock()).makePortal(newPos, world, portal);
+                DESTINATION_CACHE.add(new DimBlockPos(newPos, world.provider.getDimension()));
             }
 
             entity.setLocationAndAngles(newPos.getX() + 0.5, newPos.getY() + 1, newPos.getZ() + 0.5, yaw, 0.0F);
@@ -125,25 +127,6 @@ public class MuckTeleporter implements ITeleporter
         }
 
         return null;
-    }
-
-    private void makePortal(BlockPos pos, World world, IBlockState portal)
-    {
-        //TO DO: make this a muckportal method
-        //builds a portal at a location
-        switch (((BlockMuckPortal) portal.getBlock()).getStage())
-        {
-            case 0:
-                IBlockState activePortalSlab = MuckBlocks.PORTAL_STAGE_ONE_SLAB.getDefaultState().withProperty(BlockPortalS1Slab.ACTIVATED, true);
-                world.setBlockState(pos.north(), activePortalSlab.withProperty(BlockPortalS1Slab.FACING, EnumFacing.NORTH));
-                world.setBlockState(pos.south(), activePortalSlab.withProperty(BlockPortalS1Slab.FACING, EnumFacing.SOUTH));
-                world.setBlockState(pos, portal.withProperty(BlockMuckPortal.ACTIVATED, true));
-                break;
-            case 1:
-                world.setBlockState(pos, portal.withProperty(BlockMuckPortal.ACTIVATED, true));
-        }
-
-        DESTINATION_CACHE.add(new DimBlockPos(pos, world.provider.getDimension()));
     }
 
     private int getGoodHeight(BlockPos pos, World world)
