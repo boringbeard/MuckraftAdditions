@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
@@ -24,7 +23,6 @@ public class TileEntityPortalS2 extends TileEntity
     private final ItemStack[] heldItems = new ItemStack[5]; //items held in sacrifice slots
     private boolean sacrificeAccepted; //whether or not the item sacrifice has been made
     private UUID toTeleport = null; //entity queued up for transport
-    private int energy; //stored energy - currently unused
     private int timer = 300; //used to time the amount of time the player is on the portal
     //handles items and storage
     private ItemStackHandler itemStackHandler = new ItemStackHandler(heldItems.length)
@@ -41,7 +39,7 @@ public class TileEntityPortalS2 extends TileEntity
             TileEntityPortalS2.this.markDirty();
         }
     };
-    private EnergyStorage energyStorage = new EnergyStorage(1000000, 1000); //handles energy storage
+    private EnergyStorage energyStorage = new EnergyStorage(CAPACITY, 1_000); //handles energy storage
 
     public TileEntityPortalS2() {
         Arrays.fill(heldItems, ItemStack.EMPTY);
@@ -52,7 +50,7 @@ public class TileEntityPortalS2 extends TileEntity
     {
         super.readFromNBT(compound);
         if (compound.hasKey("items")) itemStackHandler.deserializeNBT((NBTTagCompound) compound.getTag("items"));
-        if (compound.hasKey("energy")) energy = compound.getInteger("energy");
+        if (compound.hasKey("energy")) energyStorage = new EnergyStorage(CAPACITY, 1_000, 1_000, compound.getInteger("energy"));
         if (compound.hasKey("timer")) timer = compound.getInteger("timer");
         if (compound.hasKey("UUID")) toTeleport = compound.getUniqueId("UUID");
         else toTeleport = null;
@@ -115,6 +113,11 @@ public class TileEntityPortalS2 extends TileEntity
         }
 
         return super.getCapability(capability, facing);
+    }
+
+    public boolean readyForActivation()
+    {
+        return sacrificeAccepted && energyStorage.getEnergyStored() >= CAPACITY;
     }
 
     //getter and setter methods

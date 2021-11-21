@@ -88,12 +88,15 @@ public class BlockPortalS2 extends BlockMuckPortal implements ITileEntityProvide
     {
         //activates if sacrifice is accepted and is redstone powered
         EnumFacing facing = (EnumFacing) state.getValue(FACING);
-        TileEntity tileentity = worldIn.getTileEntity(pos);
-
-        if (!worldIn.isRemote && worldIn.isBlockPowered(pos) && tileentity instanceof TileEntityPortalS2 && ((TileEntityPortalS2) tileentity).isSacrificeAccepted())
+        if (worldIn.getTileEntity(pos) instanceof TileEntityPortalS2)
         {
-            worldIn.setBlockState(pos, state.withProperty(ACTIVATED, true));
-            MuckTeleporter.DESTINATION_CACHE.add(new DimBlockPos(pos, worldIn.provider.getDimension())); //adds portal to a cache once it gets activated
+            TileEntityPortalS2 tileentity = (TileEntityPortalS2) worldIn.getTileEntity(pos);
+
+            if (!worldIn.isRemote && worldIn.isBlockPowered(pos) && tileentity.readyForActivation())
+            {
+                worldIn.setBlockState(pos, state.withProperty(ACTIVATED, true));
+                MuckTeleporter.DESTINATION_CACHE.add(new DimBlockPos(pos, worldIn.provider.getDimension())); //adds portal to a cache once it gets activated
+            }
         }
     }
 
