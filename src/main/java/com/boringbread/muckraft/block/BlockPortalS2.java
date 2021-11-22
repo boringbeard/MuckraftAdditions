@@ -35,6 +35,7 @@ public class BlockPortalS2 extends BlockMuckPortal implements ITileEntityProvide
     //of energy index reader, and visual indicators for everything
     public static final String NAME = "portal_stage_two";
     public static PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+    public static final int TELEPORT_COST_FE = 50_000;
 
     public BlockPortalS2()
     {
@@ -94,6 +95,7 @@ public class BlockPortalS2 extends BlockMuckPortal implements ITileEntityProvide
 
             if (!worldIn.isRemote && worldIn.isBlockPowered(pos) && tileentity.readyForActivation())
             {
+                tileentity.getEnergyStorage().extractEnergy(tileentity.getEnergyStorage().getMaxEnergyStored(), false);
                 worldIn.setBlockState(pos, state.withProperty(ACTIVATED, true));
                 MuckTeleporter.DESTINATION_CACHE.add(new DimBlockPos(pos, worldIn.provider.getDimension())); //adds portal to a cache once it gets activated
             }
@@ -204,8 +206,8 @@ public class BlockPortalS2 extends BlockMuckPortal implements ITileEntityProvide
             //look in TileEntityPortalS2 for more info
             if (tileEntity.getToTeleport() == null) tileEntity.setToTeleport(entityIn.getUniqueID());
 
-            //start timer if entity to teleport matches this entity
-            if (isActivated && tileEntity.getToTeleport().equals(entityIn.getUniqueID()))
+            //start timer if entity to teleport matches this entity, the portal is activated, and there's enough energy
+            if (isActivated && tileEntity.getToTeleport().equals(entityIn.getUniqueID()) && tileEntity.getEnergyStorage().getEnergyStored() >= TELEPORT_COST_FE)
             {
                 if (tileEntity.getTimer() > 0) //decrements timer value if timer is greater than 0
                 {
@@ -215,6 +217,7 @@ public class BlockPortalS2 extends BlockMuckPortal implements ITileEntityProvide
                 {
                     tileEntity.setTimer(300);
                     tileEntity.setToTeleport(null);
+                    tileEntity.getEnergyStorage().extractEnergy(TELEPORT_COST_FE, false);
                     teleportPlayer(entityIn, worldIn, pos);
                 }
             }
