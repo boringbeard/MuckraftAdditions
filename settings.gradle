@@ -8,9 +8,6 @@ pluginManagement {
     }
 
     repositories {
-        jcenter()
-        mavenCentral()
-
         maven {
             url 'https://files.minecraftforge.net/maven'
         }
@@ -18,6 +15,8 @@ pluginManagement {
             name 'FancyGradle'
             url 'https://gitlab.com/api/v4/projects/26758973/packages/maven'
         }
+        jcenter()
+        mavenCentral()
         mavenLocal()
         gradlePluginPortal()
     }

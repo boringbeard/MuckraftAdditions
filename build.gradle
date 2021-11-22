@@ -41,8 +41,16 @@ minecraft {
     }
 }
 
+repositories {
+    maven {
+        url 'http://maven.cil.li/'
+        setAllowInsecureProtocol(true)
+    }
+}
+
 dependencies {
-    implementation 'org.jetbrains:annotations:20.1.0'
+    implementation 'org.jetbrains:annotations:22.0.0'
+    implementation 'li.cil.oc:OpenComputers:MC1.12.2-1.7.+:api'
     implementation files('libs/AbyssalCraft-1.12.2-1.10.4.jar')
     implementation files('libs/SRParasites-1.12.2v1.9.1.jar')
     implementation files('libs/Mekanism-1.12.2-9.8.3.390.jar')
@@ -81,5 +89,12 @@ publishing {
         maven {
             url "file:///${project.projectDir}/mcmodsrepo"
         }
+    }
+}
+
+repositories {
+    maven {
+        url 'https://repo.maven.apache.org/maven2'
+        name 'Maven Central'
     }
 }
