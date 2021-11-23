@@ -1,6 +1,10 @@
 package com.boringbread.muckraft.tileentity;
 
 import com.boringbread.muckraft.block.BlockPortalS2;
+import li.cil.oc.api.machine.Arguments;
+import li.cil.oc.api.machine.Callback;
+import li.cil.oc.api.machine.Context;
+import li.cil.oc.api.network.SimpleComponent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,6 +13,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
@@ -16,9 +21,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.UUID;
 
-public class TileEntityPortalS2 extends TileEntity
+public class TileEntityPortalS2 extends TileEntity implements SimpleComponent
 {
-    //TO DO: implement energy
     private static final int CAPACITY = 1_000_000;
     private final ItemStack[] heldItems = new ItemStack[5]; //items held in sacrifice slots
     private boolean sacrificeAccepted; //whether or not the item sacrifice has been made
@@ -159,5 +163,16 @@ public class TileEntityPortalS2 extends TileEntity
     public UUID getToTeleport()
     {
         return toTeleport;
+    }
+
+    @Override
+    public String getComponentName()
+    {
+        return "portal_stage_two";
+    }
+
+    @Callback
+    public Object[] greet(Context context, Arguments args) {
+        return new Object[]{String.format("Hello, %s!", args.checkString(0))};
     }
 }
