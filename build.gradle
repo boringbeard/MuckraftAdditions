@@ -43,18 +43,15 @@ minecraft {
 
 repositories {
     maven {
-        url 'http://maven.cil.li/'
-        setAllowInsecureProtocol(true)
+        url 'https://maven.cil.li/'
     }
 }
 
 dependencies {
     implementation 'org.jetbrains:annotations:22.0.0'
     implementation 'li.cil.oc:OpenComputers:MC1.12.2-1.7.5+:api'
-    implementation 'li.cil.oc:OpenComputers:MC1.12.2-1.7.5+:javadoc'
     implementation files('libs/SRParasites-1.12.2v1.9.1.jar')
     implementation files('libs/Mekanism-1.12.2-9.8.3.390.jar')
-
     minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2855'
 }
 
