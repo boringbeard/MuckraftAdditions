@@ -2,6 +2,7 @@ package com.boringbread.muckraft.init;
 
 import com.boringbread.muckraft.block.*;
 import com.boringbread.muckraft.creativetab.MuckraftCreativeTab;
+import com.boringbread.muckraft.tileentity.TileEntityPortalS1;
 import com.boringbread.muckraft.tileentity.TileEntityPortalS2;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -53,6 +54,7 @@ public class MuckBlocks
 
     public static void registerTileEntities()
     {
+        GameRegistry.registerTileEntity(TileEntityPortalS1.class, new ResourceLocation("muckraft:portal_stage_one_tile_entity"));
         GameRegistry.registerTileEntity(TileEntityPortalS2.class, new ResourceLocation("muckraft:portal_stage_two_tile_entity"));
     }
 
