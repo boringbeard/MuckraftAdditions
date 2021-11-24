@@ -137,26 +137,18 @@ public class BlockPortalS2 extends BlockMuckPortal implements ITileEntityProvide
     @Override
     public @NotNull IBlockState getStateFromMeta(int meta)
     {
-        //TO DO: fix these ones too
-        //converts int into booleans in the worst way possible
-        IBlockState blockState = this.getDefaultState();
-
-        boolean activated = (meta + 1) > 4;
-        int facingInt;
+        boolean activated = (meta & 4) != 0;
         EnumFacing facing;
 
-        if (activated) facingInt = (meta + 1) - 4;
-        else facingInt = meta + 1;
-
-        switch (facingInt)
+        switch (meta & 3)
         {
-            case 2:
+            case 1:
                 facing = EnumFacing.EAST;
                 break;
-            case 3:
+            case 2:
                 facing = EnumFacing.SOUTH;
                 break;
-            case 4:
+            case 3:
                 facing = EnumFacing.WEST;
                 break;
             default:
@@ -169,24 +161,22 @@ public class BlockPortalS2 extends BlockMuckPortal implements ITileEntityProvide
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        //same thing as in S1 and above
-        int activated = state.getValue(ACTIVATED) ? 2 : 1;
-        int direction;
+        int meta = state.getValue(ACTIVATED) ? 4 : 0;
         switch (state.getValue(FACING))
         {
             case EAST:
-                direction = 2;
+                meta += 1;
                 break;
             case SOUTH:
-                direction = 3;
+                meta += 2;
                 break;
             case WEST:
-                direction = 4;
+                meta += 3;
                 break;
             default:
-                direction = 1;
+                meta += 0;
         }
-        return activated * direction - 1;
+        return meta;
     }
 
     @Override

@@ -74,30 +74,11 @@ public class BlockPortalS1Slab extends BlockSlab
     @Override
     public @NotNull IBlockState getStateFromMeta(int meta)
     {
-        //TO DO: use bitwise operators to make this shorter and more concise
-        //Converts boolean values into integer in the worst way possible by manually having each binary place value
-        int[] digitValues = {8, 4, 1};
-        int totalValue = meta;
-        List<Integer> digits = new LinkedList<>();
-
-        for (int digitValue: digitValues)
-        {
-            int digit = 0;
-
-            while(totalValue > digitValue)
-            {
-                totalValue -= digitValue;
-                digit++;
-            }
-
-            digits.add(digit);
-        }
-
-        boolean activated = digits.get(0) == 1;
-        EnumBlockHalf half = digits.get(1) == 1 ? EnumBlockHalf.TOP : EnumBlockHalf.BOTTOM;
+        boolean activated = (meta & 8) != 0;
+        EnumBlockHalf half = (meta & 4) != 0 ? EnumBlockHalf.TOP : EnumBlockHalf.BOTTOM;
         EnumFacing facing;
 
-        switch(digits.get(2))
+        switch(meta & 3)
         {
             case 1:
                 facing = EnumFacing.EAST;
@@ -121,30 +102,28 @@ public class BlockPortalS1Slab extends BlockSlab
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        //converts booleans into int in the worst way possible - use bitwise operators to make better
         boolean activated = state.getValue(ACTIVATED);
         EnumFacing direction = state.getValue(FACING);
         EnumBlockHalf half = state.getValue(HALF);
 
-        int firstDigit = activated ? 1 : 0;
-        int secondDigit = half == EnumBlockHalf.TOP ? 1 : 0;
-        int thirdDigit;
+        int meta = activated ? 8 : 0;
+        meta += half == EnumBlockHalf.TOP ? 4 : 0;
 
         switch (direction)
         {
             case EAST:
-                thirdDigit = 1;
+                meta += 1;
                 break;
             case SOUTH:
-                thirdDigit = 2;
+                meta += 2;
                 break;
             case WEST:
-                thirdDigit = 3;
+                meta += 3;
                 break;
-            default: thirdDigit = 0;
+            default:
+                meta += 0;
         }
-
-        return firstDigit * 8 + secondDigit * 4 + thirdDigit;
+        return meta;
     }
 
     @Override
