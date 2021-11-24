@@ -30,9 +30,8 @@ import java.util.UUID;
 public class BlockPortalS2 extends BlockMuckPortal implements ITileEntityProvider
 {
     //portal to transport between S2 and S3
-    //TO DO: implement energy storage + varying speed based on energy input + make multiblock
-    //Idea: no more GUI, everything is done in the actual minecraft world; pedestal-like sacrifice receivers, some sort
-    //of energy index reader, and visual indicators for everything
+    //TO DO: make multiblock
+    //Idea: no more GUI, everything is done in the actual minecraft world; pedestal-like sacrifice receivers, opencomputers integration
     public static final String NAME = "portal_stage_two";
     public static PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     public static final int TELEPORT_COST_FE = 50_000;
