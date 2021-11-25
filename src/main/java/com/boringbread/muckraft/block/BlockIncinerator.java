@@ -11,6 +11,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -19,6 +20,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -48,7 +51,18 @@ public class BlockIncinerator extends Block implements ITileEntityProvider
         if(!worldIn.isRemote)
         {
             TileEntityIncinerator tileEntity = (TileEntityIncinerator) worldIn.getTileEntity(pos);
-            tileEntity.getItemHandler().insertItem(0, playerIn.getHeldItem(hand), false);
+            ItemStackHandler handler = tileEntity.getItemHandler();
+            ItemStack heldItem = playerIn.getHeldItem(hand);
+
+            if (handler.insertItem(0, heldItem, true) != heldItem)
+            {
+                playerIn.setHeldItem(hand, handler.insertItem(0, heldItem, false));
+            }
+            else if (ItemHandlerHelper.canItemStacksStack(handler.getStackInSlot(0), heldItem) || heldItem == ItemStack.EMPTY)
+            {
+                ItemStack extracted = handler.extractItem(0, heldItem.getMaxStackSize() - heldItem.getCount(), false);
+                playerIn.setHeldItem(hand, ItemHandlerHelper.copyStackWithSize(extracted != ItemStack.EMPTY ? extracted : heldItem, heldItem.getCount() + extracted.getCount()));
+            }
         }
         return true;
     }
