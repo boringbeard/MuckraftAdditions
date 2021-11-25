@@ -48,7 +48,7 @@ public class BlockIncinerator extends Block implements ITileEntityProvider
         if(!worldIn.isRemote)
         {
             TileEntityIncinerator tileEntity = (TileEntityIncinerator) worldIn.getTileEntity(pos);
-            tileEntity.setItem(playerIn.getHeldItem(hand));
+            tileEntity.getItemHandler().insertItem(0, playerIn.getHeldItem(hand), false);
         }
         return true;
     }

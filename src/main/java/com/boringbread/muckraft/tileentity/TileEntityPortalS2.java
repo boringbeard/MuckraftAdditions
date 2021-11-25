@@ -96,8 +96,11 @@ public class TileEntityPortalS2 extends TileEntity implements SimpleComponent
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing)
     {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
-                || (capability == CapabilityEnergy.ENERGY && facing == world.getBlockState(pos).getValue(BlockPortalS2.FACING).getOpposite()))
+        if ((capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
+                && facing != world.getBlockState(pos).getValue(BlockPortalS2.FACING).getOpposite())
+                ||
+                (capability == CapabilityEnergy.ENERGY
+                && facing == world.getBlockState(pos).getValue(BlockPortalS2.FACING).getOpposite()))
         {
             return true;
         }
@@ -107,13 +110,13 @@ public class TileEntityPortalS2 extends TileEntity implements SimpleComponent
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing)
     {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && (facing != world.getBlockState(pos).getValue(BlockPortalS2.FACING).getOpposite()))
         {
-            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemStackHandler);
+            return (T) itemStackHandler;
         }
         if (capability == CapabilityEnergy.ENERGY && (facing == world.getBlockState(pos).getValue(BlockPortalS2.FACING).getOpposite()))
         {
-            return CapabilityEnergy.ENERGY.cast(energyStorage);
+            return (T) energyStorage;
         }
 
         return super.getCapability(capability, facing);

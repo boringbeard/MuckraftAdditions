@@ -1,31 +1,38 @@
 package com.boringbread.muckraft.tileentity;
 
+import com.boringbread.muckraft.block.BlockIncinerator;
+import com.boringbread.muckraft.block.BlockPortalS2;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
 public class TileEntityIncinerator extends TileEntity
 {
-    private ItemStack item = ItemStack.EMPTY;
-    private FluidTank tank = new FluidTank(5_000);
+    private ItemStackHandler itemStackHandler = new ItemStackHandler();
+    private FluidTank tank = new FluidTank(Fluid.BUCKET_VOLUME);
 
     @Override
     public void readFromNBT(NBTTagCompound compound)
     {
         super.readFromNBT(compound);
-        if (compound.hasKey("sacrifice")) item = new ItemStack(compound.getCompoundTag("sacrifice"));
+        if (compound.hasKey("item")) itemStackHandler.deserializeNBT(compound.getCompoundTag("item"));
         if (compound.hasKey("fluid")) tank.readFromNBT(compound.getCompoundTag("fluid"));
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
-        compound.setTag("sacrifice", item.writeToNBT(new NBTTagCompound()));
+        compound.setTag("item", itemStackHandler.serializeNBT());
         compound.setTag("fluid", tank.writeToNBT(new NBTTagCompound()));
         return super.writeToNBT(compound);
     }
@@ -33,17 +40,36 @@ public class TileEntityIncinerator extends TileEntity
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
     {
+        if ((capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
+                && facing != world.getBlockState(pos).getValue(BlockIncinerator.FACING))
+                ||
+                (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
+                && facing == world.getBlockState(pos).getValue(BlockIncinerator.FACING)))
+        {
+            return true;
+        }
         return super.hasCapability(capability, facing);
     }
 
-    public void setItem(ItemStack item)
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing)
     {
-        this.item = item;
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && (facing != world.getBlockState(pos).getValue(BlockPortalS2.FACING)))
+        {
+            return (T) itemStackHandler;
+        }
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && (facing == world.getBlockState(pos).getValue(BlockPortalS2.FACING)))
+        {
+            return (T) tank;
+        }
+
+        return super.getCapability(capability, facing);
     }
 
-    public ItemStack getItem()
+
+    public ItemStackHandler getItemHandler()
     {
-        return item;
+        return itemStackHandler;
     }
 
     public FluidTank getTank()
