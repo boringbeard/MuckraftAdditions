@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": {"model": "muckraft:incinerator"},
+    "facing=east": {"model": "muckraft:incinerator", "y": 90},
+    "facing=south": {"model": "muckraft:incinerator", "y": 180},
+    "facing=west": {"model": "muckraft:incinerator", "y": 270}
+  }
+}

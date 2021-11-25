@@ -1,10 +1,9 @@
 package com.boringbread.muckraft.init;
 
 import com.boringbread.muckraft.block.*;
-import com.boringbread.muckraft.creativetab.MuckraftCreativeTab;
 import com.boringbread.muckraft.tileentity.TileEntityPortalS1;
 import com.boringbread.muckraft.tileentity.TileEntityPortalS2;
-import com.boringbread.muckraft.tileentity.TileEntitySacrificeAcceptor;
+import com.boringbread.muckraft.tileentity.TileEntityIncinerator;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -23,21 +22,21 @@ public class MuckBlocks
     public static final BlockPortalS1Slab PORTAL_STAGE_ONE_SLAB = new BlockPortalS1Slab();
     public static final BlockPortalS2 PORTAL_STAGE_TWO = new BlockPortalS2();
     public static final BlockPortalS3 PORTAL_STAGE_THREE = new BlockPortalS3();
-    public static final BlockSacrificeAcceptor SACRIFICE_ACCEPTOR = new BlockSacrificeAcceptor();
+    public static final BlockIncinerator INCINERATOR = new BlockIncinerator();
     public static final Item ITEM_PORTAL_STAGE_ONE = createItemBlock(PORTAL_STAGE_ONE, 1);
     public static final Item ITEM_PORTAL_STAGE_ONE_SLAB = createItemBlock(PORTAL_STAGE_ONE_SLAB, 64);
     public static final Item ITEM_PORTAL_STAGE_TWO = createItemBlock(PORTAL_STAGE_TWO, 1);
     public static final Item ITEM_PORTAL_STAGE_THREE = createItemBlock(PORTAL_STAGE_THREE, 1);
-    public static final Item ITEM_SACRIFICE_ACCEPTOR = createItemBlock(SACRIFICE_ACCEPTOR, 64);
+    public static final Item ITEM_INCINERATOR = createItemBlock(INCINERATOR, 64);
     public static BlockParasiteJuice parasiteJuice;
 
     @SideOnly(Side.CLIENT)
     public static void initModels()
     {
-        MuckItems.initModel(ITEM_PORTAL_STAGE_ONE, "portal_stage_one");
-        MuckItems.initModel(ITEM_PORTAL_STAGE_ONE_SLAB, "portal_stage_one_slab");
-        MuckItems.initModel(ITEM_PORTAL_STAGE_TWO, "portal_stage_two");
-        MuckItems.initModel(ITEM_SACRIFICE_ACCEPTOR, "sacrifice_acceptor");
+        MuckItems.initModel(ITEM_PORTAL_STAGE_ONE, BlockPortalS1.NAME);
+        MuckItems.initModel(ITEM_PORTAL_STAGE_ONE_SLAB, BlockPortalS1Slab.NAME);
+        MuckItems.initModel(ITEM_PORTAL_STAGE_TWO, BlockPortalS2.NAME);
+        MuckItems.initModel(ITEM_INCINERATOR, BlockIncinerator.NAME);
     }
 
     private static void registerFluids()
@@ -53,7 +52,7 @@ public class MuckBlocks
         event.getRegistry().register(PORTAL_STAGE_ONE_SLAB);
         event.getRegistry().register(PORTAL_STAGE_TWO);
         event.getRegistry().register(PORTAL_STAGE_THREE);
-        event.getRegistry().register(SACRIFICE_ACCEPTOR);
+        event.getRegistry().register(INCINERATOR);
         event.getRegistry().register(parasiteJuice);
     }
 
@@ -61,7 +60,7 @@ public class MuckBlocks
     {
         GameRegistry.registerTileEntity(TileEntityPortalS1.class, new ResourceLocation("muckraft:portal_stage_one_tile_entity"));
         GameRegistry.registerTileEntity(TileEntityPortalS2.class, new ResourceLocation("muckraft:portal_stage_two_tile_entity"));
-        GameRegistry.registerTileEntity(TileEntitySacrificeAcceptor.class, new ResourceLocation("muckraft:sacrifice_acceptor_tile_entity"));
+        GameRegistry.registerTileEntity(TileEntityIncinerator.class, new ResourceLocation("muckraft:incinerator_tile_entity"));
     }
 
     public static void registerItemBlocks(RegistryEvent.Register<Item> event)
@@ -70,7 +69,7 @@ public class MuckBlocks
         event.getRegistry().register(ITEM_PORTAL_STAGE_ONE_SLAB);
         event.getRegistry().register(ITEM_PORTAL_STAGE_TWO);
         event.getRegistry().register(ITEM_PORTAL_STAGE_THREE);
-        event.getRegistry().register(ITEM_SACRIFICE_ACCEPTOR);
+        event.getRegistry().register(ITEM_INCINERATOR);
     }
 
     private static Item createItemBlock(Block block, int stackSize)

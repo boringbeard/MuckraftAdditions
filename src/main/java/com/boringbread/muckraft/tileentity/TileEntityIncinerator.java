@@ -9,22 +9,24 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
 
-public class TileEntitySacrificeAcceptor extends TileEntity
+public class TileEntityIncinerator extends TileEntity
 {
-    private ItemStack item;
-    private FluidTank tank;
+    private ItemStack item = ItemStack.EMPTY;
+    private FluidTank tank = new FluidTank(5_000);
 
     @Override
     public void readFromNBT(NBTTagCompound compound)
     {
         super.readFromNBT(compound);
-        if (compound.hasKey("item")) item.deserializeNBT(compound.getCompoundTag("sacrifice"));
+        if (compound.hasKey("sacrifice")) item = new ItemStack(compound.getCompoundTag("sacrifice"));
+        if (compound.hasKey("fluid")) tank.readFromNBT(compound.getCompoundTag("fluid"));
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         compound.setTag("sacrifice", item.writeToNBT(new NBTTagCompound()));
+        compound.setTag("fluid", tank.writeToNBT(new NBTTagCompound()));
         return super.writeToNBT(compound);
     }
 
@@ -42,5 +44,10 @@ public class TileEntitySacrificeAcceptor extends TileEntity
     public ItemStack getItem()
     {
         return item;
+    }
+
+    public FluidTank getTank()
+    {
+        return tank;
     }
 }
