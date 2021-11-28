@@ -63,6 +63,11 @@ public class BlockIncinerator extends Block implements ITileEntityProvider
                 ItemStack extracted = handler.extractItem(0, heldItem.getMaxStackSize() - heldItem.getCount(), false);
                 playerIn.setHeldItem(hand, ItemHandlerHelper.copyStackWithSize(extracted != ItemStack.EMPTY ? extracted : heldItem, heldItem.getCount() + extracted.getCount()));
             }
+
+            worldIn.markBlockRangeForRenderUpdate(pos, pos);
+            worldIn.notifyBlockUpdate(pos, worldIn.getBlockState(pos), worldIn.getBlockState(pos), 3);
+            worldIn.scheduleBlockUpdate(pos,this,0,0);
+            tileEntity.markDirty();
         }
         return true;
     }
